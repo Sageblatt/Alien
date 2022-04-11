@@ -1,5 +1,189 @@
-//
-// Created by sageblatt on 01.04.2022.
-//
-
 #include "StartingMenu.h"
+
+StartingMenu::StartingMenu(std::shared_ptr<RenderWindow> wind) {
+    window = wind;
+
+    //текстуры
+    for (auto i = 0; i < 3; i++)
+        textures.emplace_back(make_unique<Texture>());
+
+    textures[0]->loadFromFile("../images/PLAY.png");
+    textures[1]->loadFromFile("../images/alien_wave_2.png");
+    textures[2]->loadFromFile("../images/background3.png");
+
+    //спрайты
+    sprites.emplace_back(make_unique<Sprite>(*textures[0]));
+    sprites.emplace_back(make_unique<Sprite>(*textures[1]));
+    sprites.emplace_back(make_unique<Sprite>(*textures[2]));
+
+}
+
+void StartingMenu::run() {
+    sprites[0]->setPosition(300, 600);
+    sprites[1]->setPosition(-400, -500);
+    sprites[2]->setPosition(0, 0);
+
+    //номер меню и открыто окно или нет
+    bool isMenu = 1;
+    int menuNum = 0;
+
+    //вызов окна меню
+    while (isMenu and window->isOpen()) {
+        window->clear(Color(129, 181, 221));
+
+        if (IntRect(400, 600, 400, 100).contains(Mouse::getPosition(*window))) {
+            sprites[0]->setColor(Color::Red);
+            menuNum = 1;
+        }
+
+        if (Mouse::isButtonPressed(Mouse::Left)) {
+            if (menuNum == 1) {
+                window->clear(Color(129, 181, 221));
+                if (isMenu)
+                    nextWindow(); //прожали play перешли на другую страницу меню
+                break;
+            }
+
+        }
+
+        window->draw(*sprites[2]);
+        window->draw(*sprites[0]);
+        window->draw(*sprites[1]);
+        window->display();
+
+        Event event;
+        while (window->pollEvent(event)) {
+            if (event.type == Event::Closed ||
+                (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)) {
+                window->close();
+            }
+        }
+
+    }
+}
+
+void StartingMenu::nextWindow() {
+//    MainMenu m;
+//    m.run(window);
+}
+
+void StartingMenu::lor() {
+
+    Texture lor, planet;
+    planet.loadFromFile("C:/Users/79096/CLionProjects/game3/PLAY.png");
+    lor.loadFromFile("C:/Users/79096/CLionProjects/game3/blackbg.jpg");
+    Sprite getLor(lor), planet1(planet);
+    getLor.setPosition(0, 0);
+    planet1.setPosition(300, 300);
+
+    Font font;
+    font.loadFromFile("C:\\Users\\79096\\CLionProjects\\game3\\Art_Gothic_ExtraBold.ttf");
+    Text lor1("Once upon a time", font), lor2("Once upon a time", font),
+    lor3("Once upon a time", font), lor4("Once upon a time", font);
+
+    lor1.setString("In the year 2150, the Earth is destroyed. ");
+    lor2.setString("Huge monsters from other planets filled the whole space,");
+    lor3.setString(" so people had to go underground, ");
+    lor4.setString("where they can get at least one chance...");
+    lor1.setPosition(200, 100);
+    lor1.setCharacterSize(30);
+    lor2.setPosition(100, 200);
+    lor2.setCharacterSize(30);
+    lor3.setPosition(300, 300);
+    lor3.setCharacterSize(50);
+    lor4.setPosition(200, 400);
+    lor4.setCharacterSize(50);
+
+
+    Clock clock;
+    clock.restart();
+    double y = 500;
+
+    while (window->isOpen()) {
+        window->clear();
+            if(y > 0) {
+
+                auto t = clock.getElapsedTime().asSeconds();
+                y = y - 0.000001*t;
+                planet1.setPosition(300, y);
+               //lor1.setPosition(400, y);
+//                lor2.setPosition(380, y - 100);
+        }
+
+        clock.restart();
+        window->draw(getLor);
+
+//        window.draw(lor2);
+        window->draw(planet1);
+//        window.draw(lor1);
+        window->display();
+        Event event;
+        while (window->pollEvent(event)) {
+            if (event.type == Event::Closed ||
+                (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)) {
+                window->close();
+            }
+        }
+    }
+}
+
+void StartingMenu::lo1(){
+    Texture lor, planet;
+    planet.loadFromFile("C:/Users/79096/CLionProjects/game3/PLAY.png");
+    lor.loadFromFile("C:/Users/79096/CLionProjects/game3/blackbg.jpg");
+    Sprite getLor(lor), planet1(planet);
+    getLor.setPosition(0, 0);
+    planet1.setPosition(300, 300);
+
+    Font font;
+    font.loadFromFile("C:\\Users\\79096\\CLionProjects\\game3\\Art_Gothic_ExtraBold.ttf");
+    Text lor1("Once upon a time", font), lor2("Once upon a time", font),
+            lor3("Once upon a time", font), lor4("Once upon a time", font);
+
+    lor1.setString("In the year 2150, the Earth is destroyed. ");
+    lor2.setString("Huge monsters from other planets filled the whole space,");
+    lor3.setString(" so people had to go underground, ");
+    lor4.setString("where they can get at least one chance...");
+    lor1.setPosition(200, 100);
+    lor1.setCharacterSize(30);
+    lor2.setPosition(100, 200);
+    lor2.setCharacterSize(30);
+    lor3.setPosition(300, 300);
+    lor3.setCharacterSize(50);
+    lor4.setPosition(200, 400);
+    lor4.setCharacterSize(50);
+
+
+    Clock clock;
+    clock.restart();
+    double y = 500;
+
+    while (window->isOpen()) {
+        window->clear();
+        if(y > 0) {
+            auto t = clock.getElapsedTime().asSeconds();
+            y = y - 0.000001*t;
+            planet1.setPosition(300, y);
+            //lor1.setPosition(400, y);
+            //lor2.setPosition(380, y - 100);
+        }
+
+        clock.restart();
+        window->draw(getLor);
+
+        //        window.draw(lor2);
+        window->draw(planet1);
+        //        window.draw(lor1);
+        window->display();
+
+        Event event;
+        while (window->pollEvent(event)) {
+            if (event.type == Event::Closed ||
+                (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)) {
+                window->close();
+            }
+        }
+    }
+}
+
+

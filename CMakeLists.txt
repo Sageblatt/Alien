@@ -1,18 +1,16 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.20)
 project(Alien)
 
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(Alien
         Menu.cpp
+#        Planet.cpp
+#        Creature.cpp
+#        Player.cpp
+#        Monster.cpp
         StartingMenu.cpp
-        GameMenu.cpp
-        Planet.cpp
-        Creature.cpp
-        Player.cpp
-        Monster.cpp
-        Newmenu.cpp
-        MainManu.cpp
+        MainMenu.cpp
         main.cpp)
 
 include_directories(./images)
