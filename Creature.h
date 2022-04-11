@@ -14,7 +14,7 @@ protected:
     float SpeedX{};
     float SpeedY{}; //скорости по x, y
     int   directionMove{};//направление движения игрока
-    int   directionAttack{};
+
 
     String  file;         //файл с расширением
     Image   image;        //sfml изображение
@@ -26,7 +26,7 @@ protected:
 
     //std::vector <sf::Sprite> sprites;
     virtual void Move() = 0;
-    virtual void Attack() = 0;
+
 
 public:
     

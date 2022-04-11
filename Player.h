@@ -9,20 +9,21 @@ protected:
 	Clock clock; //создаем переменную для привязки персонажа ко времени.
 	float CurrentFrame;//хранит текущий кадр
 	float CurrentFrame2;
-	float CurrentAttack;
-	float CurrentAttack2;
+
 	float time;
+
 	int WindowWidth;
 	int WindowHeight;
+
 	bool key;
+
 	float boost;
 	float timeBoost;
 	float boostHeight;
 
+	bool onGround;
 	void Move() override;
-	void Attack() override;
 
-	void KeyboardAttack();
 	void Keyboard();
 public:
 
