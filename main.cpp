@@ -1,8 +1,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include "MainManu.h"
-#include "menu.h"
+#include "Newmenu.h"
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(1376, 768), "alien");

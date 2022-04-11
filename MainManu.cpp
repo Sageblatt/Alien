@@ -1,10 +1,10 @@
 #include "MainManu.h"
 using namespace sf;
 
-Menu::Menu(){
+MainMenu::MainMenu(){
     int k;
 }
-void Menu::run(RenderWindow& window) {
+void MainMenu::run(RenderWindow& window) {
     //текстуры
     Texture menuTexture1, menuTexture2, menuTexture3, menuBackground;
     menuTexture1.loadFromFile("C:/Users/79096/CLionProjects/game3/CONTINUE.png");

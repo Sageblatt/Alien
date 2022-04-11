@@ -7,7 +7,7 @@
 
 
 
-class Menu {
+class MainMenu {
 protected:
     std::vector <sf::Sprite> textures;
     unsigned long score;
@@ -15,9 +15,9 @@ protected:
     //virtual void nextWindow() = 0;
 
 public:
-    Menu();
+    MainMenu();
     static void run(sf::RenderWindow& window) ;
-    ~Menu() = default;
+
 };
 
 

@@ -4,14 +4,16 @@ project(Alien)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(Alien
-        main.cpp
         Menu.cpp
         StartingMenu.cpp
         GameMenu.cpp
         Planet.cpp
         Creature.cpp
         Player.cpp
-        Monster.cpp)
+        Monster.cpp
+        Newmenu.cpp
+        MainManu.cpp
+        main.cpp)
 
 find_package(SFML 2.5 COMPONENTS graphics audio window system REQUIRED)
 
