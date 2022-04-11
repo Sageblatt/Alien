@@ -11,9 +11,9 @@ StartingMenu::StartingMenu(){
 void StartingMenu::run(RenderWindow& window) {
     //текстуры
     Texture menuTexture1, menuTexture2, menuTexture3, aboutTexture, menuBackground;
-    menuTexture1.loadFromFile("C:/Users/79096/CLionProjects/game3/PLAY.png");
-    menuTexture2.loadFromFile("C:/Users/79096/CLionProjects/game3/alien_wave_2.png");
-    menuBackground.loadFromFile("C:/Users/79096/CLionProjects/game3/5698aad283f6267.png");
+    menuTexture1.loadFromFile("../images/PLAY.png");
+    menuTexture2.loadFromFile("../images/alien_wave_2.png");
+    menuBackground.loadFromFile("../images/background3.png");
 
     //спрайты
     Sprite menu1(menuTexture1), menu2(menuTexture2), menuBg(menuBackground);

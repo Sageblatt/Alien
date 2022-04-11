@@ -15,6 +15,8 @@ add_executable(Alien
         MainManu.cpp
         main.cpp)
 
+include_directories(./images)
+
 find_package(SFML 2.5 COMPONENTS graphics audio window system REQUIRED)
 
 target_link_libraries(Alien sfml-graphics sfml-window sfml-system sfml-audio)

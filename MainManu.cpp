@@ -7,10 +7,10 @@ MainMenu::MainMenu(){
 void MainMenu::run(RenderWindow& window) {
     //текстуры
     Texture menuTexture1, menuTexture2, menuTexture3, menuBackground;
-    menuTexture1.loadFromFile("C:/Users/79096/CLionProjects/game3/CONTINUE.png");
-    menuTexture2.loadFromFile("C:/Users/79096/CLionProjects/game3/EXIT.png");
-    menuTexture3.loadFromFile("C:/Users/79096/CLionProjects/game3/NEW_GAME.png");
-    menuBackground.loadFromFile("C:/Users/79096/CLionProjects/game3/background_2.png");
+    menuTexture1.loadFromFile("../images/CONTINUE.png");
+    menuTexture2.loadFromFile("../images/EXIT.png");
+    menuTexture3.loadFromFile("../images/NEW_GAME.png");
+    menuBackground.loadFromFile("../images/background_2.png");
 
     //спрайты
     Sprite menu1(menuTexture1), menu2(menuTexture2), menu3(menuTexture3), menuBg(menuBackground);
@@ -24,7 +24,7 @@ void MainMenu::run(RenderWindow& window) {
     int menuNum = 0;
 
     //вызов окна меню
-    while (isMenu) {
+    while (isMenu and window.isOpen()) {
         menu1.setColor(Color::White);
         menuNum = 0;
         window.clear(Color(129, 181, 221));
@@ -45,7 +45,14 @@ void MainMenu::run(RenderWindow& window) {
         window.draw(menu2);
         window.draw(menu3);
         window.display();
+        Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == Event::Closed ||
+                (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)) {
+                window.close();
+            }
 
+        }
 
     }
 }
