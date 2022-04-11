@@ -1,22 +1,18 @@
 #ifndef ALIEN_MAINMENU_H
 #define ALIEN_MAINMENU_H
 
-#include <SFML/Graphics.hpp>
-#include <vector>
+#include "Menu.h"
 
 using namespace sf;
+using std::make_unique;
 
-class MainMenu {
+class MainMenu: public Menu {
 protected:
-    std::vector <sf::Sprite> textures;
-    unsigned long score;
-
-    //virtual void nextWindow() = 0;
+    void nextWindow() override;
 
 public:
-    MainMenu();
-    static void run(sf::RenderWindow& window) ;
-
+    explicit MainMenu(std::shared_ptr<RenderWindow> wind);
+    void run() override;
 };
 
 

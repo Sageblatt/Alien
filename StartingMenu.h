@@ -13,8 +13,6 @@ using std::make_unique;
 
 class StartingMenu: public Menu {
 protected:
-    std::shared_ptr<RenderWindow> window;
-
     void nextWindow() override;
 
 public:

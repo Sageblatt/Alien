@@ -12,6 +12,7 @@
 
 class Menu {
 protected:
+    std::shared_ptr<sf::RenderWindow> window;
     std::vector <std::unique_ptr <sf::Texture>> textures;
     std::vector <std::unique_ptr <sf::Sprite>> sprites;
     unsigned long score;

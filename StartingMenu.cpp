@@ -12,10 +12,8 @@ StartingMenu::StartingMenu(std::shared_ptr<RenderWindow> wind) {
     textures[2]->loadFromFile("../images/background3.png");
 
     //спрайты
-    sprites.emplace_back(make_unique<Sprite>(*textures[0]));
-    sprites.emplace_back(make_unique<Sprite>(*textures[1]));
-    sprites.emplace_back(make_unique<Sprite>(*textures[2]));
-
+    for (auto i = 0; i < 3; i++)
+        sprites.emplace_back(make_unique<Sprite>(*textures[i]));
 }
 
 void StartingMenu::run() {
@@ -63,8 +61,8 @@ void StartingMenu::run() {
 }
 
 void StartingMenu::nextWindow() {
-//    MainMenu m;
-//    m.run(window);
+    MainMenu m(window);
+    m.run();
 }
 
 void StartingMenu::lor() {
