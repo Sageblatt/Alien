@@ -31,6 +31,8 @@ void MainMenu::run() {
     //вызов окна меню
     while (isMenu and window->isOpen()) {
         sprites[0]->setColor(Color::White);
+        sprites[1]->setColor(Color::White);
+        sprites[2]->setColor(Color::White);
         menuNum = 0;
         window->clear(Color(129, 181, 221));
 
@@ -38,27 +40,29 @@ void MainMenu::run() {
             sprites[0]->setColor(Color::Red);
             menuNum = 1; //кнопка Continue
         }
-//         if (IntRect(500, 400, 300, 100).contains(Mouse::getPosition(window))) {
-//             menu2.setColor(Color::Red);
-//             menuNum = 1; //кнопка exit(убрали continue)
-//         }
-//         if (IntRect(450, 200, 600, 100).contains(Mouse::getPosition(window))) {
-//             menu3.setColor(Color::Red);
-//             menuNum = 2; //кнопка new_game
-//         }
+         if (IntRect(500, 400, 300, 100).contains(Mouse::getPosition(*window))) {
+             sprites[1]->setColor(Color::Red);
+             menuNum = 1; //кнопка exit(убрали continue)
+         }
+         if (IntRect(450, 200, 600, 100).contains(Mouse::getPosition(*window))) {
+             sprites[2]->setColor(Color::Red);
+             menuNum = 2; //кнопка new_game
+         }
 
 
         if (Mouse::isButtonPressed(Mouse::Left)) {
             if (menuNum == 1)
                 isMenu = false; //если нажали первую кнопку, то выходим из меню
         }
-//         if (Mouse::isButtonPressed(Mouse::Left)) {
-//             if (menuNum == 2) {
-//                 nextWindow(window, isMenu);
-//                 //если нажали кнопку new_game, то перешли в GameMenu
-//             break;
-//             }
-//         }
+
+        if (Mouse::isButtonPressed(Mouse::Left)) {
+            if (menuNum == 2) {
+                if (isMenu)
+                    nextWindow();
+                //если нажали кнопку new_game, то перешли в GameMenu
+            break;
+            }
+        }
 
 
         window->draw(*sprites[3]);
@@ -76,10 +80,7 @@ void MainMenu::run() {
     }
 }
 
-void MainMenu::nextWindow(RenderWindow &window, bool isMenu) {
-    if(isMenu == 1) {
-        GameMenu Planets;
-        Planets.RunPlanets(window);
-    }
-
+void MainMenu::nextWindow() {
+    GameMenu planets(window);
+    planets.run();
 }

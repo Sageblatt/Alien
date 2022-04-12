@@ -2,6 +2,7 @@
 #define ALIEN_MAINMENU_H
 
 #include "Menu.h"
+#include "GameMenu.h"
 
 using namespace sf;
 using std::make_unique;
