@@ -283,7 +283,7 @@ void Player::Move()
         {
     case -5:
         sprite.setTextureRect(IntRect(900 - Width * (int)(CurrentFrame), Height * 4, Width, Height));
-        if (Keyboard::isKeyPressed(Keyboard::Left))
+        if (Keyboard::isKeyPressed(Keyboard::Left) && onGround)
             sprite.move(-SpeedX * time, 0);
         else if (Keyboard::isKeyPressed(Keyboard::Up) || onGround == false)
         {
@@ -425,5 +425,9 @@ void Player::Keyboard()
         return;
     }
 }
+
+
+
+
 
 
