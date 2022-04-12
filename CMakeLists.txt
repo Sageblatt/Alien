@@ -7,11 +7,12 @@ add_executable(Alien
         main.cpp
         Menu.cpp
         StartingMenu.cpp
-        GameMenu.cpp
-        Planet.cpp
+#        GameMenu.cpp
+#        Planet.cpp
         Creature.cpp
         Player.cpp
-        Monster.cpp)
+#        Monster.cpp
+        )
 
 find_package(SFML 2.5 COMPONENTS graphics audio window system REQUIRED)
 
