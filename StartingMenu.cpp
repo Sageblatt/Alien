@@ -39,6 +39,7 @@ void StartingMenu::run() {
                 window->clear(Color(129, 181, 221));
                 if (isMenu)
                     nextWindow(); //прожали play перешли на другую страницу меню
+                //lor(window) вызов первого лора
                 break;
             }
 
@@ -183,5 +184,149 @@ void StartingMenu::lo1(){
         }
     }
 }
+// void StartingMenu::lor(RenderWindow& window) {
+
+//     Texture lor, text;
+//     text.loadFromFile("C:/Users/79096/CLionProjects/game3/lor_1.png");
+//     lor.loadFromFile("C:/Users/79096/CLionProjects/game3/The_Earth.png");
+
+//     Sprite getLor(lor), planet1(text);
+//     getLor.setPosition(0, 0);
+//     planet1.setPosition(-700, 300);
+//     Font font;
+//     font.loadFromFile("C:/Users/79096/CLionProjects/game3/tab.ttf");
+//     Text tab("Press Tab to continue", font);
+//     tab.setString("Press Tab to continue");
+//     tab.setCharacterSize(20);
+//     Clock clock;
+//     tab.setPosition(100, 700);
+//     long long y = 700;
+//     int x = -300;
+
+//     while (window.isOpen()) {
+
+//             if(y >= 0) {
+//                 clock.restart();
+//                 auto t = clock.getElapsedTime().asSeconds();
+//                 y = y - 100000*t;
+//                planet1.setPosition(x, y );
+//                 clock.restart();
+//         }
+
+
+//         window.draw(getLor);
+//         window.draw(planet1);
+//         if (y<=0){
+//             window.draw(tab);
+//         }
+//         window.display();
+//         window.clear();
+
+//         Event event;
+//         while (window.pollEvent(event)) {
+//             if (event.type == Event::Closed ||
+//                 (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab)) {
+//                 lor1(window);
+//             }
+
+//         }
+//     }
+// }
+// void StartingMenu::lor1(RenderWindow& window) {
+//     Texture lor, planet;
+//     planet.loadFromFile("C:/Users/79096/CLionProjects/game3/lor_2.png");
+//     lor.loadFromFile("C:/Users/79096/CLionProjects/game3/sportzal.png");
+//     Sprite getLor(lor), planet1(planet);
+//     getLor.setPosition(0, 0);
+//     planet1.setPosition(300, 300);
+//     Font font;
+//     font.loadFromFile("C:/Users/79096/CLionProjects/game3/tab.ttf");
+//     Text tab("Press Tab to continue", font);
+//     tab.setString("Press Tab to continue");
+//     tab.setCharacterSize(20);
+//     tab.setPosition(100, 700);
+//     Clock clock;
+//     int y = 500;
+//     int x = -100;
+//     int delta;
+
+//     while (window.isOpen()) {
+
+//         if (y >= 0) {
+//             clock.restart();
+//             auto t = clock.getElapsedTime().asSeconds();
+//             y = y - 100000* t;
+//             planet1.setPosition(x, y);
+//             clock.restart();
+//         }
+
+//         window.draw(getLor);
+//         window.draw(planet1);
+//         if (y<=0){
+//             window.draw(tab);
+//         }
+//         window.display();
+//         Event event;
+//         while (window.pollEvent(event)) {
+//             if (event.type == Event::Closed ||
+//                 (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab)) {
+//                 lor3(window);
+//             }
+
+//         }
+//     }
+// }
+// void StartingMenu::lor3(RenderWindow& window) {
+
+//     Texture lor, text;
+//     text.loadFromFile("C:/Users/79096/CLionProjects/game3/lor_3.png");
+//     lor.loadFromFile("C:/Users/79096/CLionProjects/game3/monsters.png");
+
+//     Sprite getLor(lor), planet1(text);
+//     getLor.setPosition(0, 0);
+//     planet1.setPosition(300, 300);
+//     Font font;
+//     font.loadFromFile("C:/Users/79096/CLionProjects/game3/tab.ttf");
+//     Text tab("Press Tab to continue", font);
+//     tab.setString("Press Tab to continue");
+//     tab.setCharacterSize(20);
+//     tab.setPosition(100, 700);
+//     Clock clock;
+
+//     long long y = 300;
+//     int x = 400;
+
+//     while (window.isOpen()) {
+
+//         if(y >= 0) {
+//             clock.restart();
+//             auto t = clock.getElapsedTime().asSeconds();
+//             y = y - 1000*t;
+//             planet1.setPosition(x, y );
+//             clock.restart();
+//         }
+
+//         window.draw(getLor);
+//         window.draw(planet1);
+//         if (y<=0){
+//             window.draw(tab);
+//         }
+//         window.display();
+//         window.clear();
+
+//         Event event;
+//         while (window.pollEvent(event)) {
+//             if (event.type == Event::Closed ||
+//                 (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab)) {
+//                 play(window,1);
+//                 window.close();
+
+
+//             }
+
+//         }
+//     }
+// }
+
 
 
