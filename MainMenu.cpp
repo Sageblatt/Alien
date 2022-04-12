@@ -60,5 +60,10 @@ void MainMenu::run() {
     }
 }
 
-void MainMenu::nextWindow() {}
+void MainMenu::nextWindow(RenderWindow &window, bool isMen) {
+    if(isMenu == 1) {
+        GameMenu Planets;
+        Planets.RunPlanets(window);
+    }
 
+}
