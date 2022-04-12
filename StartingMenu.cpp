@@ -319,7 +319,7 @@ void StartingMenu::lo1(){
 //             if (event.type == Event::Closed ||
 //                 (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab)) {
 //                 play(window,1);
-//                 window.close();
+//                 window.close(); //WARNING
 
 
 //             }
