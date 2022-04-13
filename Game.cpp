@@ -6,7 +6,7 @@
 #include "StartingMenu.h"
 #include "MainMenu.h"
 #include "RandomNumberGenerator.h"
-#include <cmath>
+#include "AudioEngine.h"
 
 Game* Game::instance = nullptr;
 
@@ -22,6 +22,7 @@ Game::Game() {
     main_menu = nullptr;
     game_menu = nullptr;
     rng = nullptr;
+    a_eng = nullptr;
 }
 
 void Game::init() {
@@ -38,15 +39,17 @@ void Game::init() {
     main_menu = new MainMenu(window);
     game_menu = new GameMenu(window);
     rng = new RandomNumberGenerator();
-
-    double b = 1;
-    for(auto i = 0; i < pow(10, 4); i++)
-        b += pow(0.5, i);
-
+    a_eng = new AudioEngine();
 }
 
 void Game::runGame() {
+    auto audio_thread = std::thread(&AudioEngine::run, a_eng);
+
     starting_menu->run();
+
+    window->close();
+
+    audio_thread.join();
 }
 
 MainMenu* Game::getMainMenu() const {
@@ -65,6 +68,14 @@ RandomNumberGenerator *Game::getRng() const {
     return rng;
 }
 
+AudioEngine* Game::getAEng() const {
+    return a_eng;
+}
+
+const std::shared_ptr<sf::RenderWindow> &Game::getWindow() const {
+    return window;
+}
+
 void Game::deleteGame() {
     delete instance;
     instance = nullptr;
@@ -75,5 +86,9 @@ Game::~Game() {
     delete main_menu;
     delete game_menu;
     delete rng;
+    delete a_eng;
 }
+
+
+
 

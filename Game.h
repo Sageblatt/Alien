@@ -7,11 +7,13 @@
 
 #include <memory>
 #include <SFML/Graphics.hpp>
+#include <thread>
 
 class StartingMenu;
 class MainMenu;
 class GameMenu;
 class RandomNumberGenerator;
+class AudioEngine;
 
 class Game {
 private:
@@ -19,6 +21,7 @@ private:
     MainMenu* main_menu;
     GameMenu* game_menu;
     RandomNumberGenerator* rng;
+    AudioEngine* a_eng;
 
     std::shared_ptr<sf::RenderWindow> window;
     std::unique_ptr<sf::Texture> load_texture;
@@ -33,6 +36,9 @@ public:
     StartingMenu* getStartingMenu() const;
     GameMenu* getGameMenu() const;
     RandomNumberGenerator* getRng() const;
+    AudioEngine* getAEng() const;
+
+    const std::shared_ptr<sf::RenderWindow>& getWindow() const;
 
     void init();
     void runGame();

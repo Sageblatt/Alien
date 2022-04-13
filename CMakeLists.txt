@@ -13,9 +13,12 @@ add_executable(Alien
         StartingMenu.cpp
         MainMenu.cpp
         Game.cpp
+        AudioEngine.cpp
         main.cpp)
 
+
 include_directories(./images)
+include_directories(./audio)
 
 find_package(SFML 2.5 COMPONENTS graphics audio window system REQUIRED)
 

@@ -1,4 +1,6 @@
 #include "StartingMenu.h"
+#include "Game.h"
+#include "AudioEngine.h"
 
 StartingMenu::StartingMenu(std::shared_ptr<RenderWindow> wind) {
     window = wind;
@@ -37,8 +39,10 @@ void StartingMenu::run() {
         if (Mouse::isButtonPressed(Mouse::Left)) {
             if (menuNum == 1) {
                 window->clear(Color(129, 181, 221));
-                if (isMenu)
-                    nextWindow(); //прожали play перешли на другую страницу меню
+                if (isMenu) {
+                    Game::getInstance()->getAEng()->setFadeFlag(MAINMENU);
+                    nextWindow();//прожали play перешли на другую страницу меню
+                }
                 //lor(window) вызов первого лора
                 break;
             }
