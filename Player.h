@@ -5,33 +5,24 @@
 
 class Player : public Creature {
 protected:
-
-	Clock clock; //создаем переменную для привязки персонажа ко времени.
-	float CurrentFrame;//хранит текущий кадр
-	float CurrentFrame2;
-
-	float time;
-
-	int WindowWidth;
-	int WindowHeight;
-
+	
 	bool key;
 
 	float boost;
-	float timeBoost;
 	float boostHeight;
 
 	bool onGround;
-	void Move() override;
-
-	void Keyboard();
+	
 public:
 
+	void Keyboard();
+	void Move() override;
+	void IncrementTime();
 	Player(String file,float speedX, float speedY, int windowWidth, int windowHeight);
 	~Player();
 
 
-	void Run();
+	//void Run(Monster& alien);
 };
 
 #endif // ALIEN_PLAYER_H

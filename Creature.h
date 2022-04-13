@@ -13,24 +13,40 @@ protected:
     int Height{};  // ширина, высота
     float SpeedX{};
     float SpeedY{}; //скорости по x, y
-    int   directionMove{};//направление движения игрока
 
+    int   directionMove{}; //направление движения спрайта
 
-    String  file;         //файл с расширением
-    Image   image;        //sfml изображение
-    Texture texture;      //sfml текстура
-    Sprite  sprite;       //sfml спрайт
+    float time{};
+    float timeBoost{};
+    
+
+    int WindowWidth{};
+    int WindowHeight{};
+
+    float CurrentFrame{};//хранит текущий кадр
+    float CurrentFrame2{};
+
+    String  file{};         //файл с расширением
+    Image   image{};        //sfml изображение
+    Texture texture{};      //sfml текстура
+    Sprite  sprite{};       //sfml спрайт
 
     //double   hp;
     //unsigned strength;
 
     //std::vector <sf::Sprite> sprites;
-    virtual void Move() = 0;
-
 
 public:
-    
-    Creature();
+
+    virtual void Move() = 0;
+
+    void SetTime(float time);
+    float GetTime();
+
+    void Draw(RenderWindow& window);
+    virtual void IncrementTime() = 0;
+
+    //Creature();
 	//virtual ~Creature()  = 0;
 
 };

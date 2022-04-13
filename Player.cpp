@@ -1,14 +1,13 @@
 ﻿#include "Player.h"
+#include "Monster.h"
 #include <iostream>
 
 Player::Player(String file, float speedX, float speedY, int windowWidth, int windowHeight)
 {
     this->file = file;
-    //Êîíñòðóêòîð ñ ïàðàìåòðàìè äëÿ êëàññà Player. 
-    //Ïðè ñîçäàíèè îáúåêòà êëàññà ìû áóäåì çàäàâàòü èìÿ ôàéëà, êîîðäèíàòó Õ è Ó, øèðèíó è âûñîòó, è ñêîðîñòè ïî X è Y
     directionMove = 0;
 
-
+      
 
     this->WindowWidth = windowWidth;
     this->WindowHeight = windowHeight;
@@ -21,53 +20,29 @@ Player::Player(String file, float speedX, float speedY, int windowWidth, int win
 
     this->onGround = true;
 
-    image.loadFromFile(file);          // cîçäà¸ì image îáúåêòà: ("images/actronaut.png")
-    texture.loadFromImage(image);                        //çàêèäûâàåì íàøå èçîáðàæåíèå â òåêñòóðó
-    sprite.setTexture(texture);                          //çàëèâàåì ñïðàéò òåêñòóðîé
-  //  sprite.setTextureRect(IntRect(WindowWidth / 2, Y, Width, Height)); //Çàäàåì ñîñòîÿíèå ñïðàéòà
+    image.loadFromFile(file);        
+    texture.loadFromImage(image);   
+    sprite.setTexture(texture);             
     sprite.setPosition((float)(WindowWidth / 2), (float)(WindowHeight - Height));
 
     this->CurrentFrame = 0;
     this->CurrentFrame2 = 0;
 
-    this->boost = 10;
+    this->boost = 22;
     this->timeBoost = 0;
-    this->boostHeight = 0;
+    this->boostHeight = 0; 
     this->key = false;
-}
-
-void Player::Run()
-{
-    RenderWindow window(sf::VideoMode(WindowWidth, WindowHeight), "SFML works!"); //ðàçìåð èçîáðàæåíèÿ 1200x630
-
-    while (window.isOpen())
-    {
-        Event event;
-        time = (float)clock.getElapsedTime().asMicroseconds(); //äàòü ïðîøåäøåå âðåìÿ â ìèêðîñåêóíäàõ      
-        clock.restart(); //ïåðåçàãðóæàåò âðåìÿ
-        time /= 800;
-
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        Keyboard();
-        Move();
-
-
-        window.clear();
-        window.draw(sprite);//ðèñóåì ñïðàéò îáúåêòà p êëàññà player
-        window.display();
-    }
-
 }
 
 
 Player::~Player() {}
 
-
+void Player::IncrementTime()
+{
+    //std::cout << "TIME: " << time << '\n';
+    this->timeBoost += this->time/3000;
+    //std::cout << "TIMEBOOST: " << timeBoost << '\n';
+}
 void boostTimeToZero(bool& key, float& timeBoost)
 {
     if (!key)
@@ -76,10 +51,7 @@ void boostTimeToZero(bool& key, float& timeBoost)
         key = !key;
     }
 }
-void incrementTime(float& timeBoost, float& time)
-{
-    timeBoost += time / 2000;
-}
+
 
 void Player::Move()
 {
@@ -87,7 +59,7 @@ void Player::Move()
     if (CurrentFrame > 10) CurrentFrame = 0;
 
     switch (directionMove) {
-        // Stop, 0;
+        // Stop, 0; +++
         {
     case 0:
 
@@ -96,13 +68,13 @@ void Player::Move()
         CurrentFrame2 = 0;
 
         return;
-        }
+        } 
 
         // Right, 1;
         {
     case 1:
 
-        sprite.setTextureRect(IntRect(Width * (int)(CurrentFrame), Height * 0, Width, Height));
+        sprite.setTextureRect(IntRect(Width * int(CurrentFrame), 0, Width, Height));
         sprite.move(SpeedX * time, 0);
         CurrentFrame2 = 0;
         return;
@@ -122,16 +94,18 @@ void Player::Move()
     case 3:
 
         if (-SpeedY + boost * timeBoost < 0 && key == false) {
-            incrementTime(timeBoost, time);
+            IncrementTime();
+            //std::cout << "timeBoost player: " << timeBoost <<'\n';
             sprite.setTextureRect(IntRect(900, 0, Width, Height));
             sprite.move(0, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
             CurrentFrame2 = 0;
             return;
         }
+
         boostTimeToZero(key, timeBoost);
         if (key == true && sprite.getPosition().y < WindowHeight - Height) {
 
-            incrementTime(timeBoost, time);
+            IncrementTime();
             sprite.setTextureRect(IntRect(0, 0, Width, Height));
             sprite.move(0, boost * timeBoost * timeBoost / 2);
             CurrentFrame2 = 0;
@@ -148,7 +122,7 @@ void Player::Move()
     case 4:
 
         if (-SpeedY + boost * timeBoost < 0 && key == false) {
-            incrementTime(timeBoost, time);
+            IncrementTime();
             sprite.setTextureRect(IntRect(900, 0, Width, Height));
             sprite.move(SpeedX * time, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
             CurrentFrame2 = 0;
@@ -157,7 +131,7 @@ void Player::Move()
         boostTimeToZero(key, timeBoost);
         if (key == true && sprite.getPosition().y < WindowHeight - Height) {
 
-            incrementTime(timeBoost, time);
+            IncrementTime();
             sprite.setTextureRect(IntRect(0, 0, Width, Height));
             sprite.move(SpeedX * time, boost * timeBoost * timeBoost / 2);
             CurrentFrame2 = 0;
@@ -180,7 +154,7 @@ void Player::Move()
         {
             if (-SpeedY + boost * timeBoost < 0 && key == false) {
                 onGround = false;
-                incrementTime(timeBoost, time);
+                IncrementTime();
                 sprite.move(0, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
                 CurrentFrame2 = 0;
                 return;
@@ -191,7 +165,7 @@ void Player::Move()
 
             if (key == true && sprite.getPosition().y < WindowHeight - Height)
             {
-                incrementTime(timeBoost, time);
+                IncrementTime();
                 sprite.move(0, boost * timeBoost * timeBoost / 2);
                 CurrentFrame2 = 0;
                 return;
@@ -203,7 +177,7 @@ void Player::Move()
 
         else 
             sprite.move(0, 0);
-
+        timeBoost = 0;
         CurrentFrame2 = 0;
         return;
         }
@@ -233,7 +207,7 @@ void Player::Move()
 
         if (-SpeedY + boost * timeBoost < 0 && key == false) {
 
-            incrementTime(timeBoost, time);
+            IncrementTime();
             sprite.setTextureRect(IntRect(0, Height * 3, Width, Height));
             sprite.move(0 * time, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
             CurrentFrame2 = 0;
@@ -242,7 +216,7 @@ void Player::Move()
         boostTimeToZero(key, timeBoost);
         if (key == true && sprite.getPosition().y < WindowHeight - Height) {
 
-            incrementTime(timeBoost, time);
+            IncrementTime();
             sprite.setTextureRect(IntRect(900, Height * 3, Width, Height));
             sprite.move(0 * time, boost * timeBoost * timeBoost / 2);
             CurrentFrame2 = 0;
@@ -259,7 +233,7 @@ void Player::Move()
 
         if (-SpeedY + boost * timeBoost < 0 && key == false) {
 
-            incrementTime(timeBoost, time);
+            IncrementTime();
             sprite.setTextureRect(IntRect(0, Height * 3, Width, Height));
             sprite.move(-SpeedX * time, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
             CurrentFrame2 = 0;
@@ -268,7 +242,7 @@ void Player::Move()
         boostTimeToZero(key, timeBoost);
         if (key == true && sprite.getPosition().y < WindowHeight - Height) {
 
-            incrementTime(timeBoost, time);
+            IncrementTime();
             sprite.setTextureRect(IntRect(900, Height * 3, Width, Height));
             sprite.move(-SpeedX * time, boost * timeBoost * timeBoost / 2);
             CurrentFrame2 = 0;
@@ -289,7 +263,7 @@ void Player::Move()
         {
             if (-SpeedY + boost * timeBoost < 0 && key == false) {
                 onGround = false;
-                incrementTime(timeBoost, time);
+                IncrementTime();
                 sprite.move(0, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
                 CurrentFrame2 = 0;
                 return;
@@ -300,7 +274,7 @@ void Player::Move()
 
             if (key == true && sprite.getPosition().y < WindowHeight - Height)
             {
-                incrementTime(timeBoost, time);
+                IncrementTime();
                 sprite.move(0, boost * timeBoost * timeBoost / 2);
                 CurrentFrame2 = 0;
                 return;
@@ -310,6 +284,7 @@ void Player::Move()
             key = false;
         }
         else sprite.move(0, 0);
+        timeBoost = 0;
         CurrentFrame2 = 0;
         return;
         }
@@ -425,6 +400,8 @@ void Player::Keyboard()
         return;
     }
 }
+
+
 
 
 
