@@ -37,11 +37,10 @@ protected:
 
 public:
 	void Move() override;
+	void Attack() override;
 	Monster(String file, float speedX, int windowWidth, int windowHeight);
 	void IncrementTime();
 	~Monster();
-
-
 };
 
 

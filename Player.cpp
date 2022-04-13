@@ -401,7 +401,7 @@ void Player::Keyboard()
     }
 }
 
-
+void Player::Attack() {};
 
 
 

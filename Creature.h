@@ -39,6 +39,7 @@ protected:
 public:
 
     virtual void Move() = 0;
+    virtual void Attack() = 0;
 
     void SetTime(float time);
     float GetTime();

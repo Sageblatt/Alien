@@ -32,7 +32,7 @@ int main()
         hero.Keyboard();
         hero.Move();
         alien.Move();
-
+        alien.Attack();
         window.clear();
 
         hero.Draw(window);

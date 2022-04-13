@@ -17,6 +17,7 @@ public:
 
 	void Keyboard();
 	void Move() override;
+	void Attack();
 	void IncrementTime();
 	Player(String file,float speedX, float speedY, int windowWidth, int windowHeight);
 	~Player();

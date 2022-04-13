@@ -1,4 +1,4 @@
-﻿
+﻿//#include "windows.h"
 #include "Monster.h"
 #include <iostream>
 using std::cout;
@@ -53,9 +53,9 @@ Monster::Monster(String file, float speedX, int windowWidth, int windowHeight)
 }
 void Monster::IncrementTime()
 {
-    std::cout << "TIME: " << time << '\n';
+   // std::cout << "TIME: " << time << '\n';
     this->timeBoost1 += this->time / 1000;
-    std::cout << "TIMEBOOST1: " << timeBoost1 << '\n';
+   // std::cout << "TIMEBOOST1: " << timeBoost1 << '\n';
 }
 void Monster::Move()
 {
@@ -77,6 +77,20 @@ void Monster::Move()
         
         onGround = true;
         sprite.setTextureRect(IntRect(fallVec[0].X, fallVec[0].Y, fallVec[0].Width, fallVec[0].Height));
+        sprite.move(0, 0);
+    }
+    if (onGround == true) return;
+}
+
+void Monster::Attack() 
+{
+    CurrentFrame += (float)(0.0000001 * time);
+    if (CurrentFrame > 6) CurrentFrame = 0;
+    if (onGround == true)
+    {
+        int  i = (int)CurrentFrame;
+        std::cout << "i    " << i << '\n';
+        sprite.setTextureRect(IntRect(attackVec[i].X, attackVec[i].Y, attackVec[i].Width, attackVec[i].Height));
         sprite.move(0, 0);
     }
 }
