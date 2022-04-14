@@ -3,6 +3,8 @@
 //
 
 #include "AudioEngine.h"
+#include <iostream>
+using namespace std;
 
 AudioEngine::AudioEngine() {
     timer = std::make_unique<sf::Clock>();
@@ -23,7 +25,9 @@ AudioEngine::AudioEngine() {
 
 }
 
-void AudioEngine::fade(Songs next_song) {
+void AudioEngine::fade(int next_song) {
+    fade_flag[0] = 0;
+    cout << "1 " << next_song << endl;
     timer->restart();
     tracks[next_song]->setVolume(0);
     auto t = timer->getElapsedTime().asSeconds();
@@ -34,7 +38,7 @@ void AudioEngine::fade(Songs next_song) {
     }
 
     tracks[current_track]->stop();
-    current_track = next_song;
+    current_track = static_cast<Songs>(next_song);
     tracks[current_track]->play();
 
     timer->restart();
@@ -45,6 +49,7 @@ void AudioEngine::fade(Songs next_song) {
         tracks[current_track]->setVolume(100.f * t/FADE_LEN);
         t = timer->getElapsedTime().asSeconds();
     }
+    cout << 2 << endl;
 }
 
 void AudioEngine::run() {
@@ -52,16 +57,16 @@ void AudioEngine::run() {
     tracks[current_track]->play();
 
     while(Game::getInstance()->getWindow()->isOpen()) {
-        if (fade_flag.first) {
-            fade_flag.first = false;
-            fade(fade_flag.second);
-        }
+        if (fade_flag[0])
+            fade(fade_flag[1]);
     }
 
     tracks[current_track]->stop();
 }
 
 void AudioEngine::setFadeFlag(Songs number_of_track) {
-    fade_flag = std::make_pair(true, number_of_track);
+    cout << "AMOGUS " << number_of_track << endl;
+    fade_flag[0] = 1;
+    fade_flag[1] = number_of_track;
 }
 

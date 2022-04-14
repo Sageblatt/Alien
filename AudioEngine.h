@@ -23,11 +23,13 @@ private:
 
     Songs current_track;
 
-    std::pair<bool, Songs> fade_flag;
-    const float FADE_LEN = 1;
+    std::array<int, 2> fade_flag;
+
+
+    const float FADE_LEN = 0.8;
     std::unique_ptr<sf::Clock> timer;
 
-    void fade(Songs next_song);
+    void fade(int next_song);
 
 public:
     AudioEngine();
