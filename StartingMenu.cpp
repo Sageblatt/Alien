@@ -5,17 +5,38 @@
 StartingMenu::StartingMenu(std::shared_ptr<RenderWindow> wind) {
     window = wind;
 
+    font = make_unique<Font>();
+    font->loadFromFile("../fonts/tab.ttf");
+
+    tab_text = std::make_unique<Text>("Press Tab to continue", *font);
+    tab_text->setString("Press Tab to continue");
+    tab_text->setCharacterSize(20);
+    tab_text->setPosition(100, 700);
+
     //текстуры
     for (auto i = 0; i < 3; i++)
         textures.emplace_back(make_unique<Texture>());
 
+    for (auto i = 0; i < 6; i++)
+        lor_textures[i] = make_unique<Texture>();
+
     textures[0]->loadFromFile("../images/PLAY.png");
     textures[1]->loadFromFile("../images/alien_wave_2.png");
-    textures[2]->loadFromFile("../images/background3.png");
+    textures[2]->loadFromFile("../images/first_screen.png");
+
+    lor_textures[0]->loadFromFile("../images/lor_1.png");
+    lor_textures[1]->loadFromFile("../images/The_Earth.png");
+    lor_textures[2]->loadFromFile("../images/lor_2.png");
+    lor_textures[3]->loadFromFile("../images/gym.png");
+    lor_textures[4]->loadFromFile("../images/lor_3.png");
+    lor_textures[5]->loadFromFile("../images/monsters.png");
 
     //спрайты
     for (auto i = 0; i < 3; i++)
         sprites.emplace_back(make_unique<Sprite>(*textures[i]));
+
+    for (auto i = 0; i < 6; i++)
+        lor_sprites[i] = make_unique<Sprite>(*lor_textures[i]);
 }
 
 void StartingMenu::run() {
@@ -40,11 +61,13 @@ void StartingMenu::run() {
             if (menuNum == 1) {
                 window->clear(Color(129, 181, 221));
                 if (isMenu) {
-                    Game::getInstance()->getAEng()->setFadeFlag(MAINMENU);
-                    nextWindow();//прожали play перешли на другую страницу меню
+                    Game::getInstance()->getAEng()->setFadeFlag(LOR);
+                    lor();
+                    break;
+//                    nextWindow();//прожали play перешли на другую страницу меню
                 }
-                //lor(window) вызов первого лора
-                break;
+                 // вызов первого лора
+//                break;
             }
 
         }
@@ -70,267 +93,120 @@ void StartingMenu::nextWindow() {
     m.run();
 }
 
+
 void StartingMenu::lor() {
-
-    Texture lor, planet;
-    planet.loadFromFile("C:/Users/79096/CLionProjects/game3/PLAY.png");
-    lor.loadFromFile("C:/Users/79096/CLionProjects/game3/blackbg.jpg");
-    Sprite getLor(lor), planet1(planet);
-    getLor.setPosition(0, 0);
-    planet1.setPosition(300, 300);
-
-    Font font;
-    font.loadFromFile("C:\\Users\\79096\\CLionProjects\\game3\\Art_Gothic_ExtraBold.ttf");
-    Text lor1("Once upon a time", font), lor2("Once upon a time", font),
-    lor3("Once upon a time", font), lor4("Once upon a time", font);
-
-    lor1.setString("In the year 2150, the Earth is destroyed. ");
-    lor2.setString("Huge monsters from other planets filled the whole space,");
-    lor3.setString(" so people had to go underground, ");
-    lor4.setString("where they can get at least one chance...");
-    lor1.setPosition(200, 100);
-    lor1.setCharacterSize(30);
-    lor2.setPosition(100, 200);
-    lor2.setCharacterSize(30);
-    lor3.setPosition(300, 300);
-    lor3.setCharacterSize(50);
-    lor4.setPosition(200, 400);
-    lor4.setCharacterSize(50);
-
+    lor_sprites[1]->setPosition(0, 0);
+    lor_sprites[0]->setPosition(-700, 300);
 
     Clock clock;
-    clock.restart();
-    double y = 500;
+
+    float x = -300;
+    float y = 700;
 
     while (window->isOpen()) {
-        window->clear();
-            if(y > 0) {
-
-                auto t = clock.getElapsedTime().asSeconds();
-                y = y - 0.000001*t;
-                planet1.setPosition(300, y);
-               //lor1.setPosition(400, y);
-//                lor2.setPosition(380, y - 100);
-        }
-
-        clock.restart();
-        window->draw(getLor);
-
-//        window.draw(lor2);
-        window->draw(planet1);
-//        window.draw(lor1);
-        window->display();
-        Event event;
-        while (window->pollEvent(event)) {
-            if (event.type == Event::Closed ||
-                (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)) {
-                window->close();
-            }
-        }
-    }
-}
-
-void StartingMenu::lo1(){
-    Texture lor, planet;
-    planet.loadFromFile("C:/Users/79096/CLionProjects/game3/PLAY.png");
-    lor.loadFromFile("C:/Users/79096/CLionProjects/game3/blackbg.jpg");
-    Sprite getLor(lor), planet1(planet);
-    getLor.setPosition(0, 0);
-    planet1.setPosition(300, 300);
-
-    Font font;
-    font.loadFromFile("C:\\Users\\79096\\CLionProjects\\game3\\Art_Gothic_ExtraBold.ttf");
-    Text lor1("Once upon a time", font), lor2("Once upon a time", font),
-            lor3("Once upon a time", font), lor4("Once upon a time", font);
-
-    lor1.setString("In the year 2150, the Earth is destroyed. ");
-    lor2.setString("Huge monsters from other planets filled the whole space,");
-    lor3.setString(" so people had to go underground, ");
-    lor4.setString("where they can get at least one chance...");
-    lor1.setPosition(200, 100);
-    lor1.setCharacterSize(30);
-    lor2.setPosition(100, 200);
-    lor2.setCharacterSize(30);
-    lor3.setPosition(300, 300);
-    lor3.setCharacterSize(50);
-    lor4.setPosition(200, 400);
-    lor4.setCharacterSize(50);
-
-
-    Clock clock;
-    clock.restart();
-    double y = 500;
-
-    while (window->isOpen()) {
-        window->clear();
-        if(y > 0) {
+        if(y >= 0) {
+            clock.restart();
             auto t = clock.getElapsedTime().asSeconds();
-            y = y - 0.000001*t;
-            planet1.setPosition(300, y);
-            //lor1.setPosition(400, y);
-            //lor2.setPosition(380, y - 100);
+            y = y - 1000000*t;
+            lor_sprites[0]->setPosition(x, y);
+            clock.restart();
         }
 
-        clock.restart();
-        window->draw(getLor);
+        window->draw(*lor_sprites[1]);
+        window->draw(*lor_sprites[0]);
 
-        //        window.draw(lor2);
-        window->draw(planet1);
-        //        window.draw(lor1);
+        if (y <= 0)
+            window->draw(*tab_text);
+
+        window->display();
+        window->clear();
+
+        Event event;
+        while (window->pollEvent(event)) {
+            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab)
+                lor1();
+            else if (event.type == Event::Closed)
+                window->close();
+        }
+    }
+}
+
+void StartingMenu::lor1() {
+    lor_sprites[3]->setPosition(0, 0);
+    lor_sprites[2]->setPosition(300, 300);
+
+    Clock clock;
+
+    float x = -100;
+    float y = 500;
+
+    while (window->isOpen()) {
+
+        if (y >= 0) {
+            clock.restart();
+            auto t = clock.getElapsedTime().asSeconds();
+            y = y - 1000000* t;
+            lor_sprites[2]->setPosition(x, y);
+            clock.restart();
+        }
+
+        window->draw(*lor_sprites[3]);
+        window->draw(*lor_sprites[2]);
+
+        if (y <= 0)
+            window->draw(*tab_text);
+
+
         window->display();
 
         Event event;
         while (window->pollEvent(event)) {
-            if (event.type == Event::Closed ||
-                (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)) {
+            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab)
+                lor3();
+            else if (event.type == Event::Closed)
                 window->close();
-            }
         }
     }
 }
-// void StartingMenu::lor(RenderWindow& window) {
 
-//     Texture lor, text;
-//     text.loadFromFile("C:/Users/79096/CLionProjects/game3/lor_1.png");
-//     lor.loadFromFile("C:/Users/79096/CLionProjects/game3/The_Earth.png");
+void StartingMenu::lor3() {
+    lor_sprites[5]->setPosition(0, 0);
+    lor_sprites[4]->setPosition(300, 300);
 
-//     Sprite getLor(lor), planet1(text);
-//     getLor.setPosition(0, 0);
-//     planet1.setPosition(-700, 300);
-//     Font font;
-//     font.loadFromFile("C:/Users/79096/CLionProjects/game3/tab.ttf");
-//     Text tab("Press Tab to continue", font);
-//     tab.setString("Press Tab to continue");
-//     tab.setCharacterSize(20);
-//     Clock clock;
-//     tab.setPosition(100, 700);
-//     long long y = 700;
-//     int x = -300;
+    Clock clock;
 
-//     while (window.isOpen()) {
-
-//             if(y >= 0) {
-//                 clock.restart();
-//                 auto t = clock.getElapsedTime().asSeconds();
-//                 y = y - 100000*t;
-//                planet1.setPosition(x, y );
-//                 clock.restart();
-//         }
+    float x = 400;
+    float y = 300;
 
 
-//         window.draw(getLor);
-//         window.draw(planet1);
-//         if (y<=0){
-//             window.draw(tab);
-//         }
-//         window.display();
-//         window.clear();
+    while (window->isOpen()) {
 
-//         Event event;
-//         while (window.pollEvent(event)) {
-//             if (event.type == Event::Closed ||
-//                 (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab)) {
-//                 lor1(window);
-//             }
+        if (y >= 0) {
+            clock.restart();
+            auto t = clock.getElapsedTime().asSeconds();
+            y = y - 1000000*t;
+            lor_sprites[4]->setPosition(x, y);
+            clock.restart();
+        }
 
-//         }
-//     }
-// }
-// void StartingMenu::lor1(RenderWindow& window) {
-//     Texture lor, planet;
-//     planet.loadFromFile("C:/Users/79096/CLionProjects/game3/lor_2.png");
-//     lor.loadFromFile("C:/Users/79096/CLionProjects/game3/sportzal.png");
-//     Sprite getLor(lor), planet1(planet);
-//     getLor.setPosition(0, 0);
-//     planet1.setPosition(300, 300);
-//     Font font;
-//     font.loadFromFile("C:/Users/79096/CLionProjects/game3/tab.ttf");
-//     Text tab("Press Tab to continue", font);
-//     tab.setString("Press Tab to continue");
-//     tab.setCharacterSize(20);
-//     tab.setPosition(100, 700);
-//     Clock clock;
-//     int y = 500;
-//     int x = -100;
-//     int delta;
+        window->draw(*lor_sprites[5]);
+        window->draw(*lor_sprites[4]);
 
-//     while (window.isOpen()) {
-
-//         if (y >= 0) {
-//             clock.restart();
-//             auto t = clock.getElapsedTime().asSeconds();
-//             y = y - 100000* t;
-//             planet1.setPosition(x, y);
-//             clock.restart();
-//         }
-
-//         window.draw(getLor);
-//         window.draw(planet1);
-//         if (y<=0){
-//             window.draw(tab);
-//         }
-//         window.display();
-//         Event event;
-//         while (window.pollEvent(event)) {
-//             if (event.type == Event::Closed ||
-//                 (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab)) {
-//                 lor3(window);
-//             }
-
-//         }
-//     }
-// }
-// void StartingMenu::lor3(RenderWindow& window) {
-
-//     Texture lor, text;
-//     text.loadFromFile("C:/Users/79096/CLionProjects/game3/lor_3.png");
-//     lor.loadFromFile("C:/Users/79096/CLionProjects/game3/monsters.png");
-
-//     Sprite getLor(lor), planet1(text);
-//     getLor.setPosition(0, 0);
-//     planet1.setPosition(300, 300);
-//     Font font;
-//     font.loadFromFile("C:/Users/79096/CLionProjects/game3/tab.ttf");
-//     Text tab("Press Tab to continue", font);
-//     tab.setString("Press Tab to continue");
-//     tab.setCharacterSize(20);
-//     tab.setPosition(100, 700);
-//     Clock clock;
-
-//     long long y = 300;
-//     int x = 400;
-
-//     while (window.isOpen()) {
-
-//         if(y >= 0) {
-//             clock.restart();
-//             auto t = clock.getElapsedTime().asSeconds();
-//             y = y - 1000*t;
-//             planet1.setPosition(x, y );
-//             clock.restart();
-//         }
-
-//         window.draw(getLor);
-//         window.draw(planet1);
-//         if (y<=0){
-//             window.draw(tab);
-//         }
-//         window.display();
-//         window.clear();
-
-//         Event event;
-//         while (window.pollEvent(event)) {
-//             if (event.type == Event::Closed ||
-//                 (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab)) {
-//                 play(window,1);
-//                 window.close(); //WARNING
+        if (y <= 0)
+            window->draw(*tab_text);
 
 
-//             }
+        window->display();
+        window->clear();
 
-//         }
-//     }
-// }
-
-
-
+        Event event;
+        while (window->pollEvent(event)) {
+            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab) {
+                Game::getInstance()->getAEng()->setFadeFlag(MAINMENU);
+                nextWindow();
+            }
+            else if (event.type == Event::Closed)
+                window->close();
+        }
+    }
+}

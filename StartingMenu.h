@@ -13,13 +13,19 @@ using std::make_unique;
 
 class StartingMenu: public Menu {
 protected:
+    std::unique_ptr<Font> font;
+    std::array<std::unique_ptr<Texture>, 6> lor_textures;
+    std::array<std::unique_ptr<Sprite>, 6> lor_sprites;
+    std::unique_ptr<Text> tab_text;
+
     void nextWindow() override;
 
 public:
     explicit StartingMenu(std::shared_ptr<RenderWindow> wind);
 
     void lor();
-    void lo1();
+    void lor1();
+    void lor3();
     void run() override;
 };
 

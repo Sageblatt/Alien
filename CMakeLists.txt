@@ -19,6 +19,7 @@ add_executable(Alien
 
 include_directories(./images)
 include_directories(./audio)
+include_directories(./fonts)
 
 find_package(SFML 2.5 COMPONENTS graphics audio window system REQUIRED)
 

@@ -5,13 +5,6 @@
 #include "AudioEngine.h"
 
 AudioEngine::AudioEngine() {
-//    for (auto i = 0; i < TRACKS_AMOUNT; i++)
-//         sound_bufs[i] = std::make_unique<sf::SoundBuffer>();
-//
-//    sound_bufs[0]->loadFromFile("../audio/menu_01.flac");
-//    sound_bufs[1]->loadFromFile("../audio/menu_02.flac");
-//    sound_bufs[2]->loadFromFile("../audio/fight.flac");
-
     timer = std::make_unique<sf::Clock>();
 
     for (auto i = 0; i < TRACKS_AMOUNT; i++)

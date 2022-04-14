@@ -1,7 +1,6 @@
 //
 // Created by sageblatt on 12.04.2022.
 //
-
 #include "Game.h"
 #include "StartingMenu.h"
 #include "MainMenu.h"
