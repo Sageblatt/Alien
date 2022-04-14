@@ -1,17 +1,25 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.20)
 project(Alien)
 
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(Alien
-        main.cpp
         Menu.cpp
-        StartingMenu.cpp
         GameMenu.cpp
-        Planet.cpp
-        Creature.cpp
-        Player.cpp
-        Monster.cpp)
+#        Creature.cpp
+#        Player.cpp
+#        Monster.cpp
+        RandomNumberGenerator.cpp
+        StartingMenu.cpp
+        MainMenu.cpp
+        Game.cpp
+        AudioEngine.cpp
+        main.cpp)
+
+
+include_directories(./images)
+include_directories(./audio)
+include_directories(./fonts)
 
 find_package(SFML 2.5 COMPONENTS graphics audio window system REQUIRED)
 

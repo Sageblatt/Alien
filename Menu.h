@@ -6,21 +6,19 @@
 #define ALIEN_MENU_H
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
 #include <vector>
+#include <memory>
 
 
 class Menu {
 protected:
-    std::vector <sf::Sprite> textures;
-    sf::Sound music;
-    unsigned long score;
-
-    virtual void nextWindow() = 0;
+    std::shared_ptr<sf::RenderWindow> window;
+    std::vector <std::unique_ptr <sf::Texture>> textures;
+    std::vector <std::unique_ptr <sf::Sprite>> sprites;
 
 public:
     Menu();
-    virtual void run() = 0;
+    virtual int run() = 0;
     virtual ~Menu();
 };
 

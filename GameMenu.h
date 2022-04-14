@@ -1,23 +1,17 @@
-//
-// Created by sageblatt on 01.04.2022.
-//
-
 #ifndef ALIEN_GAMEMENU_H
 #define ALIEN_GAMEMENU_H
 
+#include <SFML/Graphics.hpp>
 #include "Menu.h"
-#include "Planet.h"
 
-class GameMenu: public Menu{
-protected:
-    std::array <Planet, 4> planets;
-    void nextWindow() override; //choosePlanet
+using namespace  sf;
+using std::make_unique;
 
+
+class GameMenu: public Menu {
 public:
-    GameMenu();
-    void run() override;
-    ~GameMenu();
+    explicit GameMenu(std::shared_ptr<RenderWindow> wind);
+    int run() override;
 };
-
 
 #endif //ALIEN_GAMEMENU_H
