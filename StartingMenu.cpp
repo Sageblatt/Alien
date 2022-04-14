@@ -13,6 +13,16 @@ StartingMenu::StartingMenu(std::shared_ptr<RenderWindow> wind) {
     tab_text->setCharacterSize(20);
     tab_text->setPosition(100, 700);
 
+    timer = make_unique<Clock>();
+    timer->restart();
+
+    lor_x[0] = -300;
+    lor_y[0] = 700;
+    lor_x[1] = -100;
+    lor_y[1] = 500;
+    lor_x[2] = 400;
+    lor_y[2] = 300;
+
     //текстуры
     for (auto i = 0; i < 3; i++)
         textures.emplace_back(make_unique<Texture>());
@@ -62,7 +72,11 @@ void StartingMenu::run() {
                 window->clear(Color(129, 181, 221));
                 if (isMenu) {
                     Game::getInstance()->getAEng()->setFadeFlag(LOR);
-                    lor();
+                    lorn(1);
+                    lorn(2);
+                    lorn(3);
+                    Game::getInstance()->getAEng()->setFadeFlag(MAINMENU);
+                    nextWindow();
                     break;
 //                    nextWindow();//прожали play перешли на другую страницу меню
                 }
@@ -84,7 +98,6 @@ void StartingMenu::run() {
                 window->close();
             }
         }
-
     }
 }
 
@@ -93,27 +106,26 @@ void StartingMenu::nextWindow() {
     m.run();
 }
 
+void StartingMenu::lorn(unsigned n) {
+    timer->restart();
+    auto i1 = 2 * n - 2; //0
+    auto i2 = 2 * n - 1; //1
+    lor_sprites[i2]->setPosition(0, 0);
+    lor_sprites[i1]->setPosition(-700, 300);
 
-void StartingMenu::lor() {
-    lor_sprites[1]->setPosition(0, 0);
-    lor_sprites[0]->setPosition(-700, 300);
-
-    Clock clock;
-
-    float x = -300;
-    float y = 700;
+    float x = lor_x[n-1];
+    float y = lor_y[n-1];
 
     while (window->isOpen()) {
-        if(y >= 0) {
-            clock.restart();
-            auto t = clock.getElapsedTime().asSeconds();
-            y = y - 1000000*t;
-            lor_sprites[0]->setPosition(x, y);
-            clock.restart();
+        if (y >= 0) {
+            auto t = timer->getElapsedTime().asSeconds();
+            y = y - LOR_SPEED * t;
+            lor_sprites[i1]->setPosition(x, y);
+            timer->restart();
         }
 
-        window->draw(*lor_sprites[1]);
-        window->draw(*lor_sprites[0]);
+        window->draw(*lor_sprites[i2]);
+        window->draw(*lor_sprites[i1]);
 
         if (y <= 0)
             window->draw(*tab_text);
@@ -124,87 +136,7 @@ void StartingMenu::lor() {
         Event event;
         while (window->pollEvent(event)) {
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab)
-                lor1();
-            else if (event.type == Event::Closed)
-                window->close();
-        }
-    }
-}
-
-void StartingMenu::lor1() {
-    lor_sprites[3]->setPosition(0, 0);
-    lor_sprites[2]->setPosition(300, 300);
-
-    Clock clock;
-
-    float x = -100;
-    float y = 500;
-
-    while (window->isOpen()) {
-
-        if (y >= 0) {
-            clock.restart();
-            auto t = clock.getElapsedTime().asSeconds();
-            y = y - 1000000* t;
-            lor_sprites[2]->setPosition(x, y);
-            clock.restart();
-        }
-
-        window->draw(*lor_sprites[3]);
-        window->draw(*lor_sprites[2]);
-
-        if (y <= 0)
-            window->draw(*tab_text);
-
-
-        window->display();
-
-        Event event;
-        while (window->pollEvent(event)) {
-            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab)
-                lor3();
-            else if (event.type == Event::Closed)
-                window->close();
-        }
-    }
-}
-
-void StartingMenu::lor3() {
-    lor_sprites[5]->setPosition(0, 0);
-    lor_sprites[4]->setPosition(300, 300);
-
-    Clock clock;
-
-    float x = 400;
-    float y = 300;
-
-
-    while (window->isOpen()) {
-
-        if (y >= 0) {
-            clock.restart();
-            auto t = clock.getElapsedTime().asSeconds();
-            y = y - 1000000*t;
-            lor_sprites[4]->setPosition(x, y);
-            clock.restart();
-        }
-
-        window->draw(*lor_sprites[5]);
-        window->draw(*lor_sprites[4]);
-
-        if (y <= 0)
-            window->draw(*tab_text);
-
-
-        window->display();
-        window->clear();
-
-        Event event;
-        while (window->pollEvent(event)) {
-            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab) {
-                Game::getInstance()->getAEng()->setFadeFlag(MAINMENU);
-                nextWindow();
-            }
+                return;
             else if (event.type == Event::Closed)
                 window->close();
         }
