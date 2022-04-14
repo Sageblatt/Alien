@@ -10,7 +10,7 @@ MainMenu::MainMenu(std::shared_ptr<RenderWindow> wind) {
     textures[0]->loadFromFile("../images/CONTINUE.png");
     textures[1]->loadFromFile("../images/EXIT.png");
     textures[2]->loadFromFile("../images/NEW_GAME.png");
-    textures[3]->loadFromFile("../images/background_2.png");
+    textures[3]->loadFromFile("../images/background_4.png");
 
     //спрайты
     for (auto i = 0; i < 4; i++)
@@ -19,9 +19,9 @@ MainMenu::MainMenu(std::shared_ptr<RenderWindow> wind) {
 }
 
 void MainMenu::run() {
-    sprites[0]->setPosition(350, 400);
-    sprites[1]->setPosition(350, 300);
-    sprites[2]->setPosition(350, 500);
+    sprites[0]->setPosition(350, 200);
+    sprites[1]->setPosition(350, 400);
+    sprites[2]->setPosition(350, 200);
     sprites[3]->setPosition(0, 0);
 
     //номер меню и открыто окно или нет
@@ -36,10 +36,6 @@ void MainMenu::run() {
         menuNum = 0;
         window->clear(Color(129, 181, 221));
 
-        if (IntRect(500, 400, 300, 100).contains(Mouse::getPosition(*window))) {
-            sprites[0]->setColor(Color::Red);
-            menuNum = 1; //кнопка Continue
-        }
          if (IntRect(500, 400, 300, 100).contains(Mouse::getPosition(*window))) {
              sprites[1]->setColor(Color::Red);
              menuNum = 1; //кнопка exit(убрали continue)
@@ -51,22 +47,22 @@ void MainMenu::run() {
 
 
         if (Mouse::isButtonPressed(Mouse::Left)) {
-            if (menuNum == 1)
-                isMenu = false; //если нажали первую кнопку, то выходим из меню
+            if (menuNum == 1) {
+                isMenu = false;
+                window->close();
+            }//если нажали первую кнопку, то выходим из меню
         }
 
         if (Mouse::isButtonPressed(Mouse::Left)) {
             if (menuNum == 2) {
-                if (isMenu)
-                    nextWindow();
-                //если нажали кнопку new_game, то перешли в GameMenu
-            break;
+                nextWindow(); //если нажали кнопку new_game, то перешли в GameMenu
+                break;
             }
         }
 
 
         window->draw(*sprites[3]);
-        for (auto i = 0; i < 3; i++)
+        for (auto i = 1; i < 3; i++)
             window->draw(*sprites[i]);
         window->display();
 
