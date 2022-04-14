@@ -15,13 +15,10 @@ protected:
     std::shared_ptr<sf::RenderWindow> window;
     std::vector <std::unique_ptr <sf::Texture>> textures;
     std::vector <std::unique_ptr <sf::Sprite>> sprites;
-    unsigned long score;
-
-    virtual void nextWindow() = 0;
 
 public:
     Menu();
-    virtual void run() = 0;
+    virtual int run() = 0;
     virtual ~Menu();
 };
 

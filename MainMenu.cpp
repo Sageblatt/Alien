@@ -18,18 +18,17 @@ MainMenu::MainMenu(std::shared_ptr<RenderWindow> wind) {
 
 }
 
-void MainMenu::run() {
+int MainMenu::run() {
     sprites[0]->setPosition(350, 200);
     sprites[1]->setPosition(350, 400);
     sprites[2]->setPosition(350, 200);
     sprites[3]->setPosition(0, 0);
 
-    //номер меню и открыто окно или нет
-    bool isMenu = 1;
+    //номер меню
     int menuNum = 0;
 
     //вызов окна меню
-    while (isMenu and window->isOpen()) {
+    while (window->isOpen()) {
         sprites[0]->setColor(Color::White);
         sprites[1]->setColor(Color::White);
         sprites[2]->setColor(Color::White);
@@ -45,19 +44,14 @@ void MainMenu::run() {
              menuNum = 2; //кнопка new_game
          }
 
-
         if (Mouse::isButtonPressed(Mouse::Left)) {
-            if (menuNum == 1) {
-                isMenu = false;
-                window->close();
-            }//если нажали первую кнопку, то выходим из меню
+            if (menuNum == 1)
+                window->close(); //если нажали первую кнопку, то выходим из меню
         }
 
         if (Mouse::isButtonPressed(Mouse::Left)) {
-            if (menuNum == 2) {
-                nextWindow(); //если нажали кнопку new_game, то перешли в GameMenu
-                break;
-            }
+            if (menuNum == 2) //если нажали кнопку new_game, то перешли в GameMenu
+                return 0;
         }
 
 
@@ -70,13 +64,9 @@ void MainMenu::run() {
         while (window->pollEvent(event)) {
             if (event.type == Event::Closed ||
                 (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)) {
-                window->close();
+                    window->close();
             }
         }
     }
-}
-
-void MainMenu::nextWindow() {
-    GameMenu planets(window);
-    planets.run();
+    return 1;
 }

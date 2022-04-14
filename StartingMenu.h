@@ -22,16 +22,11 @@ protected:
 
     const float LOR_SPEED = 50;
 
-    void nextWindow() override;
-
 public:
     explicit StartingMenu(std::shared_ptr<RenderWindow> wind);
 
-    void lor();
-    void lor1();
-    void lor3();
-    void lorn(unsigned n);
-    void run() override;
+    void lor(unsigned n);
+    int run() override;
 };
 
 

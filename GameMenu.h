@@ -9,12 +9,9 @@ using std::make_unique;
 
 
 class GameMenu: public Menu {
-protected:
-    void nextWindow() override;
-
 public:
     explicit GameMenu(std::shared_ptr<RenderWindow> wind);
-    void run() override;
+    int run() override;
 };
 
 #endif //ALIEN_GAMEMENU_H

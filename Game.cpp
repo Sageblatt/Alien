@@ -46,6 +46,17 @@ void Game::runGame() {
 
     starting_menu->run();
 
+    a_eng->setFadeFlag(LOR);
+
+    for (auto i = 1; i < 4; i++)
+        starting_menu->lor(i);
+
+    a_eng->setFadeFlag(MAINMENU);
+
+    main_menu->run();
+
+    game_menu->run();
+
     window->close();
 
     audio_thread.join();

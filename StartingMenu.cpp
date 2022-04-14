@@ -1,6 +1,4 @@
 #include "StartingMenu.h"
-#include "Game.h"
-#include "AudioEngine.h"
 
 StartingMenu::StartingMenu(std::shared_ptr<RenderWindow> wind) {
     window = wind;
@@ -49,17 +47,16 @@ StartingMenu::StartingMenu(std::shared_ptr<RenderWindow> wind) {
         lor_sprites[i] = make_unique<Sprite>(*lor_textures[i]);
 }
 
-void StartingMenu::run() {
+int StartingMenu::run() {
     sprites[0]->setPosition(300, 600);
     sprites[1]->setPosition(-400, -500);
     sprites[2]->setPosition(0, 0);
 
-    //номер меню и открыто окно или нет
-    bool isMenu = 1;
+    //номер меню
     int menuNum = 0;
 
     //вызов окна меню
-    while (isMenu and window->isOpen()) {
+    while (window->isOpen()) {
         window->clear(Color(129, 181, 221));
 
         if (IntRect(400, 600, 400, 100).contains(Mouse::getPosition(*window))) {
@@ -70,20 +67,8 @@ void StartingMenu::run() {
         if (Mouse::isButtonPressed(Mouse::Left)) {
             if (menuNum == 1) {
                 window->clear(Color(129, 181, 221));
-                if (isMenu) {
-                    Game::getInstance()->getAEng()->setFadeFlag(LOR);
-                    lorn(1);
-                    lorn(2);
-                    lorn(3);
-                    Game::getInstance()->getAEng()->setFadeFlag(MAINMENU);
-                    nextWindow();
-                    break;
-//                    nextWindow();//прожали play перешли на другую страницу меню
-                }
-                 // вызов первого лора
-//                break;
+                return 0;
             }
-
         }
 
         window->draw(*sprites[2]);
@@ -99,22 +84,18 @@ void StartingMenu::run() {
             }
         }
     }
+    return 1;
 }
 
-void StartingMenu::nextWindow() {
-    MainMenu m(window);
-    m.run();
-}
-
-void StartingMenu::lorn(unsigned n) {
+void StartingMenu::lor(unsigned n) {
     timer->restart();
     auto i1 = 2 * n - 2; //0
     auto i2 = 2 * n - 1; //1
     lor_sprites[i2]->setPosition(0, 0);
     lor_sprites[i1]->setPosition(-700, 300);
 
-    float x = lor_x[n-1];
-    float y = lor_y[n-1];
+    float x = lor_x[n - 1];
+    float y = lor_y[n - 1];
 
     while (window->isOpen()) {
         if (y >= 0) {

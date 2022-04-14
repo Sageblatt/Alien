@@ -19,7 +19,7 @@ GameMenu::GameMenu(std::shared_ptr<RenderWindow> wind) {
 
 }
 
-void GameMenu::run() {
+int GameMenu::run() {
     sprites[0]->setPosition(950, 300); // PURPLE 200X200
     sprites[1]->setPosition(500, 500); // FIRE
     sprites[2]->setPosition(200, 250); // ELECTRIC
@@ -27,11 +27,10 @@ void GameMenu::run() {
     sprites[4]->setPosition(0, 0);
 
     //номер меню и открыто окно или нет
-    bool isMenu = 1;
     int menuNum = 0;
 
     //вызов окна меню
-    while (isMenu) {
+    while (window->isOpen()) {
         sprites[0]->setColor(Color::White);
         sprites[1]->setColor(Color::White);
         sprites[2]->setColor(Color::White);
@@ -49,13 +48,11 @@ void GameMenu::run() {
             menuNum = 3;
         }
 
-
         if (Mouse::isButtonPressed(Mouse::Left)) {
-            if (menuNum == 1 or menuNum == 2 or menuNum == 3) {
-                isMenu = false;
-
-            }
+            if (menuNum == 1 or menuNum == 2 or menuNum == 3)
+                return menuNum;
         }
+
         window->draw(*sprites[4]);
         window->draw(*sprites[0]);
         window->draw(*sprites[1]);
@@ -71,12 +68,5 @@ void GameMenu::run() {
             }
         }
     }
+    return 1;
 }
-
-void GameMenu::nextWindow() {}
-
-
-
-
-
-

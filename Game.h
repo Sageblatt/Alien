@@ -32,13 +32,13 @@ private:
 public:
     static Game* getInstance();
 
-    MainMenu* getMainMenu() const;
-    StartingMenu* getStartingMenu() const;
-    GameMenu* getGameMenu() const;
-    RandomNumberGenerator* getRng() const;
-    AudioEngine* getAEng() const;
+    [[nodiscard]] MainMenu* getMainMenu() const;
+    [[nodiscard]] StartingMenu* getStartingMenu() const;
+    [[nodiscard]] GameMenu* getGameMenu() const;
+    [[nodiscard]] RandomNumberGenerator* getRng() const;
+    [[nodiscard]] AudioEngine* getAEng() const;
 
-    const std::shared_ptr<sf::RenderWindow>& getWindow() const;
+    [[nodiscard]] const std::shared_ptr<sf::RenderWindow>& getWindow() const;
 
     void init();
     void runGame();

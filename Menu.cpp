@@ -4,6 +4,5 @@
 
 #include "Menu.h"
 
-Menu::Menu(): score(0) {}
-
+Menu::Menu() = default;
 Menu::~Menu() = default;
