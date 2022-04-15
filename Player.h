@@ -1,22 +1,23 @@
-//
-// Created by sageblatt on 01.04.2022.
-//
-
 #ifndef ALIEN_PLAYER_H
 #define ALIEN_PLAYER_H
 
 #include "Creature.h"
 
-class Player: public Creature{
+class Player : public Creature {
 protected:
-    void move() override;
-    void attack() override;
+	bool key;
 
+	float boost;
+	float boostHeight;
+
+	bool onGround;
+	
 public:
-    Player();
-
-    ~Player();
+	void Keyboard();
+	void Move() override;
+	void Attack() override;
+	void IncrementTime() override;
+	Player(String file, float speedX, float speedY, int windowWidth, int windowHeight);
 };
 
-
-#endif //ALIEN_PLAYER_H
+#endif // ALIEN_PLAYER_H

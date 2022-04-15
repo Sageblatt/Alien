@@ -1,21 +1,39 @@
-//
-// Created by sageblatt on 01.04.2022.
-//
-
 #ifndef ALIEN_MONSTER_H
 #define ALIEN_MONSTER_H
 
 #include "Creature.h"
+using std::vector;
 
-class Monster: public Creature{
+struct tiles 
+{
+	int X;
+	int Y;
+	int Width;
+	int Height;
+};
+
+class Monster : public Creature {
 protected:
-    void move() override;
-    void attack() override;
+	vector<tiles> moveVec;
+	vector<tiles> attackVec;
+	vector<tiles> fallVec;
+
+	int X0;
+	int Y0;
+
+	bool key;
+
+	float boost;
+	float timeBoost1;
+	float boostHeight;
+
+	bool onGround;
 
 public:
-    Monster();
-
-    ~Monster();
+	void Move() override;
+	void Attack() override;
+	Monster(String file, float speedX, int windowWidth, int windowHeight);
+	void IncrementTime();
 };
 
 

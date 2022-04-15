@@ -6,9 +6,10 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(Alien
         Menu.cpp
         GameMenu.cpp
-#        Creature.cpp
-#        Player.cpp
-#        Monster.cpp
+        Creature.cpp
+        Player.cpp
+        player_main.cpp
+        Monster.cpp)
         RandomNumberGenerator.cpp
         StartingMenu.cpp
         MainMenu.cpp
