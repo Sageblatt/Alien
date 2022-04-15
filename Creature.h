@@ -4,52 +4,38 @@
 #include <SFML/Graphics.hpp>
 using namespace sf;
 
-
-class Creature
-{
+class Creature {
 protected:
+    int Width;
+    int Height;  // С€РёСЂРёРЅР°, РІС‹СЃРѕС‚Р°
+    float SpeedX;
+    float SpeedY; //СЃРєРѕСЂРѕСЃС‚Рё РїРѕ x, y
 
-    int Width{};
-    int Height{};  // ширина, высота
-    float SpeedX{};
-    float SpeedY{}; //скорости по x, y
+    int directionMove; //РЅР°РїСЂР°РІР»РµРЅРёРµ РґРІРёР¶РµРЅРёСЏ СЃРїСЂР°Р№С‚Р°
 
-    int   directionMove{}; //направление движения спрайта
+    float time;
+    float timeBoost;
 
-    float time{};
-    float timeBoost{};
-    
+    int WindowWidth;
+    int WindowHeight;
 
-    int WindowWidth{};
-    int WindowHeight{};
+    float CurrentFrame;//С…СЂР°РЅРёС‚ С‚РµРєСѓС‰РёР№ РєР°РґСЂ
+    float CurrentFrame2;
 
-    float CurrentFrame{};//хранит текущий кадр
-    float CurrentFrame2{};
-
-    String  file{};         //файл с расширением
-    Image   image{};        //sfml изображение
-    Texture texture{};      //sfml текстура
-    Sprite  sprite{};       //sfml спрайт
-
-    //double   hp;
-    //unsigned strength;
-
-    //std::vector <sf::Sprite> sprites;
+    String  file;         //С„Р°Р№Р» СЃ СЂР°СЃС€РёСЂРµРЅРёРµРј
+    Image   image;        //sfml РёР·РѕР±СЂР°Р¶РµРЅРёРµ
+    Texture texture;      //sfml С‚РµРєСЃС‚СѓСЂР°
+    Sprite  sprite;       //sfml СЃРїСЂР°Р№С‚
 
 public:
-
     virtual void Move() = 0;
     virtual void Attack() = 0;
 
-    void SetTime(float time);
+    void SetTime(float t);
     float GetTime();
 
     void Draw(RenderWindow& window);
     virtual void IncrementTime() = 0;
-
-    //Creature();
-	//virtual ~Creature()  = 0;
-
 };
 
 #endif //ALIEN_CREATURE_H

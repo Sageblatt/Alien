@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(Alien
         Creature.cpp
         Player.cpp
-        main.cpp
+        player_main.cpp
         Monster.cpp)
 
 include_directories(./images)

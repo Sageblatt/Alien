@@ -5,7 +5,6 @@
 
 class Player : public Creature {
 protected:
-	
 	bool key;
 
 	float boost;
@@ -14,16 +13,11 @@ protected:
 	bool onGround;
 	
 public:
-
 	void Keyboard();
 	void Move() override;
-	void Attack();
-	void IncrementTime();
-	Player(String file,float speedX, float speedY, int windowWidth, int windowHeight);
-	~Player();
-
-
-	//void Run(Monster& alien);
+	void Attack() override;
+	void IncrementTime() override;
+	Player(String file, float speedX, float speedY, int windowWidth, int windowHeight);
 };
 
 #endif // ALIEN_PLAYER_H

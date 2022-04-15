@@ -23,8 +23,7 @@ int main()
         hero.SetTime(time);
         alien.SetTime(time);
         clock.restart();
-        while (window.pollEvent(event))
-        {
+        while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
@@ -39,5 +38,4 @@ int main()
         alien.Draw(window);
         window.display();
     }
-    
 }

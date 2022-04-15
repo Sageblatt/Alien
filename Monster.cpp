@@ -1,9 +1,4 @@
-﻿//#include "windows.h"
-#include "Monster.h"
-#include <iostream>
-using std::cout;
-
-
+﻿#include "Monster.h"
 
 Monster::Monster(String file, float speedX, int windowWidth, int windowHeight)
 {
@@ -41,8 +36,7 @@ Monster::Monster(String file, float speedX, int windowWidth, int windowHeight)
     sprite.setTexture(texture);
 
     sprite.setPosition((float)X0, (float)Y0);
-    
-    //std::cout << sprite.getPosition().y << '\n';
+
     this->CurrentFrame = 0;
     this->CurrentFrame2 = 0;
 
@@ -51,12 +45,11 @@ Monster::Monster(String file, float speedX, int windowWidth, int windowHeight)
     this->boostHeight = 0;
     this->key = false;
 }
-void Monster::IncrementTime()
-{
-   // std::cout << "TIME: " << time << '\n';
+
+void Monster::IncrementTime() {
     this->timeBoost1 += this->time / 1000;
-   // std::cout << "TIMEBOOST1: " << timeBoost1 << '\n';
 }
+
 void Monster::Move()
 {
    // std::cout << sprite.getPosition().y << '\n';
@@ -64,14 +57,12 @@ void Monster::Move()
     if (CurrentFrame > 10) CurrentFrame = 0;
     
     if (onGround == false) {
-        std::cout << "BOOST!!! " << boost * timeBoost1 * timeBoost1 / 2 << '\n';
         onGround = false;
         IncrementTime();
        // std::cout << boost * timeBoost * timeBoost / 2 << '\n';
         sprite.setTextureRect(IntRect(fallVec[0].X, fallVec[0].Y, fallVec[0].Width, fallVec[0].Height));
         sprite.move(0, boost * timeBoost1 * timeBoost1 / 2);
     }
-    std::cout << sprite.getPosition().y << "---" << WindowHeight - fallVec[0].Height << '\n';
     if (sprite.getPosition().y >= (WindowHeight - fallVec[0].Height))
     {
         
@@ -89,10 +80,7 @@ void Monster::Attack()
     if (onGround == true)
     {
         int  i = (int)CurrentFrame;
-        std::cout << "i    " << i << '\n';
         sprite.setTextureRect(IntRect(attackVec[i].X, attackVec[i].Y, attackVec[i].Width, attackVec[i].Height));
         sprite.move(0, 0);
     }
 }
-
-Monster::~Monster() { };

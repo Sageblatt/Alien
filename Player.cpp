@@ -1,13 +1,9 @@
 ﻿#include "Player.h"
-#include "Monster.h"
-#include <iostream>
 
 Player::Player(String file, float speedX, float speedY, int windowWidth, int windowHeight)
 {
     this->file = file;
     directionMove = 0;
-
-      
 
     this->WindowWidth = windowWidth;
     this->WindowHeight = windowHeight;
@@ -34,27 +30,19 @@ Player::Player(String file, float speedX, float speedY, int windowWidth, int win
     this->key = false;
 }
 
-
-Player::~Player() {}
-
-void Player::IncrementTime()
-{
-    //std::cout << "TIME: " << time << '\n';
+void Player::IncrementTime() {
     this->timeBoost += this->time/3000;
-    //std::cout << "TIMEBOOST: " << timeBoost << '\n';
 }
-void boostTimeToZero(bool& key, float& timeBoost)
-{
-    if (!key)
-    {
+
+void boostTimeToZero(bool& key, float& timeBoost) {
+    if (!key) {
         timeBoost = 0;
         key = !key;
     }
 }
 
 
-void Player::Move()
-{
+void Player::Move() {
     CurrentFrame += (float)(0.01 * time);
     if (CurrentFrame > 10) CurrentFrame = 0;
 
@@ -402,9 +390,3 @@ void Player::Keyboard()
 }
 
 void Player::Attack() {};
-
-
-
-
-
-

@@ -14,12 +14,9 @@ struct tiles
 
 class Monster : public Creature {
 protected:
-
 	vector<tiles> moveVec;
 	vector<tiles> attackVec;
 	vector<tiles> fallVec;
-
-
 
 	int X0;
 	int Y0;
@@ -31,18 +28,13 @@ protected:
 	float boostHeight;
 
 	bool onGround;
-	
-
-
 
 public:
 	void Move() override;
 	void Attack() override;
 	Monster(String file, float speedX, int windowWidth, int windowHeight);
 	void IncrementTime();
-	~Monster();
 };
-
 
 
 #endif //ALIEN_MONSTER_H
