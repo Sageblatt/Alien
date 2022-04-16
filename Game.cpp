@@ -5,7 +5,6 @@
 #include "StartingMenu.h"
 #include "MainMenu.h"
 #include "RandomNumberGenerator.h"
-#include "AudioEngine.h"
 #include "Level.h"
 
 Game* Game::instance = nullptr;
@@ -39,7 +38,6 @@ void Game::init() {
     main_menu = new MainMenu(window);
     game_menu = new GameMenu(window);
     rng = new RandomNumberGenerator();
-    a_eng = new AudioEngine();
 
     planets[PURPLE] = new Level(window, PURPLE);
     planets[FIRE] = new Level(window, FIRE);
@@ -47,16 +45,10 @@ void Game::init() {
 }
 
 void Game::runGame() {
-    auto audio_thread = std::thread(&AudioEngine::run, a_eng);
-
     starting_menu->run();
-
-    a_eng->setFadeFlag(LOR);
 
     for (auto i = 1; i < 4; i++)
         starting_menu->lor(i);
-
-    a_eng->setFadeFlag(MAINMENU);
 
     main_menu->run();
 
@@ -71,7 +63,6 @@ void Game::runGame() {
 
     window->close();
 
-    audio_thread.join();
 }
 
 MainMenu* Game::getMainMenu() const {
@@ -108,7 +99,6 @@ Game::~Game() {
     delete main_menu;
     delete game_menu;
     delete rng;
-    delete a_eng;
 }
 
 
