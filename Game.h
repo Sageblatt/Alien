@@ -14,6 +14,7 @@ class MainMenu;
 class GameMenu;
 class RandomNumberGenerator;
 class AudioEngine;
+class Level;
 
 class Game {
 private:
@@ -22,6 +23,7 @@ private:
     GameMenu* game_menu;
     RandomNumberGenerator* rng;
     AudioEngine* a_eng;
+    std::array<Level*, 3> planets;
 
     std::shared_ptr<sf::RenderWindow> window;
     std::unique_ptr<sf::Texture> load_texture;

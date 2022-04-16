@@ -8,13 +8,13 @@ add_executable(Alien
         GameMenu.cpp
         Creature.cpp
         Player.cpp
-#        player_main.cpp
         Monster.cpp
         RandomNumberGenerator.cpp
         StartingMenu.cpp
         MainMenu.cpp
         Game.cpp
         AudioEngine.cpp
+        Level.cpp
         main.cpp)
 
 

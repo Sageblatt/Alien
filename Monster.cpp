@@ -1,6 +1,6 @@
 ﻿#include "Monster.h"
 
-Monster::Monster(String file, float speedX, int windowWidth, int windowHeight)
+Monster::Monster(String file, float speedX, int x0, int windowWidth, int windowHeight)
 {
     this->file = file;
     this->directionMove = 0;
@@ -23,8 +23,8 @@ Monster::Monster(String file, float speedX, int windowWidth, int windowHeight)
     this->WindowWidth = windowWidth;
     this->WindowHeight = windowHeight;
 
-    this->X0 = rand() % (1000 - fallVec[0].Width);
-    
+//    this->X0 = rand() % (1000 - fallVec[0].Width);
+    this->X0 = x0;
     this->Y0 = 0;
 
     this->SpeedX = speedX;

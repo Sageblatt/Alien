@@ -32,7 +32,7 @@ protected:
 public:
 	void Move() override;
 	void Attack() override;
-	Monster(String file, float speedX, int windowWidth, int windowHeight);
+	Monster(String file, float speedX, int x0, int windowWidth, int windowHeight);
 	void IncrementTime();
 };
 

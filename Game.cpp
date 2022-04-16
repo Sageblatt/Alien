@@ -6,6 +6,7 @@
 #include "MainMenu.h"
 #include "RandomNumberGenerator.h"
 #include "AudioEngine.h"
+#include "Level.h"
 
 Game* Game::instance = nullptr;
 
@@ -39,6 +40,10 @@ void Game::init() {
     game_menu = new GameMenu(window);
     rng = new RandomNumberGenerator();
     a_eng = new AudioEngine();
+
+    planets[PURPLE] = new Level(window, PURPLE);
+    planets[FIRE] = new Level(window, FIRE);
+    planets[ELECTRIC] = new Level(window, ELECTRIC);
 }
 
 void Game::runGame() {
@@ -55,7 +60,14 @@ void Game::runGame() {
 
     main_menu->run();
 
-    game_menu->run();
+    int planet_num;
+    planet_num = game_menu->run() - 1;
+
+    while (window->isOpen()) {
+        planets[planet_num]->run();
+        planet_num = game_menu->run() - 1;
+    }
+
 
     window->close();
 
