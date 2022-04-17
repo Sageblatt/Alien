@@ -31,13 +31,15 @@ protected:
     String  file{};         //файл с расширением
     Image   image{};        //sfml изображение
     Texture texture{};      //sfml текстура
-    Sprite  sprite{};       //sfml спрайт
+        //sfml спрайт
 
     //unsigned strength;
 
     //std::vector <sf::Sprite> sprites;
 
 public:
+    Sprite  sprite;
+   
     int   hp;
     int directionMove;
     virtual void Move() = 0;
