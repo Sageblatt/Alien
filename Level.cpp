@@ -21,7 +21,7 @@ Level::Level(std::shared_ptr<RenderWindow> wind, Planets num) {
             fname = "../images/fire_planet.png";
             break;
         case ELECTRIC:
-            fname = "../images/pink_planet.png";
+            fname = "../images/electric_planet.png";
             break;
     }
 
