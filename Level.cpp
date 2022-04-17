@@ -78,6 +78,17 @@ int Level::run() {
             it->Move();
             it->Attack();
         }
+        for (auto & it : monsters) {
+            for (auto &it1: bullets) {
+                if (it->getRect().intersects(it1->getRect())) {
+                    it->sprite.setColor(Color::Red);
+                    it->hp = it->hp - 50;
+                    it1->life = false;
+
+                }
+            }
+        }
+         
         for (auto it = bullets.begin(); it != bullets.end();)
         {
 
@@ -87,6 +98,16 @@ int Level::run() {
                 auto tmpit = it;
                 ++it;
                 bullets.erase(tmpit);
+            }
+            else it++;
+        }
+         for (auto it = monsters.begin(); it != monsters.end();)
+        {
+
+            if ((*it)->hp <= 0) {
+                auto tmpit = it;
+                ++it;
+                monsters.erase(tmpit);
             }
             else it++;
         }
@@ -104,6 +125,7 @@ int Level::run() {
            window->draw(bullet->sprite);
 //            std::cout << "!!!!!!";
         }
+        
         window->display();
     }
     return 0;
