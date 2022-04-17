@@ -36,7 +36,7 @@ Level::Level(std::shared_ptr<RenderWindow> wind, Planets num) {
                                           2.5,
                                           Game::getInstance()->getRng()->
                                           getRandomInt(0,static_cast<int>(window->getSize().x)),
-                                          window->getSize().x, window->getSize().y));
+                                          window->getSize().x, window->getSize().y, 100));
     }
 }
 

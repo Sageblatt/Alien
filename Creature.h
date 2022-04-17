@@ -8,10 +8,14 @@ using namespace sf;
 class Creature
 {
 protected:
+    int Width;
+    int Height;  // ширина, высота
+    float SpeedX;
+    float SpeedY; //скорости по x, y
 
      //направление движения спрайта
 
-    int   directionMove{}; //направление движения спрайта
+//    int   directionMove{}; //направление движения спрайта
 
     float time{};
     float timeBoost{};
