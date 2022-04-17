@@ -66,9 +66,7 @@ int Level::run() {
                 if (event.key.code == sf::Keyboard::Space)
                 {
 
-                    bullets.push_back(std::make_unique<Bullet>(hero->directionMove,
-                                                                                            hero->GetPositionX(),
-                                                                                            hero->GetPositionY()));
+                    bullets.emplace_back(std::make_unique<Bullet>(hero->directionMove, hero->GetPositionX(), hero->GetPositionY()));
                 }
             }
         }
@@ -84,8 +82,11 @@ int Level::run() {
         {
 
             (*it)->getBulletcoord();
+
             if (!(*it)->life) {
-                 bullets.erase(it);
+                auto tmpit = it;
+                ++it;
+                bullets.erase(tmpit);
             }
             else it++;
         }
@@ -101,7 +102,7 @@ int Level::run() {
         for (auto & bullet : bullets){
             //bullet->Draw(*window);
            window->draw(bullet->sprite);
-            std::cout << "!!!!!!";
+//            std::cout << "!!!!!!";
         }
         window->display();
     }

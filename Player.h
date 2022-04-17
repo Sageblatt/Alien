@@ -13,6 +13,8 @@ protected:
 	bool onGround;
 	
 public:
+    float GetPositionX();
+    float GetPositionY();
 	void Keyboard();
 	void Move() override;
 	void Attack() override;

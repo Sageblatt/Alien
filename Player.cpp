@@ -389,4 +389,12 @@ void Player::Keyboard()
     }
 }
 
-void Player::Attack() {};
+void Player::Attack() {}
+
+float Player::GetPositionX() {
+    return sprite.getPosition().x;
+}
+
+float Player::GetPositionY() {
+    return sprite.getPosition().x;
+}

@@ -1,12 +1,12 @@
-
-
 #ifndef ALIEN_BULLET_H
 #define ALIEN_BULLET_H
+
 #include "Creature.h"
 #include "Player.h"
+
 class Bullet: public Creature{
 protected:
-    Clock clock;
+    std::unique_ptr<Clock> clock;
     int direction;
     float bullet_x;
     float bullet_y;
@@ -17,6 +17,7 @@ protected:
     float X;
     float Y;
     float dx = 0;
+
 public:
     bool life = true;
     Sprite  sprite{};
@@ -30,6 +31,7 @@ public:
     void IncrementTime();
     ~Bullet();
 };
+
 #endif //ALIEN_BULLET_H
 
 

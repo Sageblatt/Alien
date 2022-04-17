@@ -8,7 +8,9 @@
 #include "Menu.h"
 #include "Player.h"
 #include "Monster.h"
+#include "Bullet.h"
 #include <memory>
+#include <list>
 
 using namespace sf;
 

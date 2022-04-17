@@ -11,6 +11,9 @@ Bullet::Bullet(int direction, float bullet_x, float bullet_y) {
     this->x_player = bullet_x;
     this->y_player = bullet_y;
 
+    clock = std::make_unique<Clock>();
+    clock->restart();
+
     image.loadFromFile("../images/m_bullet.png");
     texture.loadFromImage(image);
     sprite.setTexture(texture);
@@ -18,14 +21,14 @@ Bullet::Bullet(int direction, float bullet_x, float bullet_y) {
         sprite.setPosition((float) (bullet_x + 60 ), (float) (bullet_y + 31  ));
     else sprite.setPosition((float) (bullet_x + 15), (float) (bullet_y + 55 ));
 }
+
 void Bullet::getBulletcoord() {
 
-    float time = clock.getElapsedTime().asMicroseconds() ;
+    float time = clock->getElapsedTime().asMicroseconds() ;
     time = time / 800;
 
 
     if(direction >= 0) {
-
         sprite.move(4, 0);
     }
     else {
@@ -41,20 +44,23 @@ void Bullet::getBulletcoord() {
     std::cout << x_player;
    // std::cout << time << " ";
 
-    clock.restart();
+    clock->restart();
 }
 
 float Bullet::GetPositionX() {
     this->X = (float)sprite.getPosition().x;
     return this->X;
 }
+
 float Bullet::GetPositionY() {
     this->Y = (float)sprite.getPosition().y;
     return this->Y;
 }
+
 FloatRect Bullet::getRect(){
     return FloatRect (this->X, this->Y, 20, 20);
 }
+
 void Bullet::Move(){}
 void Bullet::Attack() {}
 void Bullet::IncrementTime() {}

@@ -11,7 +11,7 @@ protected:
     float SpeedX;
     float SpeedY; //скорости по x, y
 
-    int directionMove; //направление движения спрайта
+     //направление движения спрайта
 
     float time;
     float timeBoost;
@@ -28,6 +28,7 @@ protected:
     Sprite  sprite;       //sfml спрайт
 
 public:
+    int directionMove;
     virtual void Move() = 0;
     virtual void Attack() = 0;
 
