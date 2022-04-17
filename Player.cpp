@@ -63,7 +63,9 @@ void Player::Move() {
     case 1:
 
         sprite.setTextureRect(IntRect(Width * int(CurrentFrame), 0, Width, Height));
-        sprite.move(SpeedX * time, 0);
+        if(sprite.getPosition().x <= (float)(WindowWidth - Width))
+            sprite.move(SpeedX * time, 0);
+        else sprite.move(0 * time, 0);;
         CurrentFrame2 = 0;
         return;
         }
@@ -94,6 +96,7 @@ void Player::Move() {
         if (key == true && sprite.getPosition().y < WindowHeight - Height) {
 
             IncrementTime();
+
             sprite.setTextureRect(IntRect(0, 0, Width, Height));
             sprite.move(0, boost * timeBoost * timeBoost / 2);
             CurrentFrame2 = 0;
@@ -112,7 +115,9 @@ void Player::Move() {
         if (-SpeedY + boost * timeBoost < 0 && key == false) {
             IncrementTime();
             sprite.setTextureRect(IntRect(900, 0, Width, Height));
-            sprite.move(SpeedX * time, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
+            if(sprite.getPosition().x <= (float)(WindowWidth - Width))
+                sprite.move(SpeedX * time, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
+            else sprite.move(0 * time, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
             CurrentFrame2 = 0;
             return;
         }
@@ -120,8 +125,11 @@ void Player::Move() {
         if (key == true && sprite.getPosition().y < WindowHeight - Height) {
 
             IncrementTime();
+
             sprite.setTextureRect(IntRect(0, 0, Width, Height));
-            sprite.move(SpeedX * time, boost * timeBoost * timeBoost / 2);
+            if(sprite.getPosition().x <= (float)(WindowWidth - Width))
+                sprite.move(SpeedX * time, boost * timeBoost * timeBoost / 2);
+            else sprite.move(0 * time, boost * timeBoost * timeBoost / 2);
             CurrentFrame2 = 0;
             return;
         }
@@ -135,8 +143,11 @@ void Player::Move() {
     case 5:
         sprite.setTextureRect(IntRect(Width * (int)(CurrentFrame), Height * 2, Width, Height));
 
-        if (Keyboard::isKeyPressed(Keyboard::Right) && onGround)
-            sprite.move(SpeedX * time, 0);
+        if (Keyboard::isKeyPressed(Keyboard::Right) && onGround) {
+            if (sprite.getPosition().x <= (float) (WindowWidth - Width))
+                sprite.move(SpeedX * time, 0);
+            else sprite.move(0 * time, 0);
+        }
 
         else if(Keyboard::isKeyPressed(Keyboard::Up) || onGround == false)
         {
@@ -174,7 +185,9 @@ void Player::Move() {
         {
     case -1:
         sprite.setTextureRect(IntRect(900 - Width * int(CurrentFrame), Height * 3, Width, Height));
-        sprite.move(-SpeedX * time, 0);
+        if(sprite.getPosition().x >= 0)
+            sprite.move(-SpeedX * time, 0);
+        else sprite.move(0 * time, 0);
         CurrentFrame2 = 0;
         return;
         }
@@ -223,7 +236,9 @@ void Player::Move() {
 
             IncrementTime();
             sprite.setTextureRect(IntRect(0, Height * 3, Width, Height));
-            sprite.move(-SpeedX * time, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
+            if(sprite.getPosition().x >= 0)
+                sprite.move(-SpeedX * time, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
+            else sprite.move(0 * time, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
             CurrentFrame2 = 0;
             return;
         }
@@ -231,8 +246,12 @@ void Player::Move() {
         if (key == true && sprite.getPosition().y < WindowHeight - Height) {
 
             IncrementTime();
+
             sprite.setTextureRect(IntRect(900, Height * 3, Width, Height));
-            sprite.move(-SpeedX * time, boost * timeBoost * timeBoost / 2);
+
+            if(sprite.getPosition().x >= 0)
+                sprite.move(-SpeedX * time, boost * timeBoost * timeBoost / 2);
+            else sprite.move(0 * time, boost * timeBoost * timeBoost / 2);
             CurrentFrame2 = 0;
             return;
         }
@@ -246,7 +265,13 @@ void Player::Move() {
     case -5:
         sprite.setTextureRect(IntRect(900 - Width * (int)(CurrentFrame), Height * 4, Width, Height));
         if (Keyboard::isKeyPressed(Keyboard::Left) && onGround)
-            sprite.move(-SpeedX * time, 0);
+        {
+            if(sprite.getPosition().x >= 0)
+                sprite.move(-SpeedX * time, 0);
+            else sprite.move(-0 * time, 0);
+
+        }    
+
         else if (Keyboard::isKeyPressed(Keyboard::Up) || onGround == false)
         {
             if (-SpeedY + boost * timeBoost < 0 && key == false) {
@@ -389,7 +414,10 @@ void Player::Keyboard()
     }
 }
 
-void Player::Attack() {}
+void Player::Attack() {};
+int Player::GetDirectionMove(){
+    return directionMove;
+}
 
 float Player::GetPositionX() {
     return sprite.getPosition().x;

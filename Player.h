@@ -19,6 +19,7 @@ public:
 	void Move() override;
 	void Attack() override;
 	void IncrementTime() override;
+    int GetDirectionMove();
 	Player(String file, float speedX, float speedY, int windowWidth, int windowHeight);
 };
 

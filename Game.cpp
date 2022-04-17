@@ -21,7 +21,6 @@ Game::Game() {
     main_menu = nullptr;
     game_menu = nullptr;
     rng = nullptr;
-    a_eng = nullptr;
 }
 
 void Game::init() {
@@ -62,7 +61,6 @@ void Game::runGame() {
 
 
     window->close();
-
 }
 
 MainMenu* Game::getMainMenu() const {
@@ -79,10 +77,6 @@ GameMenu *Game::getGameMenu() const {
 
 RandomNumberGenerator *Game::getRng() const {
     return rng;
-}
-
-AudioEngine* Game::getAEng() const {
-    return a_eng;
 }
 
 const std::shared_ptr<sf::RenderWindow> &Game::getWindow() const {

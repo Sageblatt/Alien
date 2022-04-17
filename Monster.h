@@ -4,37 +4,44 @@
 #include "Creature.h"
 using std::vector;
 
-struct tiles 
+struct tiles
 {
-	int X;
-	int Y;
-	int Width;
-	int Height;
+    int x;
+    int y;
+    int Width;
+    int Height;
 };
 
 class Monster : public Creature {
 protected:
-	vector<tiles> moveVec;
-	vector<tiles> attackVec;
-	vector<tiles> fallVec;
 
-	int X0;
-	int Y0;
+    vector<tiles> moveVec;
+    vector<tiles> attackVec;
+    vector<tiles> fallVec;
 
-	bool key;
+    int attackTact;
 
-	float boost;
-	float timeBoost1;
-	float boostHeight;
+    bool key;
 
-	bool onGround;
+    float boost;
+    float timeBoost1;
+    float boostHeight;
+
+    int distanceToHero;
+    bool onGround;
 
 public:
-	void Move() override;
-	void Attack() override;
-	Monster(String file, float speedX, int x0, int windowWidth, int windowHeight);
-	void IncrementTime();
+
+    void DistanceToHero(int X);
+
+    void Move();
+    void Attack() override;
+    Monster(String file, float speedX, int x0, int windowWidth, int windowHeight, double hp);
+//	Monster();
+    void IncrementTime();
+    ~Monster();
 };
+
 
 
 #endif //ALIEN_MONSTER_H
