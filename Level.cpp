@@ -80,6 +80,16 @@ int Level::run() {
             it->Move();
             it->Attack();
         }
+        for (auto it = bullets.begin(); it != bullets.end();)
+        {
+
+            (*it)->getBulletcoord();
+            if (!(*it)->life) {
+                 bullets.erase(it);
+            }
+            else it++;
+        }
+
 
         window->clear();
 
@@ -87,6 +97,11 @@ int Level::run() {
         hero->Draw(*window);
         for(auto & it : monsters) {
             it->Draw(*window);
+        }
+        for (auto & bullet : bullets){
+            //bullet->Draw(*window);
+           window->draw(bullet->sprite);
+            std::cout << "!!!!!!";
         }
         window->display();
     }
