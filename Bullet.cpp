@@ -8,8 +8,7 @@ Bullet::Bullet(int direction, float bullet_x, float bullet_y) {
     this->file = file;
     this->x_player = bullet_x;
     this->y_player = bullet_y;
-    this->x_player = bullet_x;
-    this->y_player = bullet_y;
+   
 
     clock = std::make_unique<Clock>();
     clock->restart();
@@ -18,17 +17,13 @@ Bullet::Bullet(int direction, float bullet_x, float bullet_y) {
     texture.loadFromImage(image);
     sprite.setTexture(texture);
     if(direction > 0)
-        sprite.setPosition((float) (bullet_x + 60 ), (float) (bullet_y + 31  ));
-    else sprite.setPosition((float) (bullet_x + 15), (float) (bullet_y + 55 ));
+        sprite.setPosition((float) (bullet_x + 60 ), (float) (bullet_y + 30  ));
+    else sprite.setPosition((float) (bullet_x + 20), (float) (bullet_y + 50 ));
 }
 
 void Bullet::getBulletcoord() {
 
-    float time = clock->getElapsedTime().asMicroseconds() ;
-    time = time / 800;
-
-
-    if(direction >= 0) {
+   if(direction >= 0) {
         sprite.move(4, 0);
     }
     else {
@@ -40,11 +35,12 @@ void Bullet::getBulletcoord() {
 
         life = false;
     }
-    std::cout << sprite.getPosition().x << " ";
-    std::cout << x_player;
-   // std::cout << time << " ";
+    if(sprite.getPosition().x < 0){
+        life = false;
+    }
+    std::cout << sprite.getPosition().y << " ";
+    std::cout << y_player <<'\n';
 
-    clock->restart();
 }
 
 float Bullet::GetPositionX() {
