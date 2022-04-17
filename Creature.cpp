@@ -36,6 +36,11 @@ int Creature::GetPositionY()
 {
     return this->Y;
 }
+FloatRect Creature::getRect(){
+    this->X = (float)sprite.getPosition().x;
+    this->Y = (float)sprite.getPosition().y;
+    return FloatRect (X, Y, 100, 100);
+}
 
 
 
