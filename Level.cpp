@@ -61,6 +61,16 @@ int Level::run() {
                 window->close();
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab)
                 return 1;
+            if (event.type == sf::Event::KeyPressed)
+            {
+                if (event.key.code == sf::Keyboard::Space)
+                {
+
+                    bullets.push_back(std::make_unique<Bullet>(hero->directionMove,
+                                                                                            hero->GetPositionX(),
+                                                                                            hero->GetPositionY()));
+                }
+            }
         }
 
         hero->Keyboard();
