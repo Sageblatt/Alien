@@ -23,6 +23,9 @@ Game::Game() {
     game_menu = nullptr;
     rng = nullptr;
     a_eng = nullptr;
+    planets[PURPLE] = nullptr;
+    planets[FIRE] = nullptr;
+    planets[ELECTRIC] = nullptr;
 }
 
 void Game::init() {
@@ -109,6 +112,9 @@ Game::~Game() {
     delete game_menu;
     delete rng;
     delete a_eng;
+    delete planets[PURPLE];
+    delete planets[FIRE];
+    delete planets[ELECTRIC];
 }
 
 
