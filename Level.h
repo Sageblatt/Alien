@@ -23,7 +23,7 @@ enum Planets {
 class Level: public Menu {
 protected:
     std::unique_ptr<Player> hero;
-    vector<std::unique_ptr<Monster>> monsters;
+    std::list<std::unique_ptr<Monster>> monsters;
     std::list<std::unique_ptr<Bullet>> bullets;
 
 public:
