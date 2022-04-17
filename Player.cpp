@@ -424,5 +424,5 @@ float Player::GetPositionX() {
 }
 
 float Player::GetPositionY() {
-    return sprite.getPosition().x;
+    return sprite.getPosition().y;
 }
