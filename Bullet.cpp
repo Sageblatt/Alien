@@ -58,8 +58,9 @@ float Bullet::GetPositionY() {
 }
 
 FloatRect Bullet::getRect(){
-    return FloatRect (this->X, this->Y, 20, 20);
+    return FloatRect (sprite.getPosition().x, sprite.getPosition().y, 20, 20);
 }
+
 
 void Bullet::Move(){}
 void Bullet::Attack() {}
