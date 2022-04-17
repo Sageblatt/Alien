@@ -22,6 +22,7 @@ class Level: public Menu {
 protected:
     std::unique_ptr<Player> hero;
     vector<std::unique_ptr<Monster>> monsters;
+    std::list<std::unique_ptr<Bullet>> bullets;
 
 public:
     Level(std::shared_ptr<RenderWindow> wind, Planets num);
