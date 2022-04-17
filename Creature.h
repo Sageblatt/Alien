@@ -45,6 +45,7 @@ public:
     void SavePosition();
     void SetTime(float time);
     float GetTime();
+    FloatRect getRect();
 
     int GetPositionX();
     int GetPositionY();
