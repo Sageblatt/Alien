@@ -30,3 +30,16 @@ FloatRect Creature::getRect() {
     y = sprite.getPosition().y;
     return {x, y, 100, 100};
 }
+
+void Creature::setSpriteColor(Color c) {
+    sprite.setColor(c);
+}
+
+void Creature::receiveDamage(double damage) {
+    hp -= damage;
+}
+
+double Creature::getHp() const {
+    return hp;
+}
+

@@ -1,8 +1,6 @@
 ﻿#include "Monster.h"
 
-Monster::Monster(const String& fname, float sp_x, float x0, int wind_w, int wind_h, double health) {
-    file = fname;
-    direction_move = 0;
+Monster::Monster(float sp_x, float x0, int wind_w, int wind_h, double health) {
     attack_tact = 0;
     distance_to_hero = 0;
 
@@ -32,8 +30,7 @@ Monster::Monster(const String& fname, float sp_x, float x0, int wind_w, int wind
 
     on_ground = false;
 
-    image.loadFromFile(fname);
-    texture.loadFromImage(image);
+    texture.loadFromFile("../images/ALIEN.png");
     sprite.setTexture(texture);
 
     sprite.setPosition(x, y);
@@ -130,8 +127,4 @@ void Monster::attack() {
         sprite.setTextureRect(IntRect(478 - move_vec[j].x - move_vec[j].width, move_vec[j].y, move_vec[j].width, move_vec[j].height));
         sprite.move(-speed_x / 50 * time, 0);
     }
-}
-
-void Monster::DistanceToHero(float X) {
-    distance_to_hero = X - x;
 }

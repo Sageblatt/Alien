@@ -1,8 +1,7 @@
 ﻿#include "Player.h"
 
-Player::Player(const String& fname, float sp_x, float sp_y, int wind_w, int wind_h) {
-    file = fname;
-    direction_move = 0;
+Player::Player(float sp_x, float sp_y, int wind_w, int wind_h) {
+    direction_move = STOP;
 
     window_width = wind_w;
     window_height = wind_h;
@@ -15,8 +14,7 @@ Player::Player(const String& fname, float sp_x, float sp_y, int wind_w, int wind
 
     onGround = true;
 
-    image.loadFromFile(fname);
-    texture.loadFromImage(image);   
+    texture.loadFromFile("../images/astronaut.png");
     sprite.setTexture(texture);             
     sprite.setPosition((float)(window_width / 2.0), (float)(window_height - height));
 
@@ -47,13 +45,13 @@ void Player::move() {
 
     switch (direction_move)
     {
-        case 0: // Stop, 0; +++
+        case STOP: // Stop, 0;
             sprite.setTextureRect(IntRect(width * 4, height, width, height));
             sprite.move(0, 0);
             current_frame_2 = 0;
             return;
 
-        case 1: // Right, 1;
+        case GO_RIGHT: // Right, 1;
             sprite.setTextureRect(IntRect(width * int(current_frame), 0, width, height));
             if(sprite.getPosition().x <= (float)(window_width - width))
                 sprite.move(speed_x * time, 0);
@@ -62,7 +60,7 @@ void Player::move() {
                 current_frame_2 = 0;
             return;
 
-        case 2: // No move to Right, 2;
+        case SEE_RIGHT: // No move to Right, 2;
             if (current_frame_2 <= 4)
               current_frame_2 += (float)(0.015 * time);
 
@@ -70,7 +68,7 @@ void Player::move() {
             sprite.move(0, 0);
             return;
 
-        case 3: // Up, to See to Right, 3;
+        case JUMP_SEE_RIGHT: // Up, to See to Right, 3;
             if (-speed_y + boost * time_boost < 0 && !key) {
                 incrementTime();
                 sprite.setTextureRect(IntRect(900, 0, width, height));
@@ -91,10 +89,10 @@ void Player::move() {
 
             time_boost = 0;
             key = false;
-            direction_move = 2;
+            direction_move = SEE_RIGHT;
             return;
 
-        case 4: // Up to Right, 4;
+        case JUMP_RIGHT: // Up to Right, 4;
             if (-speed_y + boost * time_boost < 0 && !key) {
                 incrementTime();
                 sprite.setTextureRect(IntRect(900, 0, width, height));
@@ -124,10 +122,10 @@ void Player::move() {
             }
             time_boost = 0;
             key = false;
-            direction_move = 2;
+            direction_move = SEE_RIGHT;
             return;
 
-        case 5: // Shout to Right, 5;
+        case FIRE_RIGHT: // Shout to Right, 5;
             sprite.setTextureRect(IntRect(width * (int)(current_frame), height * 2, width, height));
 
             if (Keyboard::isKeyPressed(Keyboard::Right) && onGround) {
@@ -136,7 +134,7 @@ void Player::move() {
                 else
                     sprite.move(0 * time, 0);
             } else if (Keyboard::isKeyPressed(Keyboard::Up) || !onGround) {
-                if (-speed_y + boost * time_boost < 0 && key == false) {
+                if (-speed_y + boost * time_boost < 0 && !key) {
                     onGround = false;
                     incrementTime();
                     sprite.move(0, -speed_y * time_boost + boost * time_boost * time_boost / 2);
@@ -162,7 +160,7 @@ void Player::move() {
             return;
 
 
-        case -1: // Left, -1;
+        case GO_LEFT: // Left, -1;
             sprite.setTextureRect(IntRect(900 - width * int(current_frame), height * 3, width, height));
 
             if(sprite.getPosition().x >= 0)
@@ -173,7 +171,7 @@ void Player::move() {
             current_frame_2 = 0;
             return;
 
-        case -2: // No move to Left, -2;
+        case SEE_LEFT: // No move to Left, -2;
             if (current_frame_2 <= 4)
               current_frame_2 += (float)(0.015 * time);
 
@@ -181,7 +179,7 @@ void Player::move() {
             sprite.move(0, 0);
             return;
 
-        case -3: // Up, to See to Left, -3;
+        case JUMP_SEE_LEFT: // Up, to See to Left, -3;
             if (-speed_y + boost * time_boost < 0 && !key) {
                 incrementTime();
                 sprite.setTextureRect(IntRect(0, height * 3, width, height));
@@ -201,10 +199,10 @@ void Player::move() {
             }
             time_boost = 0;
             key = false;
-            direction_move = -2;
+            direction_move = SEE_LEFT;
             return;
 
-        case -4: // Up to Left, -4;
+        case JUMP_LEFT: // Up to Left, -4;
             if (-speed_y + boost * time_boost < 0 && !key) {
                 incrementTime();
                 sprite.setTextureRect(IntRect(0, height * 3, width, height));
@@ -230,10 +228,10 @@ void Player::move() {
             }
             time_boost = 0;
             key = false;
-            direction_move = -2;
+            direction_move = SEE_LEFT;
             return;
 
-        case -5: // Shout to Left, -5;
+        case FIRE_LEFT: // Shout to Left, -5;
             sprite.setTextureRect(IntRect(900 - width * (int)(current_frame), height * 4, width, height));
             if (Keyboard::isKeyPressed(Keyboard::Left) && onGround) {
                 if (sprite.getPosition().x >= 0)
@@ -241,7 +239,7 @@ void Player::move() {
                 else
                     sprite.move(-0 * time, 0);
             } else if (Keyboard::isKeyPressed(Keyboard::Up) || !onGround) {
-                if (-speed_y + boost * time_boost < 0 && key == false) {
+                if (-speed_y + boost * time_boost < 0 && !key) {
                     onGround = false;
                     incrementTime();
                     sprite.move(0, -speed_y * time_boost + boost * time_boost * time_boost / 2);
@@ -269,93 +267,70 @@ void Player::move() {
     }
 }
 
-// What is direction_move?
-
-// direction_move = ...
-// 0 - Stop (to Right)  
-//              
-// 1 - Go to Right
-// 2 - Stay and see to Right
-// 3 - Jump and see to right 
-// 4 - Jump to Right 
-// 
-// 5 - Shout to Right
-// 6 - Up and Shout to Right
-// 7 - Go to back and Shout to Right
-// 
-// -1 - Go to Left
-// -2 - Stay and see to Left
-// -3 - Jump and see to left 
-// -4 - Jump to Left
-// 
-// -5 - Shout to Left
-// -6 - Go to Back and Shout to Left
-//  - Up and Shout to Left
-
-
 void Player::keyboard() {
 //  FOR TO LEFT
-    if (Keyboard::isKeyPressed(Keyboard::Left) && (direction_move == 0 || direction_move == -1 || direction_move == -2 || direction_move == 2)) {
+    if (Keyboard::isKeyPressed(Keyboard::Left) && (direction_move == STOP || direction_move == GO_LEFT
+            || direction_move == SEE_LEFT || direction_move == SEE_RIGHT)) {
         if (Keyboard::isKeyPressed(Keyboard::Up)) {
-            direction_move = -4;
+            direction_move = JUMP_LEFT;
             return;
         } else {
-            direction_move = -1;
+            direction_move = GO_LEFT;
             return;
         }
-    } else if (direction_move == -1) {
-        direction_move = -2;
+    } else if (direction_move == GO_LEFT) {
+        direction_move = SEE_LEFT;
         return;
     }
 
     //  FOR TO RIGHT
 
-    else if (Keyboard::isKeyPressed(Keyboard::Right) && (direction_move == 0 || direction_move == 1 || direction_move == 2 || direction_move == -2))
-    {
+    else if (Keyboard::isKeyPressed(Keyboard::Right) && (direction_move == STOP || direction_move == GO_RIGHT
+            || direction_move == SEE_RIGHT || direction_move == SEE_LEFT)) {
         if (Keyboard::isKeyPressed(Keyboard::Up)) {
-            direction_move = 4;
+            direction_move = JUMP_RIGHT;
             return;
         }
         else {
-            direction_move = 1;
+            direction_move = GO_RIGHT;
             return;
         }
-    } else if (direction_move == 1) {
-        direction_move = 2;
+    } else if (direction_move == GO_RIGHT) {
+        direction_move = SEE_RIGHT;
         return;
     }
 
     else if (Keyboard::isKeyPressed(Keyboard::Up)) {
-        if (direction_move == -1 || direction_move == -2) {
-            direction_move = -3;
+        if (direction_move == GO_LEFT || direction_move == SEE_LEFT) {
+            direction_move = JUMP_SEE_LEFT;
             return;
         }
 
-        if (direction_move == 0 || direction_move == 1 || direction_move == 2) {
-            direction_move = 3;
+        if (direction_move == STOP || direction_move == GO_RIGHT || direction_move == SEE_RIGHT) {
+            direction_move = JUMP_SEE_RIGHT;
             return;
         }
     }
     //                     ATTACK !!!
 
     else if (Keyboard::isKeyPressed(Keyboard::Space)) {
-        if (direction_move == 0 || direction_move == 2 ) {
-            direction_move = 5; // Shout to Right;
+        if (direction_move == STOP || direction_move == SEE_RIGHT) {
+            direction_move = FIRE_RIGHT; // Shout to Right;
             return; 
-        } else if (direction_move == -2 ) {
-            direction_move = -5; // Shout to Left;
+        } else if (direction_move == SEE_LEFT) {
+            direction_move = FIRE_LEFT; // Shout to Left;
             return;
         }
-    } else if (direction_move == 5 && onGround) {
-        direction_move = 2;
+    } else if (direction_move == FIRE_RIGHT && onGround) {
+        direction_move = SEE_RIGHT;
         return;
-    } else if (direction_move == -5 && onGround) {
-        direction_move = -2;
+    } else if (direction_move == FIRE_LEFT && onGround) {
+        direction_move = SEE_LEFT;
         return;
     }
 }
 
-int Player::getDirectionMove() {
+Direction Player::getDirectionMove() const {
     return direction_move;
 }
 

@@ -17,6 +17,7 @@ protected:
 
     float x;
     float y;
+    double hp;
 
     int window_width;
     int window_height;
@@ -24,26 +25,22 @@ protected:
     float current_frame; //хранит текущий кадр
     float current_frame_2;
 
-    String  file;         //файл с расширением
-    Image   image;        //sfml изображение
-    Texture texture;      //sfml текстура
-        //sfml спрайт
+    Texture texture; //sfml текстура
+    Sprite  sprite;
 
 public:
-    Sprite  sprite;
-   
-    double hp;
-    int direction_move;
-
     virtual void move() = 0;
 
     void savePosition();
     void setTime(float t);
+    void setSpriteColor(Color c);
+    void receiveDamage(double damage);
 
     float getTime() const;
     virtual FloatRect getRect();
     float getPositionX() const;
     float getPositionY() const;
+    double getHp() const;
 
     void draw(RenderWindow& window) const;
 

@@ -44,12 +44,12 @@ void Game::init() {
 }
 
 void Game::runGame() {
-    starting_menu->run();
-
-    for (auto i = 1; i < 4; i++)
-        starting_menu->lor(i);
-
-    main_menu->run();
+//    starting_menu->run();
+//
+//    for (auto i = 1; i < 4; i++)
+//        starting_menu->lor(i);
+//
+//    main_menu->run();
 
     int planet_num;
     planet_num = game_menu->run() - 1;

@@ -4,29 +4,30 @@
 #include "Creature.h"
 #include "Player.h"
 
-class Bullet: public Creature{
+class Bullet{
 protected:
+    Sprite sprite;
+    Texture texture;
+
     std::unique_ptr<Clock> clock;
+
     int direction;
-    float bullet_x;
-    float bullet_y;
-    float x_player;
-    float y_player;
-    float x_monster;
-    float y_monster;
-    float X;
-    float Y;
-    float dx = 0;
+    bool life = true;
+    float x;
+    float y;
+
+    const double damage;
 
 public:
-    bool life = true;
-    Bullet(int dir, float x, float y);
+    Bullet(int dir, float x, float y, double dmg);
 
-    void move() override;
-    void incrementTime() override;
+    void draw(RenderWindow& window);
+    void setLife(bool life);
 
     void getBulletCoord();
-    FloatRect getRect() override;
+    FloatRect getRect();
+    bool isLife() const;
+    const double getDamage() const;
     float getPositionX();
     float getPositionY();
 };
