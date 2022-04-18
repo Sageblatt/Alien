@@ -7,13 +7,15 @@ using namespace sf;
 
 class Creature {
 protected:
+    std::unique_ptr<Clock> timer;
+
     int width;
     int height;  // ширина, высота
     float speed_x;
     float speed_y; //скорости по x, y
 
-    float time;
-    float time_boost;
+    double time;
+    float dt;
 
     float x;
     float y;
@@ -43,8 +45,6 @@ public:
     double getHp() const;
 
     void draw(RenderWindow& window) const;
-
-    virtual void incrementTime() = 0;
 };
 
 #endif //ALIEN_CREATURE_H

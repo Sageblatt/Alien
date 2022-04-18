@@ -1,6 +1,9 @@
 ﻿#include "Monster.h"
 
 Monster::Monster(float sp_x, float x0, int wind_w, int wind_h, double health) {
+    timer = std::make_unique<Clock>();
+    timer->restart();
+
     attack_tact = 0;
     distance_to_hero = 0;
 
@@ -43,7 +46,7 @@ Monster::Monster(float sp_x, float x0, int wind_w, int wind_h, double health) {
 }
 
 void Monster::incrementTime() {
-    time_boost_1 += time / 1000;
+    time_boost_1 += time;
 }
 
 void Monster::move() {

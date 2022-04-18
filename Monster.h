@@ -30,7 +30,7 @@ public:
 
     void move() override;
     void attack();
-    void incrementTime() override;
+    void incrementTime();
 };
 
 

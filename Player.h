@@ -45,8 +45,10 @@ enum Direction {
 
 class Player : public Creature {
 protected:
-	bool key;
-	float boost;
+    const float JUMP_SPEED = 200;
+    const float FRAME_RATIO = 15;
+	const float g_accel = 500;
+
 	bool onGround;
     Direction direction_move;
 	
@@ -55,12 +57,10 @@ public:
 
     void keyboard();
     void move() override;
-    void incrementTime() override;
 
     float getPositionX();
     float getPositionY();
     Direction getDirectionMove() const;
-
 };
 
 #endif // ALIEN_PLAYER_H

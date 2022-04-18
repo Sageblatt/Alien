@@ -28,7 +28,7 @@ Level::Level(std::shared_ptr<RenderWindow> wind, Planets num) {
     textures[0]->loadFromFile(fname);
     sprites.emplace_back(std::make_unique<Sprite>(*textures[0]));
 
-    hero = std::make_unique<Player>(0.2f, 5, window->getSize().x, window->getSize().y);
+    hero = std::make_unique<Player>(200.f, 300, window->getSize().x, window->getSize().y);
 
     for (auto i = 0; i < 5; i++) {
         monsters.emplace_back(
@@ -46,14 +46,12 @@ int Level::run() {
     while (window->isOpen())
     {
         Event event;
-        time = (float)clock.getElapsedTime().asMicroseconds();
-
-        time /= 800;
+        time = (float)clock.getElapsedTime().asSeconds();
 
         hero->setTime(time);
 
         for(auto & it : monsters)
-          it->setTime(time);
+            it->setTime(time);
 
         clock.restart();
 

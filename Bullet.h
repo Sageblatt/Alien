@@ -27,7 +27,7 @@ public:
     void getBulletCoord();
     FloatRect getRect();
     bool isLife() const;
-    const double getDamage() const;
+    double getDamage() const;
     float getPositionX();
     float getPositionY();
 };

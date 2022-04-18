@@ -54,6 +54,6 @@ bool Bullet::isLife() const {
     return life;
 }
 
-const double Bullet::getDamage() const {
+double Bullet::getDamage() const {
     return damage;
 }
