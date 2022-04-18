@@ -33,7 +33,7 @@ protected:
 public:
 
     void DistanceToHero(int X);
-
+    bool attack;
     void Move();
     void Attack() override;
     Monster(String file, float speedX, int x0, int windowWidth, int windowHeight, double hp);

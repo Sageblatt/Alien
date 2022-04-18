@@ -1,7 +1,7 @@
 //
 // Created by sageblatt on 15.04.2022.
 //
-
+#include "iostream"
 #include "Level.h"
 #include "Game.h"
 #include "RandomNumberGenerator.h"
@@ -29,14 +29,18 @@ Level::Level(std::shared_ptr<RenderWindow> wind, Planets num) {
     sprites.emplace_back(std::make_unique<Sprite>(*textures[0]));
 
     hero = std::make_unique<Player>("../images/astronaut.png", 0.2f, 5, window->getSize().x, window->getSize().y);
-
+    tablice = std::make_unique<Table>("../images/tablice.png");
     for (auto i = 0; i < 5; i++) {
         monsters.emplace_back(
                 std::make_unique<Monster>("../images/ALIEN_big.png",
                                           2.5,
                                           Game::getInstance()->getRng()->
                                           getRandomInt(0,static_cast<int>(window->getSize().x)),
-                                          window->getSize().x, window->getSize().y,2));
+                                          window->getSize().x, window->getSize().y,70));
+    }
+
+    for (auto i = 0; i < 5; i++){
+        hearts.emplace_back(std::make_unique<Health>("../images/health.png", i+1));
     }
 }
 
@@ -72,15 +76,28 @@ int Level::run() {
             it->Move();
             it->Attack();
         }
-
+        for(auto & it: hearts){
+            it->Hurt(5, 6);
+        }
         window->clear();
 
+
         window->draw(*sprites[0]);
+        tablice->Draw(*window);
+
+
+        for(auto & it : hearts) {
+            it->Draw(*window);
+            //window->draw(it->spriteHeart);
+            //std::cout << it->spriteHeart.getPosition().x << ' ' << it->spriteHeart.getPosition().y << '\n';
+        }
         hero->Draw(*window);
         for(auto & it : monsters) {
             it->Draw(*window);
         }
+
         window->display();
     }
+
     return 0;
 }

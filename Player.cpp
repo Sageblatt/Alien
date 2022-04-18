@@ -1,5 +1,5 @@
 ﻿#include "Player.h"
-
+#include "iostream"
 Player::Player(String file, float speedX, float speedY, int windowWidth, int windowHeight)
 {
     this->file = file;
@@ -19,7 +19,8 @@ Player::Player(String file, float speedX, float speedY, int windowWidth, int win
     image.loadFromFile(file);        
     texture.loadFromImage(image);   
     sprite.setTexture(texture);             
-    sprite.setPosition((float)(WindowWidth / 2), (float)(WindowHeight - Height));
+    sprite.setPosition((float)(WindowWidth / 2), (float)(WindowHeight - Height*1.5));
+    sprite.setScale(1.5, 1.5);
 
     this->CurrentFrame = 0;
     this->CurrentFrame2 = 0;
@@ -40,7 +41,6 @@ void boostTimeToZero(bool& key, float& timeBoost) {
         key = !key;
     }
 }
-
 
 void Player::Move() {
     CurrentFrame += (float)(0.01 * time);
@@ -93,7 +93,7 @@ void Player::Move() {
         }
 
         boostTimeToZero(key, timeBoost);
-        if (key == true && sprite.getPosition().y < WindowHeight - Height) {
+        if (key == true && sprite.getPosition().y < WindowHeight - Height*1.5) {
 
             IncrementTime();
 
@@ -122,7 +122,7 @@ void Player::Move() {
             return;
         }
         boostTimeToZero(key, timeBoost);
-        if (key == true && sprite.getPosition().y < WindowHeight - Height) {
+        if (key == true && sprite.getPosition().y < WindowHeight - Height*1.5) {
 
             IncrementTime();
 
@@ -162,7 +162,7 @@ void Player::Move() {
             
             boostTimeToZero(key, timeBoost);
 
-            if (key == true && sprite.getPosition().y < WindowHeight - Height)
+            if (key == true && sprite.getPosition().y < WindowHeight - Height*1.5)
             {
                 IncrementTime();
                 sprite.move(0, boost * timeBoost * timeBoost / 2);
@@ -215,7 +215,7 @@ void Player::Move() {
             return;
         }
         boostTimeToZero(key, timeBoost);
-        if (key == true && sprite.getPosition().y < WindowHeight - Height) {
+        if (key == true && sprite.getPosition().y < WindowHeight - Height*1.5) {
 
             IncrementTime();
             sprite.setTextureRect(IntRect(900, Height * 3, Width, Height));
@@ -243,7 +243,7 @@ void Player::Move() {
             return;
         }
         boostTimeToZero(key, timeBoost);
-        if (key == true && sprite.getPosition().y < WindowHeight - Height) {
+        if (key == true && sprite.getPosition().y < WindowHeight - Height*1.5) {
 
             IncrementTime();
 
@@ -270,7 +270,7 @@ void Player::Move() {
                 sprite.move(-SpeedX * time, 0);
             else sprite.move(-0 * time, 0);
 
-        }    
+        }
 
         else if (Keyboard::isKeyPressed(Keyboard::Up) || onGround == false)
         {
@@ -285,7 +285,7 @@ void Player::Move() {
 
             boostTimeToZero(key, timeBoost);
 
-            if (key == true && sprite.getPosition().y < WindowHeight - Height)
+            if (key == true && sprite.getPosition().y < WindowHeight - Height*1.5)
             {
                 IncrementTime();
                 sprite.move(0, boost * timeBoost * timeBoost / 2);
@@ -393,7 +393,7 @@ void Player::Keyboard()
     {
         if (directionMove == 0 || directionMove == 2 ) {
             directionMove = 5; // Shout to Right;
-            return; 
+            return;
         }
 
         else if (directionMove == -2 )
@@ -417,4 +417,70 @@ void Player::Keyboard()
 void Player::Attack() {};
 int Player::GetDirectionMove(){
     return directionMove;
+}
+
+Table::Table(String fileTab)
+{
+//    this->fileTab = fileTab;
+//    this->fileHeart = fileHeart;
+    this->fileTab = fileTab;
+
+    imageTab.loadFromFile(fileTab);
+    textureTab.loadFromImage(imageTab);
+    spriteTab.setTexture(textureTab);
+    spriteTab.setPosition(0, -100 );
+    spriteTab.setScale(1, 1);
+}
+
+void Table::Draw(RenderWindow& window)
+{
+    window.draw(spriteTab);
+};
+
+Health::Health(std::string fileHeart, int count)
+{
+
+    this->heartVec.push_back({0, 125, 0, 115});
+    this->heartVec.push_back({1000-125, 125, 0, 115});
+//    this->tile.x0Heart[0] = 0;
+//    this->tile.x0Heart[1] = 1000 - 125 ;
+//    this->tile.lenX[0] = 125;
+//    this->tile.lenX[1] = 125;
+//    this->tile.y0Heart[0] = 0;
+//    this->tile.y0Heart[1] = 0;
+//    this->tile.lenY[0] = 115;
+//    this->tile.lenY[1] = 115;
+
+    this->count = count;
+    this->fileHeart = fileHeart;
+
+    imageHeart.loadFromFile(fileHeart);
+    textureHeart.loadFromImage(imageHeart);
+    spriteHeart.setTexture(textureHeart);
+
+    spriteHeart.setPosition(0 + 125 * count, 0);
+    spriteHeart.setScale(1,1);
+}
+
+void Health::Draw(RenderWindow& window)
+{
+
+    window.draw(spriteHeart);
+    //std::cout << "I'm inside\n" ;
+}
+
+void Health::Hurt(int hp, int maxHp)
+{
+    if  (count <= hp)
+    {
+        spriteHeart.setTextureRect(IntRect(heartVec[0].x0, heartVec[0].lenX, heartVec[0].y0, heartVec[0].lenY));
+        //std::cout << count << std::endl;
+        return;
+    }
+    else if( count <= maxHp)
+    {
+        spriteHeart.setTextureRect(IntRect(heartVec[1].x0, heartVec[1].lenX, heartVec[1].y0, heartVec[1].lenY));
+        //std::cout << count << std::endl;
+        return;
+    }
 }

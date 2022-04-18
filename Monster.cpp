@@ -11,19 +11,19 @@ Monster::Monster(String file, float speedX, int x0, int windowWidth, int windowH
     this->directionMove = 0;
     this->attackTact = 0;
     //this->attackTact2 = 0;
-
+    this->attack = 0;
     this->hp = hp;
 
     this->moveVec.push_back({ 0, 524, 65, 60 });
     this->moveVec.push_back({ 78, 528, 65, 60 });
 
-    this->attackVec.push_back({ 0, 0, 83, 59 });
-    this->attackVec.push_back({ 0, 315, 83, 60 });
-    this->attackVec.push_back({ 0, 455, 83, 60 });
-    this->attackVec.push_back({ 82, 455, 83, 60 });
-    this->attackVec.push_back({ 0, 455, 83, 60 });
-    this->attackVec.push_back({ 0, 315, 83, 60 });
-    this->attackVec.push_back({ 0, 0, 83, 59 });
+    this->attackVec.push_back({ 0, 0, 82, 59 });
+    this->attackVec.push_back({ 0, 315, 82, 60 });
+    this->attackVec.push_back({ 0, 455, 82, 60 });
+    this->attackVec.push_back({ 82, 455, 82, 60 });
+    this->attackVec.push_back({ 0, 455, 82, 60 });
+    this->attackVec.push_back({ 0, 315, 82, 60 });
+    this->attackVec.push_back({ 0, 0, 82, 59 });
 
     this->fallVec.push_back({ 0, 139, 65, 65 });
 
@@ -44,6 +44,7 @@ Monster::Monster(String file, float speedX, int x0, int windowWidth, int windowH
     sprite.setTexture(texture);
 
     sprite.setPosition((float)X,(float)Y);
+    sprite.setScale(3, 3);
 
     //std::cout << sprite.getPosition().y << '\n';
     this->CurrentFrame = 0;
@@ -78,7 +79,7 @@ void Monster::Move()
         sprite.move(0, boost * timeBoost1 * timeBoost1 / 2);
     }
     //std::cout << sprite.getPosition().y << "---" << WindowHeight - fallVec[0].Height << '\n';
-    if (sprite.getPosition().y >= (WindowHeight - fallVec[0].Height))
+    if (sprite.getPosition().y >= (WindowHeight - fallVec[0].Height*3))
     {
 
         onGround = true;
@@ -102,31 +103,38 @@ void Monster::Attack()
 
         if (distanceToHero >= 0)
         {
-            while (attackTact < 250)
+            while (attackTact < 400)
             {
                 sprite.setTextureRect(IntRect(attackVec[0].x, attackVec[0].y, attackVec[0].Width, attackVec[0].Height));
                 attackTact++;
                 sprite.move(0, 0);
                 return;
             }
-
+            if ((int)CurrentFrame == 3) attack = true;
+            else attack = false;
             sprite.setTextureRect(IntRect(attackVec[(int)CurrentFrame].x, attackVec[(int)CurrentFrame].y, attackVec[(int)CurrentFrame].Width, attackVec[(int)CurrentFrame].Height));
+
+
             sprite.move(0, 0);
             CurrentFrame += (float)(time) / 100;
+
         }
 
         else
         {
-            while (attackTact < 250)
+            while (attackTact < 400)
             {
                 sprite.setTextureRect(IntRect(478 - attackVec[0].x - attackVec[0].Width, attackVec[0].y, attackVec[0].Width, attackVec[0].Height));                attackTact++;
                 sprite.move(0, 0);
                 return;
             }
-
+            if ((int)CurrentFrame == 3) attack = true;
+            attack = false;
             sprite.setTextureRect(IntRect(478 - attackVec[(int)CurrentFrame].x - attackVec[(int)CurrentFrame].Width, attackVec[(int)CurrentFrame].y, attackVec[(int)CurrentFrame].Width, attackVec[(int)CurrentFrame].Height));
+
+
             sprite.move(0, 0);
-            CurrentFrame += (float)(time) / 100;
+            CurrentFrame += (float)(time) / 110;
         }
     }
     if (onGround == true && distanceToHero > 300)

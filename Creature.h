@@ -37,7 +37,7 @@ protected:
     //std::vector <sf::Sprite> sprites;
 
 public:
-    int   hp;
+    int hp;
     virtual void Move() = 0;
     virtual void Attack() = 0;
     void SavePosition();
