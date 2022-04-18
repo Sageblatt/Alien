@@ -47,6 +47,7 @@ class Player : public Creature {
 protected:
     const float JUMP_SPEED = 200;
 	const float g_accel = 500;
+    const float COOLDOWN = 5;
 
 	bool onGround;
     Direction direction_move;

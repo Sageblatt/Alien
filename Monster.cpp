@@ -6,6 +6,7 @@ Monster::Monster(float sp_x, float x0, int wind_w, int wind_h, double health) {
     timer->restart();
     dt = 0;
 
+    is_firing = false;
     attack_tact = 0;
     distance_to_hero = 0;
 
@@ -73,22 +74,28 @@ void Monster::move() {
         return;
 }
 
-void Monster::attack() {
+bool Monster::attack() {
+    cooldown_left -= dt;
+    std::cout << cooldown_left << std::endl;
+    if (cooldown_left <= 0) {
+        cooldown_left = COOLDOWN;
+        is_firing = true;
+        return true;
+    }
+
     if (current_frame >= 5) {
         current_frame = 0;
-        attack_tact = 0;
+        is_firing = false;
     }
 
     if (on_ground && std::abs(distance_to_hero) <= 300) {
         if (distance_to_hero >= 0) {
-            std::cout << sprite.getPosition().x << '+' << sprite.getPosition().y << std::endl;
-            while (attack_tact < 500) {
+            if (!is_firing) {
                 sprite.setTextureRect(IntRect(attack_vec[0].x,
                                               attack_vec[0].y,
                                               attack_vec[0].width,
                                               attack_vec[0].height));
-                attack_tact++;
-                return;
+                return false;
             }
 
             sprite.setTextureRect(IntRect(attack_vec[(int)current_frame].x,
@@ -97,15 +104,14 @@ void Monster::attack() {
                                           attack_vec[(int)current_frame].height));
             current_frame += dt * FRAME_RATIO;
         } else {
-            std::cout << sprite.getPosition().x << '-' << sprite.getPosition().y << std::endl;
-            while (attack_tact < 500)
+            if (!is_firing)
             {
                 sprite.setTextureRect(IntRect(attack_vec[0].width,
                                               attack_vec[0].y,
                                               -attack_vec[0].width,
                                               attack_vec[0].height));
                 attack_tact++;
-                return;
+                return false;
             }
             sprite.setTextureRect(IntRect(attack_vec[(int)current_frame].x + attack_vec[(int)current_frame].width,
                                           attack_vec[(int)current_frame].y,
@@ -114,20 +120,19 @@ void Monster::attack() {
             current_frame += dt * FRAME_RATIO;
         }
     }
-
-    if (on_ground && distance_to_hero > 300) {
+    else if (on_ground && distance_to_hero > 300) {
         current_frame += dt * FRAME_RATIO_1;
         int j = (int)(current_frame / 3);
         sprite.setTextureRect(IntRect(move_vec[j].x, move_vec[j].y, move_vec[j].width, move_vec[j].height));
         sprite.move(speed_x * dt, 0);
     }
-
-    if (on_ground && distance_to_hero < -300) {
+    else if (on_ground && distance_to_hero < -300) {
         current_frame += dt * FRAME_RATIO_1;
         int j = (int)(current_frame / 3);
         sprite.setTextureRect(IntRect(move_vec[j].x + move_vec[j].width, move_vec[j].y, -move_vec[j].width, move_vec[j].height));
         sprite.move(-speed_x * dt, 0);
     }
+    return false;
 }
 
 void Monster::setDistanceToHero(float hero_pos) {

@@ -16,6 +16,8 @@ protected:
     float speed_x;
     float speed_y; //скорости по x, y
 
+    float cooldown_left = 0;
+
 //    double time;
     float dt;
 
