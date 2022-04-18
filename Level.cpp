@@ -28,11 +28,11 @@ Level::Level(std::shared_ptr<RenderWindow> wind, Planets num) {
     textures[0]->loadFromFile(fname);
     sprites.emplace_back(std::make_unique<Sprite>(*textures[0]));
 
-    hero = std::make_unique<Player>(200.f, 300, window->getSize().x, window->getSize().y);
+    hero = std::make_unique<Player>(400.f, 500, window->getSize().x, window->getSize().y);
 
-    for (auto i = 0; i < 5; i++) {
+    for (auto i = 0; i < 1; i++) {
         monsters.emplace_back(
-                std::make_unique<Monster>(2.5,
+                std::make_unique<Monster>(200,
                                           Game::getInstance()->getRng()->
                                           getRandomInt(0,static_cast<int>(window->getSize().x)),
                                           window->getSize().x, window->getSize().y, 100));
@@ -40,21 +40,13 @@ Level::Level(std::shared_ptr<RenderWindow> wind, Planets num) {
 }
 
 int Level::run() {
-    Clock clock; //создаем переменную для привязки персонажа ко времени.
-    float time;
+    hero->resetTimer();
+    for (auto & it : monsters)
+        it->resetTimer();
 
     while (window->isOpen())
     {
         Event event;
-        time = (float)clock.getElapsedTime().asSeconds();
-
-        hero->setTime(time);
-
-        for(auto & it : monsters)
-            it->setTime(time);
-
-        clock.restart();
-
         while (window->pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window->close();
@@ -73,6 +65,7 @@ int Level::run() {
         hero->move();
 
         for(auto & it : monsters) {
+            it->setDistanceToHero(hero->getPositionX());
             it->move();
             it->attack();
         }

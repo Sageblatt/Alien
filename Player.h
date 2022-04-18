@@ -46,7 +46,6 @@ enum Direction {
 class Player : public Creature {
 protected:
     const float JUMP_SPEED = 200;
-    const float FRAME_RATIO = 15;
 	const float g_accel = 500;
 
 	bool onGround;

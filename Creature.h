@@ -9,12 +9,14 @@ class Creature {
 protected:
     std::unique_ptr<Clock> timer;
 
+    const float FRAME_RATIO = 15;
+
     int width;
     int height;  // ширина, высота
     float speed_x;
     float speed_y; //скорости по x, y
 
-    double time;
+//    double time;
     float dt;
 
     float x;
@@ -33,18 +35,14 @@ protected:
 public:
     virtual void move() = 0;
 
-    void savePosition();
-    void setTime(float t);
     void setSpriteColor(Color c);
     void receiveDamage(double damage);
 
-    float getTime() const;
     virtual FloatRect getRect();
-    float getPositionX() const;
-    float getPositionY() const;
     double getHp() const;
 
     void draw(RenderWindow& window) const;
+    void resetTimer();
 };
 
 #endif //ALIEN_CREATURE_H

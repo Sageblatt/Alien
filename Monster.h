@@ -19,8 +19,8 @@ protected:
 
     int attack_tact;
 
-    float boost;
-    float time_boost_1;
+    const float g_accel = 1000;
+    const float FRAME_RATIO_1 = 9;
 
     float distance_to_hero;
     bool on_ground;
@@ -30,7 +30,8 @@ public:
 
     void move() override;
     void attack();
-    void incrementTime();
+
+    void setDistanceToHero(float hero_pos);
 };
 
 
