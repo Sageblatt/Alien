@@ -50,9 +50,9 @@ int Level::run() {
         time = (float)clock.getElapsedTime().asMicroseconds();
 
         time /= 800;
-        hero->SetTime(time);
+      hero->setTime(time);
         for(auto & it : monsters) {
-            it->SetTime(time);
+          it->setTime(time);
         }
 
         clock.restart();
@@ -66,17 +66,18 @@ int Level::run() {
                 if (event.key.code == sf::Keyboard::Space)
                 {
 
-                    bullets.emplace_back(std::make_unique<Bullet>(hero->directionMove, hero->GetPositionX(), hero->GetPositionY()));
+                    bullets.emplace_back(std::make_unique<Bullet>(hero->direction_move,
+                                                                  hero->getPositionX(), hero->getPositionY()));
                 }
             }
         }
 
-        hero->Keyboard();
-        hero->Move();
+        hero->keyboard();
+      hero->move();
 
         for(auto & it : monsters) {
-            it->Move();
-            it->Attack();
+          it->move();
+          it->attack();
         }
         for (auto & it : monsters) {
             for (auto &it1: bullets) {
@@ -92,7 +93,7 @@ int Level::run() {
         for (auto it = bullets.begin(); it != bullets.end();)
         {
 
-            (*it)->getBulletcoord();
+            (*it)->getBulletCoord();
 
             if (!(*it)->life) {
                 auto tmpit = it;
@@ -116,12 +117,12 @@ int Level::run() {
         window->clear();
 
         window->draw(*sprites[0]);
-        hero->Draw(*window);
+      hero->draw(*window);
         for(auto & it : monsters) {
-            it->Draw(*window);
+          it->draw(*window);
         }
         for (auto & bullet : bullets){
-            //bullet->Draw(*window);
+            //bullet->draw(*window);
            window->draw(bullet->sprite);
 //            std::cout << "!!!!!!";
         }

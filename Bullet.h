@@ -20,16 +20,15 @@ protected:
 
 public:
     bool life = true;
-    Sprite  sprite{};
-    Bullet(int direction, float bullet_x, float bullet_y);
-    void getBulletcoord();
-    FloatRect getRect();
-    float GetPositionX();
-    float GetPositionY();
-    void Move() override;
-    void Attack();
-    void IncrementTime();
-    ~Bullet();
+    Bullet(int dir, float x, float y);
+
+    void move() override;
+    void incrementTime() override;
+
+    void getBulletCoord();
+    FloatRect getRect() override;
+    float getPositionX();
+    float getPositionY();
 };
 
 #endif //ALIEN_BULLET_H

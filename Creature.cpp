@@ -1,46 +1,32 @@
 #include "Creature.h"
-//Creature::Creature(){}
-//#include <iostream>
-//using std::cout;
 
-
-
-void Creature::SetTime(float time)
-{
-    this->time = time;
-}
-float Creature::GetTime() {
-    return this->time;
+void Creature::setTime(float t) {
+    time = t;
 }
 
-void Creature::Draw(RenderWindow& window)
-{
+float Creature::getTime() const {
+    return time;
+}
+
+void Creature::draw(RenderWindow& window) const {
     window.draw(sprite);
 }
 
-void Creature::Move()
-{
+void Creature::savePosition() {
+    x = sprite.getPosition().x;
+    y = sprite.getPosition().y;
 }
 
-void Creature::SavePosition()
-{
-    this->X = (int)sprite.getPosition().x;
-    this->Y = (int)sprite.getPosition().y;
+float Creature::getPositionX() const {
+    return x;
 }
 
-int Creature::GetPositionX()
-{
-    return this->X;
-}
-int Creature::GetPositionY()
-{
-    return this->Y;
-}
-FloatRect Creature::getRect(){
-    this->X = (float)sprite.getPosition().x;
-    this->Y = (float)sprite.getPosition().y;
-    return FloatRect (X, Y, 100, 100);
+float Creature::getPositionY() const {
+    return y;
 }
 
-
-
+FloatRect Creature::getRect() {
+    x = sprite.getPosition().x;
+    y = sprite.getPosition().y;
+    return {x, y, 100, 100};
+}

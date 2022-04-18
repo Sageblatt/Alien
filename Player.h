@@ -6,21 +6,20 @@
 class Player : public Creature {
 protected:
 	bool key;
-
 	float boost;
-	float boostHeight;
-
 	bool onGround;
 	
 public:
-    float GetPositionX();
-    float GetPositionY();
-	void Keyboard();
-	void Move() override;
-	void Attack() override;
-	void IncrementTime() override;
-    int GetDirectionMove();
-	Player(String file, float speedX, float speedY, int windowWidth, int windowHeight);
+    Player(const String& fname, float sp_x, float sp_y, int wind_w, int wind_h);
+
+    void keyboard();
+    void move() override;
+    void incrementTime() override;
+
+    float getPositionX();
+    float getPositionY();
+    int getDirectionMove();
+
 };
 
 #endif // ALIEN_PLAYER_H

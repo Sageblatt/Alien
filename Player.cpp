@@ -1,37 +1,35 @@
 ﻿#include "Player.h"
 
-Player::Player(String file, float speedX, float speedY, int windowWidth, int windowHeight)
-{
-    this->file = file;
-    directionMove = 0;
+Player::Player(const String& fname, float sp_x, float sp_y, int wind_w, int wind_h) {
+    file = fname;
+    direction_move = 0;
 
-    this->WindowWidth = windowWidth;
-    this->WindowHeight = windowHeight;
+    window_width = wind_w;
+    window_height = wind_h;
 
-    this->Width = 100;
-    this->Height = 100;
+    width = 100;
+    height = 100;
 
-    this->SpeedX = speedX;
-    this->SpeedY = speedY;
+    speed_x = sp_x;
+    speed_y = sp_y;
 
-    this->onGround = true;
+    onGround = true;
 
-    image.loadFromFile(file);        
+    image.loadFromFile(fname);
     texture.loadFromImage(image);   
     sprite.setTexture(texture);             
-    sprite.setPosition((float)(WindowWidth / 2), (float)(WindowHeight - Height));
+    sprite.setPosition((float)(window_width / 2.0), (float)(window_height - height));
 
-    this->CurrentFrame = 0;
-    this->CurrentFrame2 = 0;
+    current_frame = 0;
+    current_frame_2 = 0;
 
-    this->boost = 22;
-    this->timeBoost = 0;
-    this->boostHeight = 0; 
-    this->key = false;
+    boost = 22;
+    time_boost = 0;
+    key = false;
 }
 
-void Player::IncrementTime() {
-    this->timeBoost += this->time/3000;
+void Player::incrementTime() {
+    time_boost += time / 3000;
 }
 
 void boostTimeToZero(bool& key, float& timeBoost) {
@@ -42,273 +40,238 @@ void boostTimeToZero(bool& key, float& timeBoost) {
 }
 
 
-void Player::Move() {
-    CurrentFrame += (float)(0.01 * time);
-    if (CurrentFrame > 10) CurrentFrame = 0;
+void Player::move() {
+    current_frame += 0.01f * time;
+    if (current_frame > 10)
+        current_frame = 0;
 
-    switch (directionMove) {
-        // Stop, 0; +++
-        {
-    case 0:
-
-        sprite.setTextureRect(IntRect(Width * 4, Height, Width, Height));
-        sprite.move(0, 0);
-        CurrentFrame2 = 0;
-
-        return;
-        } 
-
-        // Right, 1;
-        {
-    case 1:
-
-        sprite.setTextureRect(IntRect(Width * int(CurrentFrame), 0, Width, Height));
-        if(sprite.getPosition().x <= (float)(WindowWidth - Width))
-            sprite.move(SpeedX * time, 0);
-        else sprite.move(0 * time, 0);;
-        CurrentFrame2 = 0;
-        return;
-        }
-        // No move to Right, 2;
-        {
-    case 2:
-        if (CurrentFrame2 <= 4)
-            CurrentFrame2 += (float)(0.015 * time);
-
-        sprite.setTextureRect(IntRect(Width * int(CurrentFrame2), Height, Width, Height));
-        sprite.move(0, 0);
-        return;
-        }
-        // Up, to See to Right, 3;
-        {
-    case 3:
-
-        if (-SpeedY + boost * timeBoost < 0 && key == false) {
-            IncrementTime();
-            //std::cout << "timeBoost player: " << timeBoost <<'\n';
-            sprite.setTextureRect(IntRect(900, 0, Width, Height));
-            sprite.move(0, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
-            CurrentFrame2 = 0;
-            return;
-        }
-
-        boostTimeToZero(key, timeBoost);
-        if (key == true && sprite.getPosition().y < WindowHeight - Height) {
-
-            IncrementTime();
-
-            sprite.setTextureRect(IntRect(0, 0, Width, Height));
-            sprite.move(0, boost * timeBoost * timeBoost / 2);
-            CurrentFrame2 = 0;
-            return;
-        }
-
-        timeBoost = 0;
-        key = false;
-        directionMove = 2;
-        return;
-        }
-        // Up to Right, 4;
-        {
-    case 4:
-
-        if (-SpeedY + boost * timeBoost < 0 && key == false) {
-            IncrementTime();
-            sprite.setTextureRect(IntRect(900, 0, Width, Height));
-            if(sprite.getPosition().x <= (float)(WindowWidth - Width))
-                sprite.move(SpeedX * time, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
-            else sprite.move(0 * time, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
-            CurrentFrame2 = 0;
-            return;
-        }
-        boostTimeToZero(key, timeBoost);
-        if (key == true && sprite.getPosition().y < WindowHeight - Height) {
-
-            IncrementTime();
-
-            sprite.setTextureRect(IntRect(0, 0, Width, Height));
-            if(sprite.getPosition().x <= (float)(WindowWidth - Width))
-                sprite.move(SpeedX * time, boost * timeBoost * timeBoost / 2);
-            else sprite.move(0 * time, boost * timeBoost * timeBoost / 2);
-            CurrentFrame2 = 0;
-            return;
-        }
-        timeBoost = 0;
-        key = false;
-        directionMove = 2;
-        return;
-        }
-        // Shout to Right, 5;
-        {
-    case 5:
-        sprite.setTextureRect(IntRect(Width * (int)(CurrentFrame), Height * 2, Width, Height));
-
-        if (Keyboard::isKeyPressed(Keyboard::Right) && onGround) {
-            if (sprite.getPosition().x <= (float) (WindowWidth - Width))
-                sprite.move(SpeedX * time, 0);
-            else sprite.move(0 * time, 0);
-        }
-
-        else if(Keyboard::isKeyPressed(Keyboard::Up) || onGround == false)
-        {
-            if (-SpeedY + boost * timeBoost < 0 && key == false) {
-                onGround = false;
-                IncrementTime();
-                sprite.move(0, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
-                CurrentFrame2 = 0;
-                return;
-            }
-
-            
-            boostTimeToZero(key, timeBoost);
-
-            if (key == true && sprite.getPosition().y < WindowHeight - Height)
-            {
-                IncrementTime();
-                sprite.move(0, boost * timeBoost * timeBoost / 2);
-                CurrentFrame2 = 0;
-                return;
-            }
-            onGround = true;
-            timeBoost = 0;
-            key = false;
-        }
-
-        else 
+    switch (direction_move)
+    {
+        case 0: // Stop, 0; +++
+            sprite.setTextureRect(IntRect(width * 4, height, width, height));
             sprite.move(0, 0);
-        timeBoost = 0;
-        CurrentFrame2 = 0;
-        return;
-        }
-
-        // Left, -1;
-        {
-    case -1:
-        sprite.setTextureRect(IntRect(900 - Width * int(CurrentFrame), Height * 3, Width, Height));
-        if(sprite.getPosition().x >= 0)
-            sprite.move(-SpeedX * time, 0);
-        else sprite.move(0 * time, 0);
-        CurrentFrame2 = 0;
-        return;
-        }
-        // No move to Left, -2;
-        {
-    case -2:
-        if (CurrentFrame2 <= 4)
-        {
-            CurrentFrame2 += (float)(0.015 * time);
-        }
-        sprite.setTextureRect(IntRect(900 - Width * int(CurrentFrame2), Height, Width, Height));
-        sprite.move(0, 0);
-        return;
-        }
-        // Up, to See to Left, -3;
-        {
-    case -3:
-
-        if (-SpeedY + boost * timeBoost < 0 && key == false) {
-
-            IncrementTime();
-            sprite.setTextureRect(IntRect(0, Height * 3, Width, Height));
-            sprite.move(0 * time, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
-            CurrentFrame2 = 0;
+            current_frame_2 = 0;
             return;
-        }
-        boostTimeToZero(key, timeBoost);
-        if (key == true && sprite.getPosition().y < WindowHeight - Height) {
 
-            IncrementTime();
-            sprite.setTextureRect(IntRect(900, Height * 3, Width, Height));
-            sprite.move(0 * time, boost * timeBoost * timeBoost / 2);
-            CurrentFrame2 = 0;
+        case 1: // Right, 1;
+            sprite.setTextureRect(IntRect(width * int(current_frame), 0, width, height));
+            if(sprite.getPosition().x <= (float)(window_width - width))
+                sprite.move(speed_x * time, 0);
+
+            else sprite.move(0 * time, 0);
+                current_frame_2 = 0;
             return;
-        }
-        timeBoost = 0;
-        key = false;
-        directionMove = -2;
-        return;
-        }
-        // Up to Left, -4;
-        {
-    case -4:
 
-        if (-SpeedY + boost * timeBoost < 0 && key == false) {
+        case 2: // No move to Right, 2;
+            if (current_frame_2 <= 4)
+              current_frame_2 += (float)(0.015 * time);
 
-            IncrementTime();
-            sprite.setTextureRect(IntRect(0, Height * 3, Width, Height));
-            if(sprite.getPosition().x >= 0)
-                sprite.move(-SpeedX * time, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
-            else sprite.move(0 * time, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
-            CurrentFrame2 = 0;
+            sprite.setTextureRect(IntRect(width * int(current_frame_2), height, width, height));
+            sprite.move(0, 0);
             return;
-        }
-        boostTimeToZero(key, timeBoost);
-        if (key == true && sprite.getPosition().y < WindowHeight - Height) {
 
-            IncrementTime();
-
-            sprite.setTextureRect(IntRect(900, Height * 3, Width, Height));
-
-            if(sprite.getPosition().x >= 0)
-                sprite.move(-SpeedX * time, boost * timeBoost * timeBoost / 2);
-            else sprite.move(0 * time, boost * timeBoost * timeBoost / 2);
-            CurrentFrame2 = 0;
-            return;
-        }
-        timeBoost = 0;
-        key = false;
-        directionMove = -2;
-        return;
-        }
-        // Shout to Left, -5;
-        {
-    case -5:
-        sprite.setTextureRect(IntRect(900 - Width * (int)(CurrentFrame), Height * 4, Width, Height));
-        if (Keyboard::isKeyPressed(Keyboard::Left) && onGround)
-        {
-            if(sprite.getPosition().x >= 0)
-                sprite.move(-SpeedX * time, 0);
-            else sprite.move(-0 * time, 0);
-
-        }    
-
-        else if (Keyboard::isKeyPressed(Keyboard::Up) || onGround == false)
-        {
-            if (-SpeedY + boost * timeBoost < 0 && key == false) {
-                onGround = false;
-                IncrementTime();
-                sprite.move(0, -SpeedY * timeBoost + boost * timeBoost * timeBoost / 2);
-                CurrentFrame2 = 0;
+        case 3: // Up, to See to Right, 3;
+            if (-speed_y + boost * time_boost < 0 && !key) {
+                incrementTime();
+                sprite.setTextureRect(IntRect(900, 0, width, height));
+                sprite.move(0, -speed_y * time_boost + boost * time_boost * time_boost / 2);
+                current_frame_2 = 0;
                 return;
             }
 
+            boostTimeToZero(key, time_boost);
 
-            boostTimeToZero(key, timeBoost);
-
-            if (key == true && sprite.getPosition().y < WindowHeight - Height)
-            {
-                IncrementTime();
-                sprite.move(0, boost * timeBoost * timeBoost / 2);
-                CurrentFrame2 = 0;
+            if (key && sprite.getPosition().y < window_height - height) {
+                incrementTime();
+                sprite.setTextureRect(IntRect(0, 0, width, height));
+                sprite.move(0, boost * time_boost * time_boost / 2);
+                current_frame_2 = 0;
                 return;
             }
-            onGround = true;
-            timeBoost = 0;
+
+            time_boost = 0;
             key = false;
-        }
-        else sprite.move(0, 0);
-        timeBoost = 0;
-        CurrentFrame2 = 0;
-        return;
-        }
+            direction_move = 2;
+            return;
+
+        case 4: // Up to Right, 4;
+            if (-speed_y + boost * time_boost < 0 && !key) {
+                incrementTime();
+                sprite.setTextureRect(IntRect(900, 0, width, height));
+
+                if (sprite.getPosition().x <= (float)(window_width - width))
+                    sprite.move(speed_x * time, -speed_y * time_boost + boost * time_boost * time_boost / 2);
+
+                else
+                    sprite.move(0 * time, -speed_y * time_boost + boost * time_boost * time_boost / 2);
+
+                current_frame_2 = 0;
+                return;
+            }
+
+            boostTimeToZero(key, time_boost);
+
+            if (key && sprite.getPosition().y < window_height - height) {
+                incrementTime();
+
+                sprite.setTextureRect(IntRect(0, 0, width, height));
+                if (sprite.getPosition().x <= (float)(window_width - width))
+                    sprite.move(speed_x * time, boost * time_boost * time_boost / 2);
+                else
+                    sprite.move(0 * time, boost * time_boost * time_boost / 2);
+                current_frame_2 = 0;
+                return;
+            }
+            time_boost = 0;
+            key = false;
+            direction_move = 2;
+            return;
+
+        case 5: // Shout to Right, 5;
+            sprite.setTextureRect(IntRect(width * (int)(current_frame), height * 2, width, height));
+
+            if (Keyboard::isKeyPressed(Keyboard::Right) && onGround) {
+                if (sprite.getPosition().x <= window_width - width)
+                    sprite.move(speed_x * time, 0);
+                else
+                    sprite.move(0 * time, 0);
+            } else if (Keyboard::isKeyPressed(Keyboard::Up) || !onGround) {
+                if (-speed_y + boost * time_boost < 0 && key == false) {
+                    onGround = false;
+                    incrementTime();
+                    sprite.move(0, -speed_y * time_boost + boost * time_boost * time_boost / 2);
+                    current_frame_2 = 0;
+                    return;
+                }
+
+                boostTimeToZero(key, time_boost);
+
+                if (key && sprite.getPosition().y < window_height - height) {
+                    incrementTime();
+                    sprite.move(0, boost * time_boost * time_boost / 2);
+                    current_frame_2 = 0;
+                    return;
+                }
+                onGround = true;
+                time_boost = 0;
+                key = false;
+            } else
+                sprite.move(0, 0);
+            time_boost = 0;
+            current_frame_2 = 0;
+            return;
+
+
+        case -1: // Left, -1;
+            sprite.setTextureRect(IntRect(900 - width * int(current_frame), height * 3, width, height));
+
+            if(sprite.getPosition().x >= 0)
+                sprite.move(-speed_x * time, 0);
+
+            else
+                sprite.move(0 * time, 0);
+            current_frame_2 = 0;
+            return;
+
+        case -2: // No move to Left, -2;
+            if (current_frame_2 <= 4)
+              current_frame_2 += (float)(0.015 * time);
+
+            sprite.setTextureRect(IntRect(900 - width * int(current_frame_2), height, width, height));
+            sprite.move(0, 0);
+            return;
+
+        case -3: // Up, to See to Left, -3;
+            if (-speed_y + boost * time_boost < 0 && !key) {
+                incrementTime();
+                sprite.setTextureRect(IntRect(0, height * 3, width, height));
+                sprite.move(0 * time, -speed_y * time_boost + boost * time_boost * time_boost / 2);
+                current_frame_2 = 0;
+                return;
+            }
+
+            boostTimeToZero(key, time_boost);
+
+            if (key && sprite.getPosition().y < window_height - height) {
+                incrementTime();
+                sprite.setTextureRect(IntRect(900, height * 3, width, height));
+                sprite.move(0 * time, boost * time_boost * time_boost / 2);
+                 current_frame_2 = 0;
+                return;
+            }
+            time_boost = 0;
+            key = false;
+            direction_move = -2;
+            return;
+
+        case -4: // Up to Left, -4;
+            if (-speed_y + boost * time_boost < 0 && !key) {
+                incrementTime();
+                sprite.setTextureRect(IntRect(0, height * 3, width, height));
+
+                if (sprite.getPosition().x >= 0)
+                    sprite.move(-speed_x * time, -speed_y * time_boost + boost * time_boost * time_boost / 2);
+                else
+                    sprite.move(0 * time, -speed_y * time_boost + boost * time_boost * time_boost / 2);
+                current_frame_2 = 0;
+                return;
+            }
+            boostTimeToZero(key, time_boost);
+
+            if (key && sprite.getPosition().y < window_height - height) {
+                incrementTime();
+                sprite.setTextureRect(IntRect(900, height * 3, width, height));
+                if (sprite.getPosition().x >= 0)
+                    sprite.move(-speed_x * time, boost * time_boost * time_boost / 2);
+                else
+                    sprite.move(0 * time, boost * time_boost * time_boost / 2);
+                current_frame_2 = 0;
+                return;
+            }
+            time_boost = 0;
+            key = false;
+            direction_move = -2;
+            return;
+
+        case -5: // Shout to Left, -5;
+            sprite.setTextureRect(IntRect(900 - width * (int)(current_frame), height * 4, width, height));
+            if (Keyboard::isKeyPressed(Keyboard::Left) && onGround) {
+                if (sprite.getPosition().x >= 0)
+                    sprite.move(-speed_x * time, 0);
+                else
+                    sprite.move(-0 * time, 0);
+            } else if (Keyboard::isKeyPressed(Keyboard::Up) || !onGround) {
+                if (-speed_y + boost * time_boost < 0 && key == false) {
+                    onGround = false;
+                    incrementTime();
+                    sprite.move(0, -speed_y * time_boost + boost * time_boost * time_boost / 2);
+                    current_frame_2 = 0;
+                    return;
+                }
+
+                boostTimeToZero(key, time_boost);
+
+                if (key && sprite.getPosition().y < window_height - height) {
+                    incrementTime();
+                    sprite.move(0, boost * time_boost * time_boost / 2);
+                    current_frame_2 = 0;
+                    return;
+                }
+                onGround = true;
+                time_boost = 0;
+                key = false;
+            } else {
+                sprite.move(0, 0);
+                time_boost = 0;
+                current_frame_2 = 0;
+                return;
+            }
     }
 }
 
-// What is directionMove?
+// What is direction_move?
 
-
-
-// directionMove = ...
+// direction_move = ...
 // 0 - Stop (to Right)  
 //              
 // 1 - Go to Right
@@ -330,99 +293,76 @@ void Player::Move() {
 //  - Up and Shout to Left
 
 
-void Player::Keyboard()
-{
+void Player::keyboard() {
 //  FOR TO LEFT
-    if (Keyboard::isKeyPressed(Keyboard::Left) && (directionMove == 0 || directionMove == -1 || directionMove == -2 || directionMove == 2))
-    {
-        if (Keyboard::isKeyPressed(Keyboard::Up))
-        {
-            directionMove = -4;
+    if (Keyboard::isKeyPressed(Keyboard::Left) && (direction_move == 0 || direction_move == -1 || direction_move == -2 || direction_move == 2)) {
+        if (Keyboard::isKeyPressed(Keyboard::Up)) {
+            direction_move = -4;
+            return;
+        } else {
+            direction_move = -1;
             return;
         }
-        else
-        {
-            directionMove = -1;
-            return;
-        }
-    }
-
-    else if (directionMove == -1)
-    {
-        directionMove = -2;
+    } else if (direction_move == -1) {
+        direction_move = -2;
         return;
     }
 
     //  FOR TO RIGHT
 
-    else if (Keyboard::isKeyPressed(Keyboard::Right) && (directionMove == 0 || directionMove == 1 || directionMove == 2 || directionMove == -2))
+    else if (Keyboard::isKeyPressed(Keyboard::Right) && (direction_move == 0 || direction_move == 1 || direction_move == 2 || direction_move == -2))
     {
         if (Keyboard::isKeyPressed(Keyboard::Up)) {
-            directionMove = 4;
+            direction_move = 4;
             return;
         }
-        else
-        {
-            directionMove = 1;
+        else {
+            direction_move = 1;
             return;
         }
-    }
-    else if (directionMove == 1)
-    {
-        directionMove = 2;
+    } else if (direction_move == 1) {
+        direction_move = 2;
         return;
     }
 
-    else if (Keyboard::isKeyPressed(Keyboard::Up))
-    {
-        if (directionMove == -1 || directionMove == -2)
-        {
-            directionMove = -3;
+    else if (Keyboard::isKeyPressed(Keyboard::Up)) {
+        if (direction_move == -1 || direction_move == -2) {
+            direction_move = -3;
             return;
         }
 
-        if (directionMove == 0 || directionMove == 1 || directionMove == 2)
-        {
-            directionMove = 3;
+        if (direction_move == 0 || direction_move == 1 || direction_move == 2) {
+            direction_move = 3;
             return;
         }
     }
     //                     ATTACK !!!
 
-    else if (Keyboard::isKeyPressed(Keyboard::Space))
-    {
-        if (directionMove == 0 || directionMove == 2 ) {
-            directionMove = 5; // Shout to Right;
+    else if (Keyboard::isKeyPressed(Keyboard::Space)) {
+        if (direction_move == 0 || direction_move == 2 ) {
+            direction_move = 5; // Shout to Right;
             return; 
-        }
-
-        else if (directionMove == -2 )
-        {
-            directionMove = -5; // Shout to Left;
+        } else if (direction_move == -2 ) {
+            direction_move = -5; // Shout to Left;
             return;
         }
-    }
-    else if (directionMove == 5 && onGround)
-    {
-        directionMove = 2;
+    } else if (direction_move == 5 && onGround) {
+        direction_move = 2;
         return;
-    }
-    else if (directionMove == -5 && onGround)
-    {
-        directionMove = -2;
+    } else if (direction_move == -5 && onGround) {
+        direction_move = -2;
         return;
     }
 }
 
-void Player::Attack() {};
-int Player::GetDirectionMove(){
-    return directionMove;
+int Player::getDirectionMove() {
+    return direction_move;
 }
 
-float Player::GetPositionX() {
+float Player::getPositionX() {
     return sprite.getPosition().x;
 }
 
-float Player::GetPositionY() {
+float Player::getPositionY() {
     return sprite.getPosition().y;
 }
