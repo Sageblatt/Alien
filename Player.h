@@ -46,7 +46,7 @@ enum Direction {
 class Player : public Creature {
 protected:
     const float JUMP_SPEED = 200;
-	const float g_accel = 500;
+	const float g_accel = 900;
     const float COOLDOWN = 0.3;
 
 	bool onGround;

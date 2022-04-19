@@ -15,6 +15,7 @@ add_executable(Alien
         Game.cpp
         Level.cpp
         Bullet.cpp
+        Health.cpp
         main.cpp)
 
 

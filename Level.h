@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Monster.h"
 #include "Bullet.h"
+#include "Health.h"
 #include <memory>
 #include <list>
 
@@ -25,6 +26,9 @@ protected:
     std::unique_ptr<Font> font;
     std::unique_ptr<Text> wave_text;
     std::unique_ptr<Clock> wave_timer;
+
+    std::unique_ptr<Table> tablice;
+    vector<std::unique_ptr<Health>> hearts;
 
     std::vector<double> waves;
     double last_wave = 40;

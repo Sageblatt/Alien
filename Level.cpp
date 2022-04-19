@@ -14,6 +14,11 @@ using std::string;
 Level::Level(std::shared_ptr<RenderWindow> wind, Planets num) {
     window = wind;
 
+    tablice = std::make_unique<Table>();
+    for (auto i = 0; i < 5; i++)
+        hearts.emplace_back(std::make_unique<Health>(i+1));
+
+
     waves = {0.1, 0.4, 0.7, 0.99};
 
     for (auto & it : waves)
@@ -129,6 +134,10 @@ int Level::run() {
 
         if (hero->getHp() <= 0)
             return 1;
+
+        for(auto & it: hearts)
+            it->hurt(hero->getHp(), 2000);
+
          
         for (auto it = bullets.begin(); it != bullets.end();) {
             (*it)->move();
@@ -171,6 +180,10 @@ int Level::run() {
         window->clear();
         window->draw(*sprites[0]);
         window->draw(*wave_text);
+        tablice->draw(*window);
+
+        for(auto & it : hearts)
+            it->draw(*window);
 
         hero->draw(*window);
         for (auto & it : monsters)

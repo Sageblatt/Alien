@@ -53,7 +53,7 @@ void Game::runGame() {
 
     int planet_num;
     planet_num = game_menu->run() - 1;
-
+    
     while (window->isOpen()) {
         planets[planet_num]->run();
         planet_num = game_menu->run() - 1;
