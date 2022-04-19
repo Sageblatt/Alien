@@ -44,6 +44,8 @@ int Level::run() {
     for (auto & it : monsters)
         it->resetTimer();
 
+    bool hero_shoots;
+
     while (window->isOpen())
     {
         Event event;
@@ -52,36 +54,42 @@ int Level::run() {
                 window->close();
             else if (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab)
                 return 1;
-            if (event.type == sf::Event::KeyPressed)
-            {
-                if (event.key.code == sf::Keyboard::Space) {
-                    bullets.emplace_back(std::make_unique<Bullet>(hero->getDirectionMove(),
-                                                                  hero->getPositionX(), hero->getPositionY(), 50.0));
-                }
-            }
         }
 
-        hero->keyboard();
+        hero_shoots = hero->keyboard();
+
+        if (hero_shoots) {
+            bullets.emplace_back(std::make_unique<Bullet>(hero->getDirectionMove(),
+                                                          hero->getPositionX(),
+                                                          hero->getPositionY(),
+                                                          50.0, 20));
+        }
         hero->move();
 
         for(auto & it : monsters) {
             it->setDistanceToHero(hero->getPositionX());
             it->move();
-            it->attack();
-        }
-
-        for (auto & it : monsters) {
-            for (auto &it1: bullets) {
-                if (it->getRect().intersects(it1->getRect())) {
-                    it->setSpriteColor(Color::Red);
-                    it->receiveDamage(it1->getDamage());
-                    it1->setLife(false);
-                }
+            auto fire = it->attack();
+            if (fire) {
+                bullets.emplace_back(std::make_unique<Bullet>(it->getDirection(),
+                                                              it->getPositionX(),
+                                                              it->getPositionY(),
+                                                              50.0, 20));
             }
         }
+
+//        for (auto & it : monsters) {
+//            for (auto &it1: bullets) {
+//                if (it->getRect().intersects(it1->getRect())) {
+//                    it->setSpriteColor(Color::Red);
+//                    it->receiveDamage(it1->getDamage());
+//                    it1->setLife(false);
+//                }
+//            }
+//        }
          
         for (auto it = bullets.begin(); it != bullets.end();) {
-            (*it)->getBulletCoord();
+            (*it)->move();
 
             if (!(*it)->isLife()) {
                 auto tmpit = it;

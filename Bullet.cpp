@@ -1,11 +1,12 @@
 #include "Bullet.h"
 
-Bullet::Bullet(int dir, float x_, float y_, double dmg): damage(dmg) {
+Bullet::Bullet(int dir, float x_, float y_, double dmg, float spd): damage(dmg) {
+    speed = spd;
     x = 0;
     y = 0;
     direction = dir;
-    clock = std::make_unique<Clock>();
-    clock->restart();
+    timer = std::make_unique<Clock>();
+    timer->restart();
 
     texture.loadFromFile("../images/m_bullet.png");
     sprite.setTexture(texture);
@@ -16,28 +17,21 @@ Bullet::Bullet(int dir, float x_, float y_, double dmg): damage(dmg) {
         sprite.setPosition(x_ + 20, y_ + 50);
 }
 
-void Bullet::getBulletCoord() {
-   if (direction >= 0) {
-        sprite.move(4, 0);
-   } else {
-       sprite.setRotation(180);
-       sprite.move(-4, 0);
-   }
+void Bullet::move() {
+    dt = timer->getElapsedTime().asSeconds();
+    timer->restart();
 
-   auto actual_x = sprite.getPosition().x;
+    if (direction >= 0) {
+        sprite.move(speed * dt, 0);
+    } else {
+        sprite.setRotation(180);
+        sprite.move(-speed * dt, 0);
+    }
 
-   if (actual_x > 1700 or actual_x < 0)
-       life = false;
-}
+    auto actual_x = sprite.getPosition().x;
 
-float Bullet::getPositionX() {
-    x = sprite.getPosition().x;
-    return x;
-}
-
-float Bullet::getPositionY() {
-    y = sprite.getPosition().y;
-    return y;
+    if (actual_x > 1700 or actual_x < 0)
+        life = false;
 }
 
 FloatRect Bullet::getRect() {
@@ -57,3 +51,5 @@ bool Bullet::isLife() const {
 double Bullet::getDamage() const {
     return damage;
 }
+
+

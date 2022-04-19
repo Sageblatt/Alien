@@ -213,21 +213,22 @@ void Player::move() {
     }
 }
 
-void Player::keyboard() {
+bool Player::keyboard() {
+    cooldown_left -= dt;
 //  FOR TO LEFT
     if (Keyboard::isKeyPressed(Keyboard::Left) && (direction_move == STOP || direction_move == GO_LEFT
             || direction_move == SEE_LEFT || direction_move == SEE_RIGHT)) {
         if (Keyboard::isKeyPressed(Keyboard::Up)) {
             direction_move = JUMP_LEFT;
             speed_y = JUMP_SPEED;
-            return;
+            return false;
         } else {
             direction_move = GO_LEFT;
-            return;
+            return false;
         }
     } else if (direction_move == GO_LEFT) {
         direction_move = SEE_LEFT;
-        return;
+        return false;
     }
 
     //  FOR TO RIGHT
@@ -236,28 +237,28 @@ void Player::keyboard() {
         if (Keyboard::isKeyPressed(Keyboard::Up)) {
             direction_move = JUMP_RIGHT;
             speed_y = JUMP_SPEED;
-            return;
+            return false;
         }
         else {
             direction_move = GO_RIGHT;
-            return;
+            return false;
         }
     } else if (direction_move == GO_RIGHT) {
         direction_move = SEE_RIGHT;
-        return;
+        return false;
     }
 
     else if (Keyboard::isKeyPressed(Keyboard::Up)) {
         if (direction_move == GO_LEFT || direction_move == SEE_LEFT) {
             direction_move = JUMP_SEE_LEFT;
             speed_y = JUMP_SPEED;
-            return;
+            return false;
         }
 
         if (direction_move == STOP || direction_move == GO_RIGHT || direction_move == SEE_RIGHT) {
             direction_move = JUMP_SEE_RIGHT;
             speed_y = JUMP_SPEED;
-            return;
+            return false;
         }
     }
     //                     ATTACK !!!
@@ -265,18 +266,22 @@ void Player::keyboard() {
     else if (Keyboard::isKeyPressed(Keyboard::Space)) {
         if (direction_move == STOP || direction_move == SEE_RIGHT) {
             direction_move = FIRE_RIGHT; // Shout to Right;
-            return; 
         } else if (direction_move == SEE_LEFT) {
             direction_move = FIRE_LEFT; // Shout to Left;
-            return;
         }
+        if (cooldown_left <= 0) {
+            cooldown_left = COOLDOWN;
+            return true;
+        }
+        return false;
     } else if (direction_move == FIRE_RIGHT && onGround) {
         direction_move = SEE_RIGHT;
-        return;
+        return false;
     } else if (direction_move == FIRE_LEFT && onGround) {
         direction_move = SEE_LEFT;
-        return;
+        return false;
     }
+    return false;
 }
 
 Direction Player::getDirectionMove() const {

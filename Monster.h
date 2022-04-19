@@ -17,12 +17,12 @@ protected:
     vector<Tiles> attack_vec;
     vector<Tiles> fall_vec;
 
-    unsigned attack_tact;
-    bool is_firing;
-
     const float g_accel = 1000;
     const float FRAME_RATIO_1 = 9;
     const float COOLDOWN = 2;
+    bool is_firing;
+
+    int direction;
 
     float distance_to_hero;
     bool on_ground;
@@ -34,6 +34,10 @@ public:
     bool attack();
 
     void setDistanceToHero(float hero_pos);
+
+    float getPositionX();
+    float getPositionY();
+    int getDirection() const;
 };
 
 

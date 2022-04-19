@@ -1,5 +1,4 @@
 ﻿#include "Monster.h"
-#include <iostream>
 
 Monster::Monster(float sp_x, float x0, int wind_w, int wind_h, double health) {
     timer = std::make_unique<Clock>();
@@ -7,7 +6,6 @@ Monster::Monster(float sp_x, float x0, int wind_w, int wind_h, double health) {
     dt = 0;
 
     is_firing = false;
-    attack_tact = 0;
     distance_to_hero = 0;
 
     hp = health;
@@ -76,7 +74,6 @@ void Monster::move() {
 
 bool Monster::attack() {
     cooldown_left -= dt;
-    std::cout << cooldown_left << std::endl;
     if (cooldown_left <= 0) {
         cooldown_left = COOLDOWN;
         is_firing = true;
@@ -87,6 +84,11 @@ bool Monster::attack() {
         current_frame = 0;
         is_firing = false;
     }
+
+    if (distance_to_hero >= 0)
+        direction = 1;
+    else
+        direction = -1;
 
     if (on_ground && std::abs(distance_to_hero) <= 300) {
         if (distance_to_hero >= 0) {
@@ -110,7 +112,6 @@ bool Monster::attack() {
                                               attack_vec[0].y,
                                               -attack_vec[0].width,
                                               attack_vec[0].height));
-                attack_tact++;
                 return false;
             }
             sprite.setTextureRect(IntRect(attack_vec[(int)current_frame].x + attack_vec[(int)current_frame].width,
@@ -137,4 +138,16 @@ bool Monster::attack() {
 
 void Monster::setDistanceToHero(float hero_pos) {
     distance_to_hero = hero_pos - sprite.getPosition().x;
+}
+
+float Monster::getPositionX() {
+    return sprite.getPosition().x;
+}
+
+float Monster::getPositionY() {
+    return sprite.getPosition().y;
+}
+
+int Monster::getDirection() const {
+    return direction;
 }

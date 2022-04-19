@@ -47,7 +47,7 @@ class Player : public Creature {
 protected:
     const float JUMP_SPEED = 200;
 	const float g_accel = 500;
-    const float COOLDOWN = 5;
+    const float COOLDOWN = 1;
 
 	bool onGround;
     Direction direction_move;
@@ -55,7 +55,7 @@ protected:
 public:
     Player(float sp_x, float sp_y, int wind_w, int wind_h);
 
-    void keyboard();
+    bool keyboard();
     void move() override;
 
     float getPositionX();
