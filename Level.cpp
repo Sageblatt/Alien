@@ -5,7 +5,6 @@
 #include "Level.h"
 #include "Game.h"
 #include "RandomNumberGenerator.h"
-#include <iostream>
 #include <sstream>
 #include <iomanip>
 
@@ -18,6 +17,8 @@ Level::Level(std::shared_ptr<RenderWindow> wind, Planets num) {
     for (auto i = 0; i < 5; i++)
         hearts.emplace_back(std::make_unique<Health>(i+1));
 
+    is_lose = false;
+    is_win = false;
 
     waves = {0.1, 0.4, 0.7, 0.99};
 
@@ -32,28 +33,46 @@ Level::Level(std::shared_ptr<RenderWindow> wind, Planets num) {
 
     wave_text = std::make_unique<Text>("Wave", *font);
     wave_text->setFillColor(Color::Yellow);
-    wave_text->setString("wave");
     wave_text->setCharacterSize(20);
     wave_text->setPosition(window->getSize().x / 2.f - 150, 50);
 
-    textures.emplace_back(std::make_unique<Texture>());
+    win_text = std::make_unique<Text>("Win", *font);
+    lose_text = std::make_unique<Text>("Lose", *font);
+    win_text->setFillColor(Color::White);
+    lose_text->setFillColor(Color::Red);
+    win_text->setCharacterSize(20);
+    lose_text->setCharacterSize(20);
+    win_text->setPosition(100, 700);
+    lose_text->setPosition(100, 700);
+    win_text->setString("Press TAB to continue");
+    lose_text->setString("Press Esc to exit");
 
-    std::string fname;
+    for (auto i = 0; i < 3; i++)
+        textures.emplace_back(std::make_unique<Texture>());
+
+    std::string fname, won_name;
 
     switch (num) {
         case PURPLE:
             fname = "../images/pink_planet.png";
+            won_name = "../images/pink_win.png";
             break;
         case FIRE:
             fname = "../images/fire_planet.png";
+            won_name = "../images/fire_win.png";
             break;
         case ELECTRIC:
             fname = "../images/electric_planet.png";
+            won_name = "../images/electric_win.png";
             break;
     }
 
     textures[0]->loadFromFile(fname);
-    sprites.emplace_back(std::make_unique<Sprite>(*textures[0]));
+    textures[1]->loadFromFile("../images/game_over.png");
+    textures[2]->loadFromFile(won_name);
+
+    for (auto i = 0; i < 3; i++)
+        sprites.emplace_back(std::make_unique<Sprite>(*textures[i]));
 
     hero = std::make_unique<Player>(400.f,
                                     500,
@@ -85,113 +104,135 @@ int Level::run() {
 
     while (window->isOpen())
     {
-        Event event;
-        while (window->pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window->close();
-            else if (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab)
-                return 1;
-        }
-
-        hero_shoots = hero->keyboard();
-
-        if (hero_shoots) {
-            bullets.emplace_back(std::make_unique<Bullet>(hero->getDirectionMove(),
-                                                          hero->getPositionX(),
-                                                          hero->getPositionY(),
-                                                          50.0, BULLET_SPEED, false));
-        }
-        hero->move();
-
-        for(auto & it : monsters) {
-            it->setDistanceToHero(hero->getPositionX());
-            it->move();
-            auto fire = it->attack();
-            if (fire) {
-                bullets.emplace_back(std::make_unique<Bullet>(it->getDirection(),
-                                                              it->getPositionX(),
-                                                              it->getPositionY(),
-                                                              50.0, BULLET_SPEED, true));
+        if (!is_win and !is_lose) {
+            Event event;
+            while (window->pollEvent(event)) {
+                if (event.type == sf::Event::Closed)
+                    window->close();
             }
-        }
 
-        for (auto & it : monsters) {
-            for (auto &it1: bullets) {
-                if (it->getRect().intersects(it1->getRect()) and !it1->isForHero()) {
-                    //it->setSpriteColor(Color::Red);
-                    it->receiveDamage(it1->getDamage());
+            if (last_wave == 0 and monsters.empty())
+                is_win = true;
+
+            hero_shoots = hero->keyboard();
+
+            if (hero_shoots) {
+                bullets.emplace_back(std::make_unique<Bullet>(hero->getDirectionMove(),
+                                                              hero->getPositionX(),
+                                                              hero->getPositionY(),
+                                                              50.0, BULLET_SPEED, false));
+            }
+            hero->move();
+
+            for (auto &it : monsters) {
+                it->setDistanceToHero(hero->getPositionX());
+                it->move();
+                auto fire = it->attack();
+                if (fire) {
+                    bullets.emplace_back(std::make_unique<Bullet>(it->getDirection(),
+                                                                  it->getPositionX(),
+                                                                  it->getPositionY(),
+                                                                  50.0, BULLET_SPEED, true));
+                }
+            }
+
+            for (auto &it : monsters) {
+                for (auto &it1 : bullets) {
+                    if (it->getRect().intersects(it1->getRect()) and !it1->isForHero()) {
+                        //it->setSpriteColor(Color::Red);
+                        it->receiveDamage(it1->getDamage());
+                        it1->setLife(false);
+                    }
+                }
+            }
+
+            for (auto &it1 : bullets) {
+                if (hero->getRect().intersects(it1->getRect()) and it1->isForHero()) {
+                    hero->receiveDamage(it1->getDamage());
                     it1->setLife(false);
                 }
             }
-        }
 
-        for (auto &it1: bullets) {
-            if (hero->getRect().intersects(it1->getRect()) and it1->isForHero()) {
-                hero->receiveDamage(it1->getDamage());
-                it1->setLife(false);
+            if (hero->getHp() <= 0)
+                is_lose = true;
+
+            for (auto &it : hearts)
+                it->hurt(hero->getHp(), 2000);
+
+            for (auto it = bullets.begin(); it != bullets.end();) {
+                (*it)->move();
+
+                if (!(*it)->isLife()) {
+                    auto tmpit = it;
+                    ++it;
+                    bullets.erase(tmpit);
+                } else {
+                    it++;
+                }
             }
-        }
 
-        if (hero->getHp() <= 0)
-            return 1;
-
-        for(auto & it: hearts)
-            it->hurt(hero->getHp(), 2000);
-
-         
-        for (auto it = bullets.begin(); it != bullets.end();) {
-            (*it)->move();
-
-            if (!(*it)->isLife()) {
-                auto tmpit = it;
-                ++it;
-                bullets.erase(tmpit);
-            } else {
-                it++;
+            for (auto it = monsters.begin(); it != monsters.end();) {
+                if ((*it)->getHp() <= 0) {
+                    auto tmpit = it;
+                    ++it;
+                    monsters.erase(tmpit);
+                } else {
+                    it++;
+                }
             }
-        }
 
-        for (auto it = monsters.begin(); it != monsters.end();) {
-            if ((*it)->getHp() <= 0) {
-                auto tmpit = it;
-                ++it;
-                monsters.erase(tmpit);
-            } else {it++;
+            last_wave -= wave_timer->getElapsedTime().asSeconds();
+            if (last_wave < 0)
+                last_wave = 0;
+            if (last_wave < waves[current_wave]) {
+                current_wave++;
+                spawnMonsters(current_wave);
             }
+
+            wave_timer->restart();
+            wave_stream.str(std::string());
+            wave_stream.clear();
+            wave_stream << last_wave;
+            std::string time_until_last = wave_stream.str();
+            wave_text->setString(string("              Wave ")
+                                     + std::to_string(current_wave) + string("\n")
+                                     + string("Time until last wave: ") + time_until_last);
+
+            window->clear();
+            window->draw(*sprites[0]);
+            window->draw(*wave_text);
+            tablice->draw(*window);
+
+            for (auto &it : hearts)
+                it->draw(*window);
+
+            hero->draw(*window);
+            for (auto &it : monsters)
+                it->draw(*window);
+
+            for (auto &bullet : bullets)
+                bullet->draw(*window);
         }
-
-        last_wave -= wave_timer->getElapsedTime().asSeconds();
-        if (last_wave < 0)
-            last_wave = 0;
-        if (last_wave < waves[current_wave]) {
-            current_wave++;
-            spawnMonsters(current_wave);
+        else if (is_win) {
+            Event event;
+            while (window->pollEvent(event)) {
+                if (event.type == Event::Closed)
+                    window->close();
+                else if (event.type == Event::KeyPressed && event.key.code == Keyboard::Tab)
+                    return 1;
+            }
+            window->draw(*sprites[2]);
+            window->draw(*win_text);
         }
-
-        wave_timer->restart();
-        wave_stream.str(std::string());
-        wave_stream.clear();
-        wave_stream << last_wave;
-        std::string time_until_last = wave_stream.str();
-        wave_text->setString(string("              Wave ")
-            + std::to_string(current_wave) + string("\n")
-            + string("Time until last wave: ") + time_until_last);
-
-        window->clear();
-        window->draw(*sprites[0]);
-        window->draw(*wave_text);
-        tablice->draw(*window);
-
-        for(auto & it : hearts)
-            it->draw(*window);
-
-        hero->draw(*window);
-        for (auto & it : monsters)
-            it->draw(*window);
-
-        for (auto & bullet : bullets)
-            bullet->draw(*window);
-
+        else if (is_lose) {
+            Event event;
+            while (window->pollEvent(event)) {
+                if (event.type == Event::Closed or (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape))
+                    window->close();
+            }
+            window->draw(*sprites[1]);
+            window->draw(*lose_text);
+        }
 
         window->display();
     }

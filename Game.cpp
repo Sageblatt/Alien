@@ -26,7 +26,7 @@ Game::Game() {
 void Game::init() {
     window = std::make_shared<sf::RenderWindow>(sf::VideoMode(1376, 768), "Alien");
     load_texture = std::make_unique<Texture>();
-    load_texture->loadFromFile("../images/loading_screen.png");
+    load_texture->loadFromFile("../images/loading.png");
     load_sprite = make_unique<Sprite>(*load_texture);
 
     window->clear();

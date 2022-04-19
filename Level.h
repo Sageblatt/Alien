@@ -33,6 +33,11 @@ protected:
     std::vector<double> waves;
     double last_wave = 40;
 
+    bool is_win;
+    bool is_lose;
+    std::unique_ptr<Text> win_text;
+    std::unique_ptr<Text> lose_text;
+
     std::unique_ptr<Player> hero;
     std::list<std::unique_ptr<Monster>> monsters;
     std::list<std::unique_ptr<Bullet>> bullets;
