@@ -5,6 +5,7 @@
 #include "Level.h"
 #include "Game.h"
 #include "RandomNumberGenerator.h"
+#include <iostream>
 
 Level::Level(std::shared_ptr<RenderWindow> wind, Planets num) {
     window = wind;
@@ -28,7 +29,11 @@ Level::Level(std::shared_ptr<RenderWindow> wind, Planets num) {
     textures[0]->loadFromFile(fname);
     sprites.emplace_back(std::make_unique<Sprite>(*textures[0]));
 
-    hero = std::make_unique<Player>(400.f, 500, window->getSize().x, window->getSize().y);
+    hero = std::make_unique<Player>(400.f,
+                                    500,
+                                    window->getSize().x,
+                                    window->getSize().y,
+                                    200);
 
     for (auto i = 0; i < 1; i++) {
         monsters.emplace_back(
@@ -62,7 +67,7 @@ int Level::run() {
             bullets.emplace_back(std::make_unique<Bullet>(hero->getDirectionMove(),
                                                           hero->getPositionX(),
                                                           hero->getPositionY(),
-                                                          50.0, 20));
+                                                          50.0, 100, false));
         }
         hero->move();
 
@@ -74,19 +79,30 @@ int Level::run() {
                 bullets.emplace_back(std::make_unique<Bullet>(it->getDirection(),
                                                               it->getPositionX(),
                                                               it->getPositionY(),
-                                                              50.0, 20));
+                                                              50.0, 100, true));
             }
         }
 
-//        for (auto & it : monsters) {
-//            for (auto &it1: bullets) {
-//                if (it->getRect().intersects(it1->getRect())) {
-//                    it->setSpriteColor(Color::Red);
-//                    it->receiveDamage(it1->getDamage());
-//                    it1->setLife(false);
-//                }
-//            }
-//        }
+        for (auto & it : monsters) {
+            for (auto &it1: bullets) {
+                if (it->getRect().intersects(it1->getRect()) and !it1->isForHero()) {
+                    //it->setSpriteColor(Color::Red);
+                    it->receiveDamage(it1->getDamage());
+                    it1->setLife(false);
+                }
+            }
+        }
+
+        for (auto &it1: bullets) {
+            if (hero->getRect().intersects(it1->getRect()) and it1->isForHero()) {
+                hero->receiveDamage(it1->getDamage());
+                it1->setLife(false);
+            }
+        }
+        std::cout << hero->getHp() << std::endl;
+
+        if (hero->getHp() <= 0)
+            return 1;
          
         for (auto it = bullets.begin(); it != bullets.end();) {
             (*it)->move();

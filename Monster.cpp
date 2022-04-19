@@ -74,7 +74,7 @@ void Monster::move() {
 
 bool Monster::attack() {
     cooldown_left -= dt;
-    if (cooldown_left <= 0) {
+    if (cooldown_left <= 0 and on_ground) {
         cooldown_left = COOLDOWN;
         is_firing = true;
         return true;

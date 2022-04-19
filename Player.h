@@ -53,7 +53,7 @@ protected:
     Direction direction_move;
 	
 public:
-    Player(float sp_x, float sp_y, int wind_w, int wind_h);
+    Player(float sp_x, float sp_y, int wind_w, int wind_h, double health);
 
     bool keyboard();
     void move() override;

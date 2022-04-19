@@ -1,9 +1,11 @@
 ﻿#include "Player.h"
 
-Player::Player(float sp_x, float sp_y, int wind_w, int wind_h): JUMP_SPEED(sp_y) {
+Player::Player(float sp_x, float sp_y, int wind_w, int wind_h, double health): JUMP_SPEED(sp_y) {
     timer = std::make_unique<Clock>();
     timer->restart();
     dt = 0;
+
+    hp = health;
 
     direction_move = STOP;
 

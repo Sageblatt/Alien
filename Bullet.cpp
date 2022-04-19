@@ -1,9 +1,9 @@
 #include "Bullet.h"
 
-Bullet::Bullet(int dir, float x_, float y_, double dmg, float spd): damage(dmg) {
+Bullet::Bullet(int dir, float x_, float y_, double dmg, float spd, bool for_hero_):
+damage(dmg),  for_hero(for_hero_){
     speed = spd;
-    x = 0;
-    y = 0;
+    dt = 0;
     direction = dir;
     timer = std::make_unique<Clock>();
     timer->restart();
@@ -50,6 +50,10 @@ bool Bullet::isLife() const {
 
 double Bullet::getDamage() const {
     return damage;
+}
+
+bool Bullet::isForHero() const {
+    return for_hero;
 }
 
 

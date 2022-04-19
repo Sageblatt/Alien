@@ -15,16 +15,14 @@ protected:
     int direction;
 
     bool life = true;
-
-    float x;
-    float y;
+    const bool for_hero;
 
     float speed;
 
     const double damage;
 
 public:
-    Bullet(int dir, float x, float y, double dmg, float spd);
+    Bullet(int dir, float x, float y, double dmg, float spd, bool for_hero_);
 
     void draw(RenderWindow& window);
     void setLife(bool life);
@@ -32,8 +30,8 @@ public:
     void move();
     FloatRect getRect();
     bool isLife() const;
+    bool isForHero() const;
     double getDamage() const;
-
 };
 
 #endif //ALIEN_BULLET_H
