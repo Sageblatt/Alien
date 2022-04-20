@@ -49,7 +49,6 @@ void Health::hurt(double hp_, double maxHp_) {
     while (hp > maxHp){
         hp -= maxHp;
     }
-    std::cout << "hp " << hp <<"   maxHp " << maxHp << "  count " << count << '\n';
     auto fracHp = maxHp / 5;
     auto i = (int)(hp / fracHp);
 

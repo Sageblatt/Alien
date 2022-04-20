@@ -14,11 +14,11 @@ using std::string;
 Level::Level(std::shared_ptr<RenderWindow> wind, Planets num) {
     window = wind;
 
-    // Table and Hearts ...
+
     tablice = std::make_unique<Table>();
     for (auto i = 0; i < 5; i++)
         hearts.emplace_back(std::make_unique<Health>(i+1));
-    // ...;
+
 
     waves = {0.1, 0.4, 0.7, 0.99}; //-
 
@@ -48,11 +48,11 @@ Level::Level(std::shared_ptr<RenderWindow> wind, Planets num) {
             break;
         case FIRE:
             fname = "../images/fire_planet.png";
-            mParams = {225, 150, 1.5, 75};
+            mParams = {225, 150, 1.5, 60};
             break;
         case ELECTRIC:
             fname = "../images/electric_planet.png";
-            mParams = {250, 200, 1, 100};
+            mParams = {250, 200, 1, 70};
             break;
     }
 

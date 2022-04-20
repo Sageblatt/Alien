@@ -12,9 +12,9 @@ damage(dmg),  for_hero(for_hero_){
     sprite.setTexture(texture);
 
     if (dir > 0)
-        sprite.setPosition(x_ + 60,y_ + 30);
+        sprite.setPosition(x_ + 55,y_ + 45);
     else
-        sprite.setPosition(x_ + 20, y_ + 50);
+        sprite.setPosition(x_ + 75, y_ + 65);
 }
 
 void Bullet::move() {
