@@ -1,169 +1,161 @@
-﻿//#include "windows.h"
-#include "Monster.h"
-//#include <iostream>
-//using std::cout;
-
-//Monster::Monster() {}
-
-Monster::Monster(String file, float speedX, int x0, int windowWidth, int windowHeight, double hp)
-{
-    this->file = file;
-    this->directionMove = 0;
-    this->attackTact = 0;
-    //this->attackTact2 = 0;
-    this->attack = 0;
-    this->hp = hp;
-
-    this->moveVec.push_back({ 0, 524, 65, 60 });
-    this->moveVec.push_back({ 78, 528, 65, 60 });
-
-    this->attackVec.push_back({ 0, 0, 82, 59 });
-    this->attackVec.push_back({ 0, 315, 82, 60 });
-    this->attackVec.push_back({ 0, 455, 82, 60 });
-    this->attackVec.push_back({ 82, 455, 82, 60 });
-    this->attackVec.push_back({ 0, 455, 82, 60 });
-    this->attackVec.push_back({ 0, 315, 82, 60 });
-    this->attackVec.push_back({ 0, 0, 82, 59 });
-
-    this->fallVec.push_back({ 0, 139, 65, 65 });
+﻿#include "Monster.h"
 
 
-    this->WindowWidth = windowWidth;
-    this->WindowHeight = windowHeight;
 
-    this->X = x0;
+Monster::Monster(float sp_x, float x0, int wind_w, int wind_h, double health, float cooldown): COOLDOWN(cooldown) {
+    timer = std::make_unique<Clock>();
+    timer->restart();
+    dt = 0;
 
-    this->Y = 0;
+    is_firing = false;
+    distance_to_hero = 0;
 
-    this->SpeedX = speedX;
+    hp = health;
 
-    this->onGround = false;
+    move_vec.push_back({0, 524, 65, 60 });
+    move_vec.push_back({78, 528, 65, 60 });
 
-    image.loadFromFile(file);
-    texture.loadFromImage(image);
+    attack_vec.push_back({0, 0, 83, 59 });
+    attack_vec.push_back({0, 315, 83, 60 });
+    attack_vec.push_back({0, 455, 83, 60 });
+    attack_vec.push_back({82, 455, 83, 60 });
+    attack_vec.push_back({0, 455, 83, 60 });
+    attack_vec.push_back({0, 315, 83, 60 });
+    attack_vec.push_back({0, 0, 83, 59 });
+
+    fall_vec.push_back({0, 139, 65, 65 });
+
+    window_width = wind_w;
+    window_height = wind_h;
+
+    x = x0;
+
+    y = 0;
+
+    speed_x = sp_x;
+    speed_y = 0;
+
+    on_ground = false;
+
+    texture.loadFromFile("../images/ALIEN.png");
     sprite.setTexture(texture);
 
-    sprite.setPosition((float)X,(float)Y);
-    sprite.setScale(3, 3);
+    sprite.setPosition(x, y);
 
-    //std::cout << sprite.getPosition().y << '\n';
-    this->CurrentFrame = 0;
-    this->CurrentFrame2 = 0;
+    //NEW
+    // begin ...
+    sprite.setScale(SCALE_X, SCALE_Y);
+    // ...end
 
-    this->boost = 10;
-    this->timeBoost1 = 0;
-    this->boostHeight = 0;
-    this->key = false;
-}
-void Monster::IncrementTime()
-{
-    // std::cout << "TIME: " << time << '\n';
-    this->timeBoost1 += this->time / 1000;
-    // std::cout << "TIMEBOOST1: " << timeBoost1 << '\n';
+    current_frame = 0;
+    current_frame_2 = 0;
 }
 
-void Monster::Move()
-{
+void Monster::move() {
+    dt = timer->getElapsedTime().asSeconds();
+    timer->restart();
 
-    // std::cout << sprite.getPosition().y << '\n';
+    if (!on_ground) {
+        current_frame += FRAME_RATIO * dt;
 
+        if (current_frame > 10)
+            current_frame = 0;
 
-    if (onGround == false) {
-        //std::cout << "BOOST!!! " << boost * timeBoost1 * timeBoost1 / 2 << '\n';
-        CurrentFrame += (float)(0.01 * time);
-        if (CurrentFrame > 10) CurrentFrame = 0;
-        onGround = false;
-        IncrementTime();
-        // std::cout << boost * timeBoost * timeBoost / 2 << '\n';
-        sprite.setTextureRect(IntRect(fallVec[0].x, fallVec[0].y, fallVec[0].Width, fallVec[0].Height));
-        sprite.move(0, boost * timeBoost1 * timeBoost1 / 2);
+        on_ground = false;
+        sprite.setTextureRect(IntRect(fall_vec[0].x,
+                                      fall_vec[0].y,
+                                      fall_vec[0].width,
+                                      fall_vec[0].height));
+        sprite.move(0, -speed_y * dt + g_accel * dt * dt / 2);
+        speed_y = speed_y - g_accel * dt;
     }
-    //std::cout << sprite.getPosition().y << "---" << WindowHeight - fallVec[0].Height << '\n';
-    if (sprite.getPosition().y >= (WindowHeight - fallVec[0].Height*3))
-    {
 
-        onGround = true;
-
+    if (sprite.getPosition().y >= (float)(window_height - fall_vec[0].height * SCALE_Y)) {
+        on_ground = true;
+        speed_y = 0;
     }
-    if (onGround == true) return;
+
+    if (on_ground)
+        return;
 }
 
-void Monster::Attack()
-{
-    if ((int)CurrentFrame >= 5)
-    {
-        //std::cout << "Tact: " << attackTact << '\n';
-        CurrentFrame = 0;
-        attackTact = 0;
+bool Monster::attack() {
+    cooldown_left -= dt;
+    if (cooldown_left <= 0 and on_ground) {
+        cooldown_left = COOLDOWN;
+        is_firing = true;
+        return true;
     }
 
-    if (onGround == true && abs(distanceToHero) <= 300)
-    {
-        //std::cout << "not OK    " << distanceToHero << '\n';
+    if (current_frame >= 5) {
+        current_frame = 0;
+        is_firing = false;
+    }
 
-        if (distanceToHero >= 0)
-        {
-            while (attackTact < 400)
-            {
-                sprite.setTextureRect(IntRect(attackVec[0].x, attackVec[0].y, attackVec[0].Width, attackVec[0].Height));
-                attackTact++;
-                sprite.move(0, 0);
-                return;
+    if (distance_to_hero >= 0)
+        direction = 1;
+    else
+        direction = -1;
+
+    if (on_ground && std::abs(distance_to_hero) <= 500) {
+        if (distance_to_hero >= 0) {
+            if (!is_firing) {
+                sprite.setTextureRect(IntRect(attack_vec[0].x,
+                                              attack_vec[0].y,
+                                              attack_vec[0].width,
+                                              attack_vec[0].height));
+                return false;
             }
-            if ((int)CurrentFrame == 3) attack = true;
-            else attack = false;
-            sprite.setTextureRect(IntRect(attackVec[(int)CurrentFrame].x, attackVec[(int)CurrentFrame].y, attackVec[(int)CurrentFrame].Width, attackVec[(int)CurrentFrame].Height));
 
-
-            sprite.move(0, 0);
-            CurrentFrame += (float)(time) / 100;
-
-        }
-
-        else
-        {
-            while (attackTact < 400)
+            sprite.setTextureRect(IntRect(attack_vec[(int)current_frame].x,
+                                          attack_vec[(int)current_frame].y,
+                                          attack_vec[(int)current_frame].width,
+                                          attack_vec[(int)current_frame].height));
+            current_frame += dt * FRAME_RATIO;
+        } else {
+            if (!is_firing)
             {
-                sprite.setTextureRect(IntRect(478 - attackVec[0].x - attackVec[0].Width, attackVec[0].y, attackVec[0].Width, attackVec[0].Height));                attackTact++;
-                sprite.move(0, 0);
-                return;
+                sprite.setTextureRect(IntRect(attack_vec[0].width,
+                                              attack_vec[0].y,
+                                              -attack_vec[0].width,
+                                              attack_vec[0].height));
+                return false;
             }
-            if ((int)CurrentFrame == 3) attack = true;
-            attack = false;
-            sprite.setTextureRect(IntRect(478 - attackVec[(int)CurrentFrame].x - attackVec[(int)CurrentFrame].Width, attackVec[(int)CurrentFrame].y, attackVec[(int)CurrentFrame].Width, attackVec[(int)CurrentFrame].Height));
-
-
-            sprite.move(0, 0);
-            CurrentFrame += (float)(time) / 110;
+            sprite.setTextureRect(IntRect(attack_vec[(int)current_frame].x + attack_vec[(int)current_frame].width,
+                                          attack_vec[(int)current_frame].y,
+                                          -attack_vec[(int)current_frame].width,
+                                          attack_vec[(int)current_frame].height));
+            current_frame += dt * FRAME_RATIO;
         }
     }
-    if (onGround == true && distanceToHero > 300)
-    {
-        CurrentFrame += (float)(time) / 110;
-        //std::cout << "OK    " << distanceToHero << '\n';
-        int j = (int)(CurrentFrame / 3);
-        //std::cout << "j   " << j << '\n';
-        sprite.setTextureRect(IntRect(moveVec[j].x, moveVec[j].y, moveVec[j].Width, moveVec[j].Height));
-        sprite.move(SpeedX/50 * time, 0);
+    else if (on_ground && distance_to_hero > 500) {
+        current_frame += dt * FRAME_RATIO_1;
+        int j = (int)(current_frame / 3);
+        sprite.setTextureRect(IntRect(move_vec[j].x, move_vec[j].y, move_vec[j].width, move_vec[j].height));
+        sprite.move(speed_x * dt, 0);
     }
-
-    if (onGround == true && distanceToHero < -300)
-    {
-        CurrentFrame += (float)(time) / 110;
-        //std::cout << "OK    " << distanceToHero << '\n';
-        int j = (int)(CurrentFrame / 3);
-        //std::cout << "j   " << j << '\n';
-        sprite.setTextureRect(IntRect(478 - moveVec[j].x - moveVec[j].Width, moveVec[j].y, moveVec[j].Width, moveVec[j].Height));
-        sprite.move(-SpeedX/50 * time, 0);
+    else if (on_ground && distance_to_hero < -500) {
+        current_frame += dt * FRAME_RATIO_1;
+        int j = (int)(current_frame / 3);
+        sprite.setTextureRect(IntRect(move_vec[j].x + move_vec[j].width, move_vec[j].y, -move_vec[j].width, move_vec[j].height));
+        sprite.move(-speed_x * dt, 0);
     }
-
+    return false;
 }
 
-void Monster::DistanceToHero(int X)
-{
-    this->distanceToHero = X - this->X;
+void Monster::setDistanceToHero(float hero_pos) {
+    distance_to_hero = hero_pos - sprite.getPosition().x;
 }
 
-Monster::~Monster() { };
+float Monster::getPositionX() {
+    return sprite.getPosition().x;
+}
 
+float Monster::getPositionY() {
+    return sprite.getPosition().y;
+}
+
+int Monster::getDirection() const {
+    return direction;
+}
 

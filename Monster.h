@@ -4,42 +4,48 @@
 #include "Creature.h"
 using std::vector;
 
-struct tiles
-{
+struct Tiles {
     int x;
     int y;
-    int Width;
-    int Height;
+    int width;
+    int height;
 };
+
 
 class Monster : public Creature {
 protected:
+    vector<Tiles> move_vec;
+    vector<Tiles> attack_vec;
+    vector<Tiles> fall_vec;
 
-    vector<tiles> moveVec;
-    vector<tiles> attackVec;
-    vector<tiles> fallVec;
+    const float g_accel = 1000;
+    const float FRAME_RATIO_1 = 9;
+    const float COOLDOWN;
 
-    int attackTact;
+    // NEW
+    // begin...
+    const float SCALE_X = 1.6;
+    const float SCALE_Y = 1.6;
+    // ...end;
 
-    bool key;
 
-    float boost;
-    float timeBoost1;
-    float boostHeight;
+    bool is_firing;
 
-    int distanceToHero;
-    bool onGround;
+    int direction;
+
+    float distance_to_hero;
+    bool on_ground;
 
 public:
+    Monster(float sp_x, float x0, int wind_w, int wind_h, double health, float cooldown);
+    void move() override;
+    bool attack();
 
-    void DistanceToHero(int X);
-    bool attack;
-    void Move();
-    void Attack() override;
-    Monster(String file, float speedX, int x0, int windowWidth, int windowHeight, double hp);
-//	Monster();
-    void IncrementTime();
-    ~Monster();
+    void setDistanceToHero(float hero_pos);
+
+    float getPositionX();
+    float getPositionY();
+    int getDirection() const;
 };
 
 

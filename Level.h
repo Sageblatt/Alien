@@ -8,7 +8,10 @@
 #include "Menu.h"
 #include "Player.h"
 #include "Monster.h"
+#include "Bullet.h"
+#include "Health.h"
 #include <memory>
+#include <list>
 
 using namespace sf;
 
@@ -18,17 +21,41 @@ enum Planets {
     ELECTRIC
 };
 
+//NEW
+//begin...
+struct MonsterParameters{
+    float speed;
+    double hp;
+    double coolDown;
+    double damage;
+};
+//...end;
+
 class Level: public Menu {
 protected:
-    std::unique_ptr<Player> hero;
-    vector<std::unique_ptr<Monster>> monsters;
+    std::unique_ptr<Font> font;
+    std::unique_ptr<Text> wave_text;
+    std::unique_ptr<Clock> wave_timer;
+
     std::unique_ptr<Table> tablice;
     vector<std::unique_ptr<Health>> hearts;
+
+    std::vector<double> waves;
+    double last_wave = 40;
+
+    std::unique_ptr<Player> hero;
+    std::list<std::unique_ptr<Monster>> monsters;
+    std::list<std::unique_ptr<Bullet>> bullets;
+
+    MonsterParameters mParams;
+
+    const double BULLET_SPEED = 500;
 
 public:
     Level(std::shared_ptr<RenderWindow> wind, Planets num);
 
     int run() override;
+    void spawnMonsters(unsigned wave);
 };
 
 

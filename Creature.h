@@ -5,54 +5,48 @@
 using namespace sf;
 
 
-class Creature
-{
+class Creature {
 protected:
+    std::unique_ptr<Clock> timer;
 
-    int Width{};
-    int Height{};  // ширина, высота
-    float SpeedX{};
-    float SpeedY{}; //скорости по x, y
+    const float FRAME_RATIO = 15;
 
-    int   directionMove{}; //направление движения спрайта
+    int width;
+    int height;  // ширина, высота
+    float speed_x;
+    float speed_y; //скорости по x, y
 
-    float time{};
-    float timeBoost{};
-    int X{};
-    int Y{};
+    float cooldown_left = 0;
 
-    int WindowWidth{};
-    int WindowHeight{};
+//    double time;
+    float dt;
 
-    float CurrentFrame{};//хранит текущий кадр
-    float CurrentFrame2{};
+    float x;
+    float y;
+    double hp;
 
-    String  file{};         //файл с расширением
-    Image   image{};        //sfml изображение
-    Texture texture{};      //sfml текстура
-    Sprite  sprite{};       //sfml спрайт
+    int window_width;
+    int window_height;
 
-    //unsigned strength;
 
-    //std::vector <sf::Sprite> sprites;
+
+    float current_frame; //хранит текущий кадр
+    float current_frame_2;
+
+    Texture texture; //sfml текстура
+    Sprite  sprite;
 
 public:
-    int hp;
-    virtual void Move() = 0;
-    virtual void Attack() = 0;
-    void SavePosition();
-    void SetTime(float time);
-    float GetTime();
+    virtual void move() = 0;
 
-    int GetPositionX();
-    int GetPositionY();
+    void setSpriteColor(Color c);
+    void receiveDamage(double damage);
 
-    void Draw(RenderWindow& window);
-    virtual void IncrementTime() = 0;
+    virtual FloatRect getRect();
+    double getHp() const;
 
-    //Creature();
-    //virtual ~Creature()  = 0;
-
+    void draw(RenderWindow& window) const;
+    void resetTimer();
 };
 
 #endif //ALIEN_CREATURE_H
