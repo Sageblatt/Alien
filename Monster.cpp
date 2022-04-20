@@ -49,6 +49,11 @@ COOLDOWN(cd) {
 void Monster::move() {
     dt = timer->getElapsedTime().asSeconds();
     timer->restart();
+    red_cooldown -= dt;
+    if (red_cooldown <= 0) {
+        red_cooldown = 0.5;
+        is_red = false;
+    }
 
     if (!on_ground) {
         current_frame += FRAME_RATIO * dt;

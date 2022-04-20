@@ -21,13 +21,14 @@ protected:
     const float FRAME_RATIO_1 = 9;
     const float COOLDOWN = 2;
     bool is_firing;
-
+    float red_cooldown = 0;
     int direction;
 
     float distance_to_hero;
     bool on_ground;
 
 public:
+     bool is_red;
     Monster(float sp_x, float x0, int wind_w, int wind_h, double health, float cd);
 
     void move() override;

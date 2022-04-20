@@ -140,9 +140,15 @@ int Level::run() {
             }
 
             for (auto &it : monsters) {
-                for (auto &it1 : bullets) {
+                for (auto &it1: bullets) {
+                    if (!it->is_red) { it->setSpriteColor(Color::White); }
                     if (it->getRect().intersects(it1->getRect()) and !it1->isForHero()) {
-                        //it->setSpriteColor(Color::Red);
+
+                        it->is_red = true;
+                        if (it->is_red) {
+                            it->setSpriteColor(Color::Red);
+                        }
+
                         it->receiveDamage(it1->getDamage());
                         it1->setLife(false);
                     }
