@@ -1,7 +1,6 @@
 //
 // Created by sageblatt on 15.04.2022.
 //
-
 #ifndef ALIEN_LEVEL_H
 #define ALIEN_LEVEL_H
 
@@ -19,6 +18,13 @@ enum Planets {
     PURPLE,
     FIRE,
     ELECTRIC
+};
+
+struct MonsterParameters{
+    float speed;
+    double hp;
+    double cooldown;
+    double damage;
 };
 
 class Level: public Menu {
@@ -41,6 +47,8 @@ protected:
     std::unique_ptr<Player> hero;
     std::list<std::unique_ptr<Monster>> monsters;
     std::list<std::unique_ptr<Bullet>> bullets;
+
+    MonsterParameters monster_parameters;
 
     const double BULLET_SPEED = 500;
 

@@ -56,14 +56,17 @@ Level::Level(std::shared_ptr<RenderWindow> wind, Planets num) {
         case PURPLE:
             fname = "../images/pink_planet.png";
             won_name = "../images/pink_win.png";
+            monster_parameters = {200, 100, 2, 50};
             break;
         case FIRE:
             fname = "../images/fire_planet.png";
             won_name = "../images/fire_win.png";
+            monster_parameters = {225, 150, 1.5, 75};
             break;
         case ELECTRIC:
             fname = "../images/electric_planet.png";
             won_name = "../images/electric_win.png";
+            monster_parameters = {250, 200, 1, 100};
             break;
     }
 
@@ -82,10 +85,10 @@ Level::Level(std::shared_ptr<RenderWindow> wind, Planets num) {
 
     for (auto i = 0; i < 0; i++) {
         monsters.emplace_back(
-                std::make_unique<Monster>(200,
+                std::make_unique<Monster>(monster_parameters.speed,
                                           Game::getInstance()->getRng()->
                                           getRandomInt(0,static_cast<int>(window->getSize().x)),
-                                          window->getSize().x, window->getSize().y, 100));
+                                          window->getSize().x, window->getSize().y, monster_parameters.hp, monster_parameters.cooldown));
     }
 }
 
@@ -132,7 +135,7 @@ int Level::run() {
                     bullets.emplace_back(std::make_unique<Bullet>(it->getDirection(),
                                                                   it->getPositionX(),
                                                                   it->getPositionY(),
-                                                                  50.0, BULLET_SPEED, true));
+                                                                  monster_parameters.damage, BULLET_SPEED, true));
                 }
             }
 
@@ -250,6 +253,6 @@ void Level::spawnMonsters(unsigned wave) {
                                        static_cast<int>(window->getSize().x));
         }
         monsters.emplace_back(
-            std::make_unique<Monster>(200, x0, window->getSize().x, window->getSize().y, 100));
+            std::make_unique<Monster>(monster_parameters.speed, x0, window->getSize().x, window->getSize().y, monster_parameters.hp, monster_parameters.cooldown));
     }
 }

@@ -28,7 +28,7 @@ protected:
     bool on_ground;
 
 public:
-    Monster(float sp_x, float x0, int wind_w, int wind_h, double health);
+    Monster(float sp_x, float x0, int wind_w, int wind_h, double health, float cd);
 
     void move() override;
     bool attack();

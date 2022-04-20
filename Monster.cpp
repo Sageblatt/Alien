@@ -1,12 +1,14 @@
 ﻿#include "Monster.h"
 
-Monster::Monster(float sp_x, float x0, int wind_w, int wind_h, double health) {
+Monster::Monster(float sp_x, float x0, int wind_w, int wind_h, double health, float cd):
+COOLDOWN(cd) {
     timer = std::make_unique<Clock>();
     timer->restart();
     dt = 0;
 
     is_firing = false;
     distance_to_hero = 0;
+    direction = 0;
 
     hp = health;
 
