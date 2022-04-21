@@ -1,5 +1,7 @@
 #include "StartingMenu.h"
 
+using std::make_unique;
+
 StartingMenu::StartingMenu(std::shared_ptr<RenderWindow> wind) {
     window = wind;
 
@@ -14,12 +16,8 @@ StartingMenu::StartingMenu(std::shared_ptr<RenderWindow> wind) {
     timer = make_unique<Clock>();
     timer->restart();
 
-    lor_x[0] = -300;
-    lor_y[0] = 700;
-    lor_x[1] = -100;
-    lor_y[1] = 500;
-    lor_x[2] = 400;
-    lor_y[2] = 300;
+    lor_x = {-300, -100, 400};
+    lor_y = {700, 500, 300};
 
     //текстуры
     for (auto i = 0; i < 3; i++)

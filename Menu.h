@@ -1,7 +1,6 @@
 //
 // Created by sageblatt on 01.04.2022.
 //
-
 #ifndef ALIEN_MENU_H
 #define ALIEN_MENU_H
 

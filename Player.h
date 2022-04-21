@@ -3,27 +3,6 @@
 
 #include "Creature.h"
 
-// What is direction_move?
-// direction_move = ...
-// 0 - Stop (to Right)
-//
-// 1 - Go to Right
-// 2 - Stay and see to Right
-// 3 - Jump and see to right
-// 4 - Jump to Right
-//
-// 5 - Shout to Right
-// 6 - Up and Shout to Right
-// 7 - Go to back and Shout to Right
-//
-// -1 - Go to Left
-// -2 - Stay and see to Left
-// -3 - Jump and see to left
-// -4 - Jump to Left
-//
-// -5 - Shout to Left
-// -6 - Go to Back and Shout to Left
-//  - Up and Shout to Left
 
 enum Direction {
     STOP = 0,
@@ -43,13 +22,15 @@ enum Direction {
     JUMP_FIRE_LEFT [[maybe_unused]] = -7
 };
 
-class Player : public Creature {
+
+class Player: public Creature {
 protected:
     const float JUMP_SPEED = 200;
 	const float g_accel = 900;
     const float COOLDOWN = 0.3;
 
 	bool onGround;
+
     Direction direction_move;
 	
 public:

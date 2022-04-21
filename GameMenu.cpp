@@ -1,4 +1,5 @@
 #include "GameMenu.h"
+using std::make_unique;
 
 GameMenu::GameMenu(std::shared_ptr<RenderWindow> wind) {
     window = wind;

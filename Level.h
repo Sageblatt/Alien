@@ -13,6 +13,7 @@
 #include <list>
 
 using namespace sf;
+using std::unique_ptr;
 
 enum Planets {
     PURPLE,
@@ -29,24 +30,24 @@ struct MonsterParameters{
 
 class Level: public Menu {
 protected:
-    std::unique_ptr<Font> font;
-    std::unique_ptr<Text> wave_text;
-    std::unique_ptr<Clock> wave_timer;
+    unique_ptr<Font> font;
+    unique_ptr<Text> wave_text;
+    unique_ptr<Clock> wave_timer;
 
-    std::unique_ptr<Table> tablice;
-    vector<std::unique_ptr<Health>> hearts;
+    unique_ptr<Table> tablice;
+    std::vector<unique_ptr<Health>> hearts;
 
     std::vector<double> waves;
     double last_wave = 40;
 
     bool is_win;
     bool is_lose;
-    std::unique_ptr<Text> win_text;
-    std::unique_ptr<Text> lose_text;
+    unique_ptr<Text> win_text;
+    unique_ptr<Text> lose_text;
 
-    std::unique_ptr<Player> hero;
-    std::list<std::unique_ptr<Monster>> monsters;
-    std::list<std::unique_ptr<Bullet>> bullets;
+    unique_ptr<Player> hero;
+    std::list<unique_ptr<Monster>> monsters;
+    std::list<unique_ptr<Bullet>> bullets;
 
     MonsterParameters monster_parameters;
 

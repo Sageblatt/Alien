@@ -2,9 +2,8 @@
 #define ALIEN_BULLET_H
 
 #include "Creature.h"
-#include "Player.h"
 
-class Bullet{
+class Bullet {
 protected:
     Sprite sprite;
     Texture texture;
@@ -24,10 +23,11 @@ protected:
 public:
     Bullet(int dir, float x, float y, double dmg, float spd, bool for_hero_);
 
+    void move();
     void draw(RenderWindow& window);
+
     void setLife(bool life);
 
-    void move();
     FloatRect getRect();
     bool isLife() const;
     bool isForHero() const;
@@ -35,6 +35,3 @@ public:
 };
 
 #endif //ALIEN_BULLET_H
-
-
-

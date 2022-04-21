@@ -2,6 +2,7 @@
 #define ALIEN_CREATURE_H
 
 #include <SFML/Graphics.hpp>
+
 using namespace sf;
 
 
@@ -18,7 +19,6 @@ protected:
 
     float cooldown_left = 0;
 
-//    double time;
     float dt;
 
     float x;
@@ -36,15 +36,15 @@ protected:
 
 public:
     virtual void move() = 0;
+    void draw(RenderWindow& window) const;
+    void receiveDamage(double damage);
+
+    void resetTimer();
 
     void setSpriteColor(Color c);
-    void receiveDamage(double damage);
 
     virtual FloatRect getRect();
     double getHp() const;
-
-    void draw(RenderWindow& window) const;
-    void resetTimer();
 };
 
 #endif //ALIEN_CREATURE_H

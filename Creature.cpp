@@ -1,6 +1,5 @@
 #include "Creature.h"
 
-
 void Creature::draw(RenderWindow& window) const {
     window.draw(sprite);
 }
@@ -26,4 +25,3 @@ double Creature::getHp() const {
 void Creature::resetTimer() {
     timer->restart();
 }
-

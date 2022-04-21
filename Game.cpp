@@ -21,6 +21,9 @@ Game::Game() {
     main_menu = nullptr;
     game_menu = nullptr;
     rng = nullptr;
+    planets[PURPLE] = nullptr;
+    planets[FIRE] = nullptr;
+    planets[ELECTRIC] = nullptr;
 }
 
 void Game::init() {
@@ -44,12 +47,12 @@ void Game::init() {
 }
 
 void Game::runGame() {
-//    starting_menu->run();
-//
-//    for (auto i = 1; i < 4; i++)
-//        starting_menu->lor(i);
-//
-//    main_menu->run();
+    starting_menu->run();
+
+    for (auto i = 1; i < 4; i++)
+        starting_menu->lor(i);
+
+    main_menu->run();
 
     int planet_num;
     planet_num = game_menu->run() - 1;
@@ -59,19 +62,18 @@ void Game::runGame() {
         planet_num = game_menu->run() - 1;
     }
 
-
     window->close();
 }
 
-MainMenu* Game::getMainMenu() const {
+[[maybe_unused]] MainMenu* Game::getMainMenu() const {
     return main_menu;
 }
 
-StartingMenu* Game::getStartingMenu() const {
+[[maybe_unused]] StartingMenu* Game::getStartingMenu() const {
     return starting_menu;
 }
 
-GameMenu *Game::getGameMenu() const {
+[[maybe_unused]] GameMenu *Game::getGameMenu() const {
     return game_menu;
 }
 
@@ -79,7 +81,7 @@ RandomNumberGenerator *Game::getRng() const {
     return rng;
 }
 
-const std::shared_ptr<sf::RenderWindow> &Game::getWindow() const {
+[[maybe_unused]] const std::shared_ptr<sf::RenderWindow> &Game::getWindow() const {
     return window;
 }
 
@@ -93,6 +95,9 @@ Game::~Game() {
     delete main_menu;
     delete game_menu;
     delete rng;
+    delete planets[PURPLE];
+    delete planets[FIRE];
+    delete planets[ELECTRIC];
 }
 
 

@@ -8,15 +8,18 @@
 #include "Menu.h"
 
 using namespace sf;
-using std::make_unique;
+using std::unique_ptr;
 
 class StartingMenu: public Menu {
 protected:
-    std::unique_ptr<Font> font;
-    std::array<std::unique_ptr<Texture>, 6> lor_textures;
-    std::array<std::unique_ptr<Sprite>, 6> lor_sprites;
-    std::unique_ptr<Text> tab_text;
-    std::unique_ptr<Clock> timer;
+    unique_ptr<Font> font;
+    unique_ptr<Text> tab_text;
+
+    std::array<unique_ptr<Texture>, 6> lor_textures;
+    std::array<unique_ptr<Sprite>, 6> lor_sprites;
+
+    unique_ptr<Clock> timer;
+
     std::array<float, 3> lor_x;
     std::array<float, 3> lor_y;
 

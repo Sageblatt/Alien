@@ -7,13 +7,13 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 
-using std::vector;
 using namespace sf;
+using std::unique_ptr;
 
 class Table {
 protected:
-    std::unique_ptr<Texture> texture_tab;
-    std::unique_ptr<Sprite>  sprite_tab;
+    unique_ptr<Texture> texture_tab;
+    unique_ptr<Sprite>  sprite_tab;
 
 public:
     Table();
@@ -29,10 +29,10 @@ struct TilesHeart {
 
 class Health {
 protected:
-    std::unique_ptr<Texture> texture_heart;
-    std::unique_ptr<Sprite>  sprite_heart;
+    unique_ptr<Texture> texture_heart;
+    unique_ptr<Sprite>  sprite_heart;
 
-    vector<TilesHeart> heart_vec;
+    std::vector<TilesHeart> heart_vec;
 
     int count;
 

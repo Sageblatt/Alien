@@ -1,7 +1,6 @@
 //
 // Created by sageblatt on 13.04.2022.
 //
-
 #ifndef ALIEN_AUDIOENGINE_H
 #define ALIEN_AUDIOENGINE_H
 
@@ -9,25 +8,26 @@
 #include <array>
 #include "Game.h"
 
+using std::unique_ptr;
+
 enum Songs {
     STARTINGMENU,
     MAINMENU,
-    LOR
+    LOR,
+    TRACKS_AMOUNT
 };
 
 class AudioEngine {
 private:
-    std::array<std::unique_ptr<sf::SoundBuffer>, 3> sound_bufs;
-    static const unsigned short TRACKS_AMOUNT = 3;
-    std::array<std::unique_ptr<sf::Music>, TRACKS_AMOUNT> tracks;
+    std::array<unique_ptr<sf::SoundBuffer>, 3> sound_bufs;
+    std::array<unique_ptr<sf::Music>, TRACKS_AMOUNT> tracks;
 
     Songs current_track;
 
     std::array<int, 2> fade_flag;
 
-
     const float FADE_LEN = 0.8;
-    std::unique_ptr<sf::Clock> timer;
+    unique_ptr<sf::Clock> timer;
 
     void fade(int next_song);
 

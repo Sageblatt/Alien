@@ -15,7 +15,6 @@ MainMenu::MainMenu(std::shared_ptr<RenderWindow> wind) {
     //спрайты
     for (auto i = 0; i < 4; i++)
         sprites.emplace_back(make_unique<Sprite>(*textures[i]));
-
 }
 
 int MainMenu::run() {
@@ -53,7 +52,6 @@ int MainMenu::run() {
             if (menuNum == 2) //если нажали кнопку new_game, то перешли в GameMenu
                 return 0;
         }
-
 
         window->draw(*sprites[3]);
         for (auto i = 1; i < 3; i++)

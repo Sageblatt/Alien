@@ -114,6 +114,9 @@ int Level::run() {
                     window->close();
             }
 
+            if (hero->getHp() <= 0)
+                is_lose = true;
+
             if (last_wave == 0 and monsters.empty())
                 is_win = true;
 
@@ -123,7 +126,9 @@ int Level::run() {
                 bullets.emplace_back(std::make_unique<Bullet>(hero->getDirectionMove(),
                                                               hero->getPositionX(),
                                                               hero->getPositionY(),
-                                                              50.0, BULLET_SPEED, false));
+                                                              50.0,
+                                                              BULLET_SPEED,
+                                                              false));
             }
             hero->move();
 
@@ -135,7 +140,9 @@ int Level::run() {
                     bullets.emplace_back(std::make_unique<Bullet>(it->getDirection(),
                                                                   it->getPositionX(),
                                                                   it->getPositionY(),
-                                                                  monster_parameters.damage, BULLET_SPEED, true));
+                                                                  monster_parameters.damage,
+                                                                  BULLET_SPEED,
+                                                                  true));
                 }
             }
 
@@ -161,9 +168,6 @@ int Level::run() {
                     it1->setLife(false);
                 }
             }
-
-            if (hero->getHp() <= 0)
-                is_lose = true;
 
             for (auto &it : hearts)
                 it->hurt(hero->getHp(), 2000);
@@ -252,13 +256,19 @@ void Level::spawnMonsters(unsigned wave) {
     for (int i = 0; i < wave * 2; i++) {
         auto x0 = 0;
         if (Game::getInstance()->getRng()->getRandomInt(0, 1)) {
-            x0 = Game::getInstance()->getRng()->getRandomInt(0, static_cast<int>(window->getSize().x / 2) - 150);
+            x0 = Game::getInstance()->getRng()->getRandomInt(0,
+                                                             static_cast<int>(window->getSize().x / 2) - 150);
         } else {
             x0 = Game::getInstance()->
                 getRng()->getRandomInt(static_cast<int>(window->getSize().x / 2) + 150,
                                        static_cast<int>(window->getSize().x));
         }
         monsters.emplace_back(
-            std::make_unique<Monster>(monster_parameters.speed, x0, window->getSize().x, window->getSize().y, monster_parameters.hp, monster_parameters.cooldown));
+            std::make_unique<Monster>(monster_parameters.speed,
+                                      x0,
+                                      window->getSize().x,
+                                      window->getSize().y,
+                                      monster_parameters.hp,
+                                      monster_parameters.cooldown));
     }
 }

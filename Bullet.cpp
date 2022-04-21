@@ -1,10 +1,11 @@
 #include "Bullet.h"
 
 Bullet::Bullet(int dir, float x_, float y_, double dmg, float spd, bool for_hero_):
-damage(dmg),  for_hero(for_hero_){
+damage(dmg), for_hero(for_hero_) {
     speed = spd;
     dt = 0;
     direction = dir;
+
     timer = std::make_unique<Clock>();
     timer->restart();
 
@@ -41,9 +42,11 @@ FloatRect Bullet::getRect() {
 void Bullet::draw(RenderWindow &window) {
     window.draw(sprite);
 }
+
 void Bullet::setLife(bool life_) {
     life = life_;
 }
+
 bool Bullet::isLife() const {
     return life;
 }

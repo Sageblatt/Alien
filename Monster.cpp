@@ -133,13 +133,19 @@ bool Monster::attack() {
     else if (on_ground && distance_to_hero > 300) {
         current_frame += dt * FRAME_RATIO_1;
         int j = (int)(current_frame / 3);
-        sprite.setTextureRect(IntRect(move_vec[j].x, move_vec[j].y, move_vec[j].width, move_vec[j].height));
+        sprite.setTextureRect(IntRect(move_vec[j].x,
+                                      move_vec[j].y,
+                                      move_vec[j].width,
+                                      move_vec[j].height));
         sprite.move(speed_x * dt, 0);
     }
     else if (on_ground && distance_to_hero < -300) {
         current_frame += dt * FRAME_RATIO_1;
         int j = (int)(current_frame / 3);
-        sprite.setTextureRect(IntRect(move_vec[j].x + move_vec[j].width, move_vec[j].y, -move_vec[j].width, move_vec[j].height));
+        sprite.setTextureRect(IntRect(move_vec[j].x + move_vec[j].width,
+                                      move_vec[j].y,
+                                      -move_vec[j].width,
+                                      move_vec[j].height));
         sprite.move(-speed_x * dt, 0);
     }
     return false;

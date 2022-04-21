@@ -23,7 +23,6 @@ AudioEngine::AudioEngine() {
         tracks[i]->setLoop(true);
         tracks[i]->setVolume(0);
     }
-
 }
 
 void AudioEngine::fade(int next_song) {

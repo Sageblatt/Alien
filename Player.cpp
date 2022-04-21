@@ -39,12 +39,18 @@ void Player::move() {
     switch (direction_move)
     {
         case STOP: // Stop, 0; +
-            sprite.setTextureRect(IntRect(width * 4, height, width, height));
+            sprite.setTextureRect(IntRect(width * 4,
+                                          height,
+                                          width,
+                                          height));
             current_frame_2 = 0;
             return;
 
         case GO_RIGHT: // Right, 1; +
-            sprite.setTextureRect(IntRect(width * int(current_frame), 0, width, height));
+            sprite.setTextureRect(IntRect(width * int(current_frame),
+                                          0,
+                                          width,
+                                          height));
 
             if (sprite.getPosition().x <= (float)(window_width - width))
                 sprite.move(speed_x * dt, 0);
@@ -56,12 +62,18 @@ void Player::move() {
             if (current_frame_2 <= 4)
               current_frame_2 += FRAME_RATIO * dt;
 
-            sprite.setTextureRect(IntRect(width * int(current_frame_2), height, width, height));
+            sprite.setTextureRect(IntRect(width * int(current_frame_2),
+                                          height,
+                                          width,
+                                          height));
             return;
 
         case JUMP_SEE_RIGHT: // Up, to See to Right, 3; +
             if (-speed_y + g_accel * dt < 0) {
-                sprite.setTextureRect(IntRect(900, 0, width, height));
+                sprite.setTextureRect(IntRect(900,
+                                              0,
+                                              width,
+                                              height));
                 sprite.move(0, -speed_y * dt + g_accel * dt * dt / 2);
                 current_frame_2 = 0;
                 speed_y = speed_y - g_accel * dt;
@@ -80,21 +92,31 @@ void Player::move() {
 
         case JUMP_RIGHT: // Up to Right, 4; +
             if (-speed_y + g_accel * dt < 0) {
-                sprite.setTextureRect(IntRect(900, 0, width, height));
+                sprite.setTextureRect(IntRect(900,
+                                              0,
+                                              width,
+                                              height));
+
                 if (sprite.getPosition().x <= (float) (window_width - width))
                     sprite.move(speed_x * dt, -speed_y * dt + g_accel * dt * dt / 2);
                 else
                     sprite.move(0, -speed_y * dt + g_accel * dt * dt / 2);
+
                 current_frame_2 = 0;
                 speed_y = speed_y - g_accel * dt;
                 return;
             } else if (sprite.getPosition().y < (float)(window_height - height)
                     and -speed_y + g_accel * dt > 0) {
-                sprite.setTextureRect(IntRect(0, 0, width, height));
+                sprite.setTextureRect(IntRect(0,
+                                              0,
+                                              width,
+                                              height));
+
                 if (sprite.getPosition().x <= (float)(window_width - width))
                     sprite.move(speed_x * dt, -speed_y * dt + g_accel * dt * dt / 2);
                 else
                     sprite.move(0, -speed_y * dt + g_accel * dt * dt / 2);
+
                 current_frame_2 = 0;
                 speed_y = speed_y - g_accel * dt;
                 return;
@@ -104,7 +126,10 @@ void Player::move() {
             return;
 
         case FIRE_RIGHT: // Shout to Right, 5; +
-            sprite.setTextureRect(IntRect(width * (int)(current_frame), height * 2, width, height));
+            sprite.setTextureRect(IntRect(width * (int)(current_frame),
+                                          height * 2,
+                                          width,
+                                          height));
 
             if (Keyboard::isKeyPressed(Keyboard::Right) && onGround) {
                 if (sprite.getPosition().x <= (float)(window_width - width))
@@ -128,7 +153,10 @@ void Player::move() {
             return;
 
         case GO_LEFT: // Left, -1; +
-            sprite.setTextureRect(IntRect(900 - width * int(current_frame), height * 3, width, height));
+            sprite.setTextureRect(IntRect(900 - width * int(current_frame),
+                                          height * 3,
+                                          width,
+                                          height));
 
             if (sprite.getPosition().x >= 0)
                 sprite.move(-speed_x * dt, 0);
@@ -140,19 +168,28 @@ void Player::move() {
             if (current_frame_2 <= 4)
                 current_frame_2 += FRAME_RATIO * dt;
 
-            sprite.setTextureRect(IntRect(900 - width * int(current_frame_2), height, width, height));
+            sprite.setTextureRect(IntRect(900 - width * int(current_frame_2),
+                                          height,
+                                          width,
+                                          height));
             return;
 
         case JUMP_SEE_LEFT: // Up, to See to Left, -3; +
             if (-speed_y + g_accel * dt < 0) {
-                sprite.setTextureRect(IntRect(0, height * 3, width, height));
+                sprite.setTextureRect(IntRect(0,
+                                              height * 3,
+                                              width,
+                                              height));
                 sprite.move(0, -speed_y * dt + g_accel * dt * dt / 2);
                 current_frame_2 = 0;
                 speed_y = speed_y - g_accel * dt;
                 return;
             } else if (sprite.getPosition().y < (float)(window_height - height)
                     and -speed_y + g_accel * dt > 0) {
-                sprite.setTextureRect(IntRect(900, height * 3, width, height));
+                sprite.setTextureRect(IntRect(900,
+                                              height * 3,
+                                              width,
+                                              height));
                 sprite.move(0, -speed_y * dt + g_accel * dt * dt / 2);
                 current_frame_2 = 0;
                 speed_y = speed_y - g_accel * dt;
@@ -164,22 +201,31 @@ void Player::move() {
 
         case JUMP_LEFT: // Up to Left, -4; +
             if (-speed_y + g_accel * dt < 0) {
-                sprite.setTextureRect(IntRect(0, height * 3, width, height));
+                sprite.setTextureRect(IntRect(0,
+                                              height * 3,
+                                              width,
+                                              height));
 
                 if (sprite.getPosition().x >= 0)
                     sprite.move(-speed_x * dt, -speed_y * dt + g_accel * dt * dt / 2);
                 else
                     sprite.move(0, -speed_y * dt + g_accel * dt * dt / 2);
+
                 current_frame_2 = 0;
                 speed_y = speed_y - g_accel * dt;
                 return;
             } else if (sprite.getPosition().y < (float)(window_height - height)
                     and -speed_y + g_accel * dt > 0) {
-                sprite.setTextureRect(IntRect(900, height * 3, width, height));
+                sprite.setTextureRect(IntRect(900,
+                                              height * 3,
+                                              width,
+                                              height));
+
                 if (sprite.getPosition().x >= 0)
                     sprite.move(-speed_x * dt, -speed_y * dt + g_accel * dt * dt / 2);
                 else
                     sprite.move(0, -speed_y * dt + g_accel * dt * dt / 2);
+
                 current_frame_2 = 0;
                 speed_y = speed_y - g_accel * dt;
                 return;
@@ -189,7 +235,10 @@ void Player::move() {
             return;
 
         case FIRE_LEFT: // Shout to Left, -5; +
-            sprite.setTextureRect(IntRect(900 - width * (int)(current_frame), height * 4, width, height));
+            sprite.setTextureRect(IntRect(900 - width * (int)(current_frame),
+                                          height * 4,
+                                          width,
+                                          height));
             if (Keyboard::isKeyPressed(Keyboard::Left) && onGround) {
                 if (sprite.getPosition().x >= 0)
                     sprite.move(-speed_x * dt, 0);
@@ -263,8 +312,8 @@ bool Player::keyboard() {
             return false;
         }
     }
-    //                     ATTACK !!!
 
+    //                     ATTACK !!!
     else if (Keyboard::isKeyPressed(Keyboard::Space)) {
         if (direction_move == STOP || direction_move == SEE_RIGHT) {
             direction_move = FIRE_RIGHT; // Shout to Right;
@@ -297,3 +346,25 @@ float Player::getPositionX() {
 float Player::getPositionY() {
     return sprite.getPosition().y;
 }
+
+// What is direction_move?
+// direction_move = ...
+// 0 - Stop (to Right)
+//
+// 1 - Go to Right
+// 2 - Stay and see to Right
+// 3 - Jump and see to right
+// 4 - Jump to Right
+//
+// 5 - Shout to Right
+// 6 - Up and Shout to Right
+// 7 - Go to back and Shout to Right
+//
+// -1 - Go to Left
+// -2 - Stay and see to Left
+// -3 - Jump and see to left
+// -4 - Jump to Left
+//
+// -5 - Shout to Left
+// -6 - Go to Back and Shout to Left
+//  - Up and Shout to Left

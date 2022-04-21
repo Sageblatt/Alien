@@ -1,7 +1,6 @@
 //
 // Created by sageblatt on 19.04.2022.
 //
-
 #include "Health.h"
 
 Table::Table() {
