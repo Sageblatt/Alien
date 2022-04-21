@@ -2,39 +2,48 @@
 #define ALIEN_MONSTER_H
 
 #include "Creature.h"
+
 using std::vector;
 
-struct tiles 
-{
-	int X;
-	int Y;
-	int Width;
-	int Height;
+struct Tiles {
+    int x;
+    int y;
+    int width;
+    int height;
 };
 
-class Monster : public Creature {
+class Monster: public Creature {
 protected:
-	vector<tiles> moveVec;
-	vector<tiles> attackVec;
-	vector<tiles> fallVec;
+    vector<Tiles> move_vec;
+    vector<Tiles> attack_vec;
+    vector<Tiles> fall_vec;
 
-	int X0;
-	int Y0;
+    const float g_accel = 1000;
+    const float FRAME_RATIO_1 = 9;
+    const float COOLDOWN = 2;
 
-	bool key;
+    bool is_firing;
+    bool on_ground;
 
-	float boost;
-	float timeBoost1;
-	float boostHeight;
+    float red_cooldown = 0;
+    bool is_red;
 
-	bool onGround;
+    int direction;
+    float distance_to_hero;
 
 public:
-	void Move() override;
-	void Attack() override;
-	Monster(String file, float speedX, int x0, int windowWidth, int windowHeight);
-	void IncrementTime();
-};
+    Monster(float sp_x, float x0, int wind_w, int wind_h, double health, float cd);
 
+    void move() override;
+    bool attack();
+
+    void setDistanceToHero(float hero_pos);
+    void setIsRed(bool is_red);
+
+    float getPositionX();
+    float getPositionY();
+    int getDirection() const;
+    bool isRed() const;
+};
 
 #endif //ALIEN_MONSTER_H

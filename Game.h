@@ -1,7 +1,6 @@
 //
 // Created by sageblatt on 12.04.2022.
 //
-
 #ifndef ALIEN_GAME_H
 #define ALIEN_GAME_H
 
@@ -13,7 +12,6 @@ class StartingMenu;
 class MainMenu;
 class GameMenu;
 class RandomNumberGenerator;
-class AudioEngine;
 class Level;
 
 class Game {
@@ -22,7 +20,6 @@ private:
     MainMenu* main_menu;
     GameMenu* game_menu;
     RandomNumberGenerator* rng;
-    AudioEngine* a_eng;
     std::array<Level*, 3> planets;
 
     std::shared_ptr<sf::RenderWindow> window;
@@ -34,13 +31,12 @@ private:
 public:
     static Game* getInstance();
 
-    [[nodiscard]] MainMenu* getMainMenu() const;
-    [[nodiscard]] StartingMenu* getStartingMenu() const;
-    [[nodiscard]] GameMenu* getGameMenu() const;
+    [[maybe_unused]] [[nodiscard]] MainMenu* getMainMenu() const;
+    [[maybe_unused]] [[nodiscard]] StartingMenu* getStartingMenu() const;
+    [[maybe_unused]] [[nodiscard]] GameMenu* getGameMenu() const;
     [[nodiscard]] RandomNumberGenerator* getRng() const;
-    [[nodiscard]] AudioEngine* getAEng() const;
 
-    [[nodiscard]] const std::shared_ptr<sf::RenderWindow>& getWindow() const;
+    [[maybe_unused]] [[nodiscard]] const std::shared_ptr<sf::RenderWindow>& getWindow() const;
 
     void init();
     void runGame();

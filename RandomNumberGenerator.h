@@ -1,7 +1,6 @@
 //
 // Created by Sageblatt on 28.07.2021.
 //
-
 #ifndef ALIEN_RANDOMNUMBERGENERATOR_H
 #define ALIEN_RANDOMNUMBERGENERATOR_H
 

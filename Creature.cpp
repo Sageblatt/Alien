@@ -1,16 +1,27 @@
 #include "Creature.h"
 
-void Creature::SetTime(float t) {
-	this->time = t;
+void Creature::draw(RenderWindow& window) const {
+    window.draw(sprite);
 }
 
-float Creature::GetTime() {
-    return this->time;
+FloatRect Creature::getRect() {
+    x = sprite.getPosition().x;
+    y = sprite.getPosition().y;
+    return {x, y, 100, 100};
 }
 
-void Creature::Draw(RenderWindow& window) {
-	window.draw(sprite);
+void Creature::setSpriteColor(Color c) {
+    sprite.setColor(c);
 }
 
+void Creature::receiveDamage(double damage) {
+    hp -= damage;
+}
 
+double Creature::getHp() const {
+    return hp;
+}
 
+void Creature::resetTimer() {
+    timer->restart();
+}

@@ -2,40 +2,49 @@
 #define ALIEN_CREATURE_H
 
 #include <SFML/Graphics.hpp>
+
 using namespace sf;
+
 
 class Creature {
 protected:
-    int Width;
-    int Height;  // ширина, высота
-    float SpeedX;
-    float SpeedY; //скорости по x, y
+    std::unique_ptr<Clock> timer;
 
-    int directionMove; //направление движения спрайта
+    const float FRAME_RATIO = 15;
 
-    float time;
-    float timeBoost;
+    int width;
+    int height;  // ширина, высота
+    float speed_x;
+    float speed_y; //скорости по x, y
 
-    int WindowWidth;
-    int WindowHeight;
+    float cooldown_left = 0;
 
-    float CurrentFrame;//хранит текущий кадр
-    float CurrentFrame2;
+    float dt;
 
-    String  file;         //файл с расширением
-    Image   image;        //sfml изображение
-    Texture texture;      //sfml текстура
-    Sprite  sprite;       //sfml спрайт
+    float x;
+    float y;
+    double hp;
+
+    int window_width;
+    int window_height;
+
+    float current_frame; //хранит текущий кадр
+    float current_frame_2;
+
+    Texture texture; //sfml текстура
+    Sprite  sprite;
 
 public:
-    virtual void Move() = 0;
-    virtual void Attack() = 0;
+    virtual void move() = 0;
+    void draw(RenderWindow& window) const;
+    void receiveDamage(double damage);
 
-    void SetTime(float t);
-    float GetTime();
+    void resetTimer();
 
-    void Draw(RenderWindow& window);
-    virtual void IncrementTime() = 0;
+    void setSpriteColor(Color c);
+
+    virtual FloatRect getRect();
+    double getHp() const;
 };
 
 #endif //ALIEN_CREATURE_H

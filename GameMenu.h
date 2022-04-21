@@ -5,8 +5,6 @@
 #include "Menu.h"
 
 using namespace  sf;
-using std::make_unique;
-
 
 class GameMenu: public Menu {
 public:

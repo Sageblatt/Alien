@@ -5,7 +5,6 @@
 #include "StartingMenu.h"
 #include "MainMenu.h"
 #include "RandomNumberGenerator.h"
-#include "AudioEngine.h"
 #include "Level.h"
 
 Game* Game::instance = nullptr;
@@ -31,7 +30,7 @@ Game::Game() {
 void Game::init() {
     window = std::make_shared<sf::RenderWindow>(sf::VideoMode(1376, 768), "Alien");
     load_texture = std::make_unique<Texture>();
-    load_texture->loadFromFile("../images/loading_screen.png");
+    load_texture->loadFromFile("../images/loading.png");
     load_sprite = make_unique<Sprite>(*load_texture);
 
     window->clear();
@@ -42,7 +41,6 @@ void Game::init() {
     main_menu = new MainMenu(window);
     game_menu = new GameMenu(window);
     rng = new RandomNumberGenerator();
-    a_eng = new AudioEngine();
 
     planets[PURPLE] = new Level(window, PURPLE);
     planets[FIRE] = new Level(window, FIRE);
@@ -50,22 +48,16 @@ void Game::init() {
 }
 
 void Game::runGame() {
-    auto audio_thread = std::thread(&AudioEngine::run, a_eng);
-
     starting_menu->run();
-
-    a_eng->setFadeFlag(LOR);
 
     for (auto i = 1; i < 4; i++)
         starting_menu->lor(i);
-
-    a_eng->setFadeFlag(MAINMENU);
 
     main_menu->run();
 
     int planet_num;
     planet_num = game_menu->run() - 1;
-
+    
     while (window->isOpen()) {
         a_eng->setFadeFlag(FIGHT);
         planets[planet_num]->run();
@@ -74,19 +66,17 @@ void Game::runGame() {
     }
 
     window->close();
-
-    audio_thread.join();
 }
 
-MainMenu* Game::getMainMenu() const {
+[[maybe_unused]] MainMenu* Game::getMainMenu() const {
     return main_menu;
 }
 
-StartingMenu* Game::getStartingMenu() const {
+[[maybe_unused]] StartingMenu* Game::getStartingMenu() const {
     return starting_menu;
 }
 
-GameMenu *Game::getGameMenu() const {
+[[maybe_unused]] GameMenu *Game::getGameMenu() const {
     return game_menu;
 }
 
@@ -94,11 +84,7 @@ RandomNumberGenerator *Game::getRng() const {
     return rng;
 }
 
-AudioEngine* Game::getAEng() const {
-    return a_eng;
-}
-
-const std::shared_ptr<sf::RenderWindow> &Game::getWindow() const {
+[[maybe_unused]] const std::shared_ptr<sf::RenderWindow> &Game::getWindow() const {
     return window;
 }
 

@@ -1,13 +1,14 @@
 //
 // Created by sageblatt on 13.04.2022.
 //
-
 #ifndef ALIEN_AUDIOENGINE_H
 #define ALIEN_AUDIOENGINE_H
 
 #include <SFML/Audio.hpp>
 #include <array>
 #include "Game.h"
+
+using std::unique_ptr;
 
 enum Songs {
     STARTINGMENU,
@@ -26,7 +27,7 @@ private:
     std::array<int, 2> fade_flag;
 
     const float FADE_LEN = 0.8;
-    std::unique_ptr<sf::Clock> timer;
+    unique_ptr<sf::Clock> timer;
 
     void fade(int next_song);
 
