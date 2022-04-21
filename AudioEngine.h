@@ -12,19 +12,18 @@
 enum Songs {
     STARTINGMENU,
     MAINMENU,
-    LOR
+    LOR,
+    FIGHT,
+    TRACKS_AMOUNT
 };
 
 class AudioEngine {
 private:
-    std::array<std::unique_ptr<sf::SoundBuffer>, 3> sound_bufs;
-    static const unsigned short TRACKS_AMOUNT = 3;
     std::array<std::unique_ptr<sf::Music>, TRACKS_AMOUNT> tracks;
 
     Songs current_track;
 
     std::array<int, 2> fade_flag;
-
 
     const float FADE_LEN = 0.8;
     std::unique_ptr<sf::Clock> timer;

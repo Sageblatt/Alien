@@ -7,8 +7,7 @@
 AudioEngine::AudioEngine() {
     timer = std::make_unique<sf::Clock>();
 
-    fade_flag[0] = 0;
-    fade_flag[1] = 0;
+    fade_flag = {0, 0};
 
     for (auto i = 0; i < TRACKS_AMOUNT; i++)
         tracks[i] = std::make_unique<sf::Music>();
@@ -16,6 +15,7 @@ AudioEngine::AudioEngine() {
     tracks[0]->openFromFile("../audio/StartingMenu.ogg");
     tracks[1]->openFromFile("../audio/MainMenu.ogg");
     tracks[2]->openFromFile("../audio/Lor.ogg");
+    tracks[3]->openFromFile("../audio/Fight.ogg");
 
     current_track = STARTINGMENU;
 

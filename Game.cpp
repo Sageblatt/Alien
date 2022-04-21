@@ -67,10 +67,11 @@ void Game::runGame() {
     planet_num = game_menu->run() - 1;
 
     while (window->isOpen()) {
+        a_eng->setFadeFlag(FIGHT);
         planets[planet_num]->run();
+        a_eng->setFadeFlag(MAINMENU);
         planet_num = game_menu->run() - 1;
     }
-
 
     window->close();
 
