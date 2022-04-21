@@ -19,6 +19,7 @@ add_executable(Alien
         StartingMenu.cpp
         MainMenu.cpp
         Game.cpp
+        AudioEngine.cpp
         Level.cpp
         Bullet.cpp
         Health.cpp
@@ -29,6 +30,6 @@ include_directories(./images)
 include_directories(./audio)
 include_directories(./fonts)
 
-find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
+find_package(SFML 2.5 COMPONENTS graphics window system audio REQUIRED)
 
-target_link_libraries(Alien sfml-graphics sfml-window sfml-system)
+target_link_libraries(Alien sfml-graphics sfml-window sfml-system sfml-audio)

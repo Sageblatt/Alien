@@ -12,6 +12,7 @@ class StartingMenu;
 class MainMenu;
 class GameMenu;
 class RandomNumberGenerator;
+class AudioEngine;
 class Level;
 
 class Game {
@@ -20,6 +21,7 @@ private:
     MainMenu* main_menu;
     GameMenu* game_menu;
     RandomNumberGenerator* rng;
+    AudioEngine* a_eng;
     std::array<Level*, 3> planets;
 
     std::shared_ptr<sf::RenderWindow> window;
@@ -31,12 +33,13 @@ private:
 public:
     static Game* getInstance();
 
-    [[maybe_unused]] [[nodiscard]] MainMenu* getMainMenu() const;
-    [[maybe_unused]] [[nodiscard]] StartingMenu* getStartingMenu() const;
-    [[maybe_unused]] [[nodiscard]] GameMenu* getGameMenu() const;
-    [[nodiscard]] RandomNumberGenerator* getRng() const;
+    [[maybe_unused]] MainMenu* getMainMenu() const;
+    [[maybe_unused]] StartingMenu* getStartingMenu() const;
+    [[maybe_unused]] GameMenu* getGameMenu() const;
+    RandomNumberGenerator* getRng() const;
+    [[maybe_unused]] AudioEngine* getAEng() const;
 
-    [[maybe_unused]] [[nodiscard]] const std::shared_ptr<sf::RenderWindow>& getWindow() const;
+    [[maybe_unused]] const std::shared_ptr<sf::RenderWindow>& getWindow() const;
 
     void init();
     void runGame();
