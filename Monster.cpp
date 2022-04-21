@@ -49,7 +49,9 @@ COOLDOWN(cd) {
 void Monster::move() {
     dt = timer->getElapsedTime().asSeconds();
     timer->restart();
+
     red_cooldown -= dt;
+
     if (red_cooldown <= 0) {
         red_cooldown = 0.5;
         is_red = false;
@@ -157,4 +159,12 @@ float Monster::getPositionY() {
 
 int Monster::getDirection() const {
     return direction;
+}
+
+bool Monster::isRed() const {
+    return is_red;
+}
+
+void Monster::setIsRed(bool red) {
+    is_red = red;
 }
