@@ -8,12 +8,11 @@
 #include <SFML/Graphics.hpp>
 #include <thread>
 
-class StartingMenu;
-class MainMenu;
-class GameMenu;
-class RandomNumberGenerator;
-class AudioEngine;
-class Level;
+#include "StartingMenu.h"
+#include "MainMenu.h"
+#include "RandomNumberGenerator.h"
+#include "AudioEngine.h"
+#include "Level.h"
 
 class Game {
 private:

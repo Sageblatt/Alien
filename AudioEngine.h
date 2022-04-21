@@ -6,7 +6,6 @@
 
 #include <SFML/Audio.hpp>
 #include <array>
-#include "Game.h"
 
 using std::unique_ptr;
 
