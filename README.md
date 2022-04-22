@@ -2,11 +2,11 @@
 ___
 2D shooting game about brave cosmonaut fighting evil forces to save the planet.
 
-# Required libraries
+# Required
 ___
 - SFML
 - CMake
-- libpthread (for Linux users)
+- libpthread
 
 
 # Build
